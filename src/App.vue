@@ -15,6 +15,7 @@
 <template>
   <nav>
     <p>Tobias is in the houseee</p>
+    <p>hannes was here</p>
     <p>Erik was here</p>
     <p>Helené was here</p>
     <ul>
