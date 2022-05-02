@@ -14,6 +14,7 @@
 
 <template>
   <nav>
+    <p>hannes was here</p>
     <p>Tobias was here</p>
     <p>Erik was here</p>
     <p>Helené was here</p>
