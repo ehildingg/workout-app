@@ -14,7 +14,6 @@
 
 <template>
   <nav>
-    <p>Tobias was here wefwfe</p>
     <p>Tobias was hereeeeeeee</p>
     <p>Tobias is in the houseee</p>
     <p>hannes is herejeaioujfnsio</p>
