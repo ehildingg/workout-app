@@ -2,19 +2,20 @@
   import CitiesList from './components/CitiesList.vue'
   import CounterButton from './components/CounterButton.vue'
   import HelloWorld from './components/HelloWorld.vue'
-
+  import Timer from './components/Timer.vue'
   export default {
     components: {
       CitiesList,
       CounterButton,
-      HelloWorld
+      HelloWorld,
+      Timer
     }
   }
 </script>
 
 <template>
   <nav>
-    <p>Tobias was here again</p>
+    <Timer />
     <ul>
       <li>
         <RouterLink to="/">Hem</RouterLink>
