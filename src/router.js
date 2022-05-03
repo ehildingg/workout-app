@@ -1,22 +1,22 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
-import AboutView from './views/AboutView.vue'
-import ContactView from './views/ContactView.vue'
-import HomeView from './views/HomeView.vue'
+import StartView from './views/StartView.vue'
+import EditView from './views/EditView.vue'
+import TimerView from './views/TimerView.vue'
 
 export default createRouter({
   history: createWebHashHistory(),
   routes: [
     {
-      component: AboutView,
+      component: StartView,
       path: '/about'
     },
     {
-      component: ContactView,
+      component: EditView,
       path: '/contact'
     },
     {
-      component: HomeView,
+      component: TimerView,
       path: '/'
     }
   ]
