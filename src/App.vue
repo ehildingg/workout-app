@@ -14,6 +14,7 @@
 
 <template>
   <nav>
+    <p>TJ</p>
     <ul>
       <li>
         <RouterLink to="/">Hem</RouterLink>
