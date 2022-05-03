@@ -8,10 +8,10 @@ const mutations = {
   state = {
     counter: 0,
     exerciseList: [
-      { blockName: 'pullups', seconds: 6, resting: true, color: 'blue' },
-      { blockName: 'rest', seconds: 5, resting: false, color: 'red' },
-      { blockName: 'crunches', seconds: 6, resting: true, color: 'green' },
-      { blockName: 'rest', seconds: 5, resting: false, color: 'red' }
+      { id: 1, blockName: 'pullups', seconds: 6, resting: true, color: 'blue' },
+      { id: 2, blockName: 'rest', seconds: 5, resting: false, color: 'red' },
+      { id: 3, blockName: 'jump', seconds: 6, resting: true, color: 'green' },
+      { id: 4, blockName: 'rest', seconds: 5, resting: false, color: 'red' }
     ]
   }
 

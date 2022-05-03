@@ -8,15 +8,15 @@ export default createRouter({
   history: createWebHashHistory(),
   routes: [
     {
-      component: StartView,
-      path: '/about'
+      component: TimerView,
+      path: '/timer'
     },
     {
       component: EditView,
-      path: '/contact'
+      path: '/edit'
     },
     {
-      component: TimerView,
+      component: StartView,
       path: '/'
     }
   ]
