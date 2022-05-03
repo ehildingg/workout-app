@@ -14,11 +14,6 @@
 
 <template>
   <nav>
-    <p>Tobias was</p>
-    <p>Tobias is in the houseee</p>
-    <p>hannes is herejeaioujfnsio</p>
-    <p>Erik was here</p>
-    <p>Helené was hereeee</p>
     <ul>
       <li>
         <RouterLink to="/">Hem</RouterLink>
