@@ -14,9 +14,14 @@
 
 <template>
   <nav>
+    <p>Tobias was hereeeeeeee</p>
+    <p>Tobias is in the houseee</p>
+    <p>hanndes is herejeaioujfnsio</p>
+    <p>Erik was here</p>
+    <p>Helené was hereeee</p>
+    <p>blublu</p>
     <p>TJ</p>
     <p>TJ0.1</p>
-
     <ul>
       <li>
         <RouterLink to="/">Hem</RouterLink>
