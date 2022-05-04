@@ -9,8 +9,8 @@
     },
     computed: {
       // Get exercisesArray from vuex
-      exercisesList: function () {
-        return this.$store.state.exerciseList
+      workoutList: function () {
+        return this.$store.state.workoutList
       },
       // Get data from router
       getRoutePathName: function () {
@@ -27,8 +27,8 @@
 
 <template>
   <h1>RouterPath: {{ getRoutePathName }}</h1>
-  <ol class="list-container" v-if="exercisesList">
-    <li class="list-item" :key="exercise.id" v-for="exercise in exercisesList">
+  <ol class="list-container" v-if="workoutList">
+    <li class="list-item" :key="exercise.id" v-for="exercise in workoutList">
       ID: {{ exercise.id }}<br />
       NAME: {{ exercise.blockName }}<br />
       INTERVAL: {{ exercise.seconds }} sec<br />
