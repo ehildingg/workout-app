@@ -3,22 +3,56 @@
     created() {},
     data() {
       return {
-
-                listBocks: [
-          { blockName: 'B1', resting: false, seconds: 5 },
-          { blockName: 'B1', resting: false, seconds: 5 }
-        ]
+        timerId: null,
+        /*         delay: 1000,
+        countSec: 0,
+        index: 0,
+        executeEventSecond: 0, */
 
         sec: 20,
         min: 1,
         hour: 0,
         intervals: [],
-        timer: null,
-
+        timer: null
       }
     },
     methods: {
-      startRoutine() {
+      start() {
+        let delay = 1000 // 1 second
+        let countSec = 0
+        let index = 0
+        let executeEventSecond = 0
+
+        this.timerId = setInterval(() => {
+          console.log(countSec)
+
+          if (countSec === executeEventSecond) {
+            console.log('Index', index)
+
+            if (index < exercisesArray.length) {
+              console.log(exercisesArray[index].blockName)
+              executeEventSecond += exercisesArray[index].seconds
+            } else {
+              console.log('Exercise completed')
+            }
+
+            index++
+          }
+
+          if (countSec >= executeEventSecond) {
+            clearInterval(timerId)
+          }
+
+          console.log(
+            'executesecond: ',
+            executeEventSecond + ' countsec: ',
+            countSec
+          )
+          countSec++
+        }, delay)
+      }
+
+      /*       startRoutine() {
         if (this.timer === null) {
           this.onGoingRoutine()
           this.timer = setInterval(() => this.onGoingRoutine(), 1000)
@@ -27,13 +61,13 @@
           this.timer = null
           this.pause()
         }
-      },
+      }, */
       /*
       onGoingRoutine() {
         this.totalTimeCounter()
       }, */
 
-      onGoingRoutine() {
+      /*       onGoingRoutine() {
         this.sec--
         if (this.sec == 0) {
           this.sec = 60
@@ -47,9 +81,12 @@
           clearInterval(this.timer)
           this.timer = null
         }
-      }
+      } */
     },
     computed: {
+      exercisesList: function () {
+        return this.$store.state.exerciseList
+      },
       nrOfrestIntervals: function () {
         return this.nrOfSets < 1 ? 0 : this.nrOfSets - 1
       },
