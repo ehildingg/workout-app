@@ -20,10 +20,34 @@ const mutations = {
     //   { id: 4, blockName: 'rest', seconds: 5, resting: false, color: 'red' }
     // ],
     upperBodyExercises: [
-      { id: 1, blockName: 'pullups', seconds: 6, resting: true, color: 'blue' },
-      { id: 2, blockName: 'rest', seconds: 5, resting: false, color: 'red' },
-      { id: 3, blockName: 'jump', seconds: 6, resting: true, color: 'green' },
-      { id: 4, blockName: 'rest', seconds: 5, resting: false, color: 'red' }
+      {
+        id: 1,
+        blockName: 'pullups',
+        durationInSeconds: 6,
+        resting: true,
+        color: 'blue'
+      },
+      {
+        id: 2,
+        blockName: 'rest',
+        durationInSeconds: 5,
+        resting: false,
+        color: 'red'
+      },
+      {
+        id: 3,
+        blockName: 'jump',
+        durationInSeconds: 6,
+        resting: true,
+        color: 'green'
+      },
+      {
+        id: 4,
+        blockName: 'rest',
+        durationInSeconds: 5,
+        resting: false,
+        color: 'red'
+      }
     ],
     workoutList: [
       {

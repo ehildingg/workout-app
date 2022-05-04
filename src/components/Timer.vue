@@ -1,55 +1,69 @@
 <script>
   export default {
     created() {
-      this.start()
+      this.exerciseArray = this.$store.state.upperBodyExercises
+      /*       this.totalCounter = this.exerciseArray.reduce(
+        (previousValue, currentValue) => previousValue + currentValue.seconds,
+        0
+      )
+      console.log(this.totalCounter) */
+      this.exerciseArray.forEach((exercise) => {
+        this.totalCounter += exercise.durationInSeconds
+      })
     },
     beforeUnmount() {
-      this.$timer.stop('start')
+      this.$timer.stop('exerciseTimer')
     },
     timers: {
-      start: { time: 1000, autostart: true, repeat: true }
+      exerciseTimer: {
+        time: 1000,
+        autostart: true,
+        repeat: true
+      }
     },
     data() {
       return {
-        timerId: null,
-        countSec: 0,
-        index: 0,
-        executeEventSecond: 0,
+        exerciseArray: null,
+        totalCounter: null,
+        counterInSeconds: 5,
+        currentExercise: 0
 
-        sec: 20,
+        /*         sec: 20,
         min: 1,
         hour: 0,
         intervals: [],
-        timer: null
+        timer: null */
       }
     },
     methods: {
-      start() {
-        console.log(this.countSec)
+      exerciseTimer() {
+        console.log('ÖvningsTimer: ' + this.counterInSeconds)
+        this.counterInSeconds--
+        this.totalCounter--
+        console.log('Total Timer:' + this.totalCounter)
 
-        if (this.countSec === this.executeEventSecond) {
-          console.log('Index', this.index)
-
-          if (this.index < this.exercisesArray.length) {
-            console.log(this.exercisesArray[this.index].blockName)
-            this.executeEventSecond += this.exercisesArray[this.index].seconds
-          } else {
-            console.log('Exercise completed')
-          }
-
-          this.index++
+        if (this.counterInSeconds == 0) {
+          this.$timer.stop('exerciseTimer')
+          this.prepareNextExercise()
+          this.startNextExercise()
         }
-
-        if (this.countSec >= this.executeEventSecond) {
-          this.$timer.stop('start')
+        if (this.totalCounter == 0) {
+          this.finishWorkout()
         }
+      },
 
-        console.log(
-          'executesecond: ',
-          this.executeEventSecond + ' countsec: ',
-          this.countSec
-        )
-        this.countSec++
+      prepareNextExercise() {
+        this.currentExercise++
+        console.log(this.exerciseArray[this.currentExercise].blockName)
+        this.counterInSeconds =
+          this.exerciseArray[this.currentExercise].durationInSeconds
+      },
+
+      startNextExercise() {
+        this.$timer.start('exerciseTimer')
+      },
+      finishWorkout() {
+        this.$timer.stop('exerciseTimer')
       }
 
       /*       startRoutine() {
@@ -84,18 +98,9 @@
       } */
     },
     computed: {
-      exercisesArray: function () {
+      /*       exercisesArray: function () {
         return this.$store.state.upperBodyExercises
-      },
-      nrOfrestIntervals: function () {
-        return this.nrOfSets < 1 ? 0 : this.nrOfSets - 1
-      },
-      totalTime: function () {
-        return (
-          this.nrOfSets * this.activeTimeSec +
-          this.norOfIntervals * this.restTimeSec
-        )
-      }
+      } */
       /*       totalTimeLeft: function () {
         (this.hour * 3600) + (this.min * 60) + (this.sec)
         const result = new Date(seconds * 1000).toISOString().slice(11, 19)
@@ -107,7 +112,12 @@
 </script>
 
 <template>
-  <div>Timer</div>
+  <div v-if="exerciseArray">
+    <h1>{{ this.exerciseArray[this.currentExercise].blockName }}</h1>
+    <h1>{{ this.counterInSeconds }}</h1>
+    <h1>Totaltimer:</h1>
+    <h1>{{ this.totalCounter }}</h1>
+  </div>
 </template>
 
 <style scoped>
