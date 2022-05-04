@@ -21,7 +21,7 @@
         <RouterLink to="/">StartView</RouterLink>
       </li>
       <li>
-        <RouterLink to="/edit">EditView</RouterLink>
+        <RouterLink to="/edit">EditViewändrar</RouterLink>
       </li>
       <li>
         <RouterLink to="/timer">TimerView</RouterLink>
