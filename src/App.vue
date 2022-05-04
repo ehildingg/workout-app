@@ -31,6 +31,7 @@
   <main>
     <RouterView />
   </main>
+  <p>TESTAR</p>
 </template>
 
 <style>
