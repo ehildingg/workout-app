@@ -11,7 +11,7 @@
     computed: {
       // Get exercisesArray from vuex
       exercisesList: function () {
-        return this.$store.state.exerciseList
+        return this.$store.state.upperBodyExercises
       },
       // Get data from router
       getRoutePathName: function () {
