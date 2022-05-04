@@ -28,12 +28,12 @@
 <template>
   <h1>RouterPath: {{ getRoutePathName }}</h1>
   <ol class="list-container" v-if="exercisesList">
-    <li class="list-item" :key="exercice.id" v-for="exercice in exercisesList">
-      ID: {{ exercice.id }}<br />
-      NAME: {{ exercice.blockName }}<br />
-      INTERVAL: {{ exercice.seconds }} sec<br />
-      REST: {{ exercice.resting }}<br />
-      COLOR: {{ exercice.color }}<br />
+    <li class="list-item" :key="exercise.id" v-for="exercise in exercisesList">
+      ID: {{ exercise.id }}<br />
+      NAME: {{ exercise.blockName }}<br />
+      INTERVAL: {{ exercise.seconds }} sec<br />
+      REST: {{ exercise.resting }}<br />
+      COLOR: {{ exercise.color }}<br />
     </li>
   </ol>
 </template>

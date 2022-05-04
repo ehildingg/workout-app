@@ -1,6 +1,7 @@
 <script>
+  import ExerciseBlock from '../components/ExerciseBlock.vue'
   export default {
-    components: {},
+    components: { ExerciseBlock },
     created() {},
     data() {
       return {
@@ -27,15 +28,13 @@
 
 <template>
   <h1>RouterPath: {{ getRoutePathName }}</h1>
-  <ol class="list-container" v-if="exercisesList">
-    <li class="list-item" :key="exercice.id" v-for="exercice in exercisesList">
-      ID: {{ exercice.id }}<br />
-      NAME: {{ exercice.blockName }}<br />
-      INTERVAL: {{ exercice.seconds }} sec<br />
-      REST: {{ exercice.resting }}<br />
-      COLOR: {{ exercice.color }}<br />
-    </li>
-  </ol>
+  <section class="list-container" v-if="exercisesList">
+    <ExerciseBlock
+      :key="exercise.id"
+      v-for="exercise in exercisesList"
+      :exercise="exercise"
+    />
+  </section>
 </template>
 
 <style scoped>
@@ -43,9 +42,5 @@
 GLOBALA STYLES I APP.VUE */
   .list-container {
     border: 1px solid black;
-  }
-  .list-item {
-    border: 1px solid gray;
-    margin: 0.3rem;
   }
 </style>
