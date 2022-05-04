@@ -20,6 +20,7 @@
       }
     }
   }
+  // Test
 </script>
 
 <template>
