@@ -1,13 +1,20 @@
 <script>
   export default {
-    created() {},
+    created() {
+      this.start()
+    },
+    beforeUnmount() {
+      this.$timer.stop('start')
+    },
+    timers: {
+      start: { time: 1000, autostart: true, repeat: true }
+    },
     data() {
       return {
         timerId: null,
-        /*         delay: 1000,
         countSec: 0,
         index: 0,
-        executeEventSecond: 0, */
+        executeEventSecond: 0,
 
         sec: 20,
         min: 1,
@@ -18,38 +25,31 @@
     },
     methods: {
       start() {
-        let delay = 1000 // 1 second
-        let countSec = 0
-        let index = 0
-        let executeEventSecond = 0
+        console.log(this.countSec)
 
-        this.timerId = setInterval(() => {
-          console.log(countSec)
+        if (this.countSec === this.executeEventSecond) {
+          console.log('Index', this.index)
 
-          if (countSec === executeEventSecond) {
-            console.log('Index', index)
-
-            if (index < exercisesArray.length) {
-              console.log(exercisesArray[index].blockName)
-              executeEventSecond += exercisesArray[index].seconds
-            } else {
-              console.log('Exercise completed')
-            }
-
-            index++
+          if (this.index < this.exercisesArray.length) {
+            console.log(this.exercisesArray[this.index].blockName)
+            this.executeEventSecond += this.exercisesArray[this.index].seconds
+          } else {
+            console.log('Exercise completed')
           }
 
-          if (countSec >= executeEventSecond) {
-            clearInterval(timerId)
-          }
+          this.index++
+        }
 
-          console.log(
-            'executesecond: ',
-            executeEventSecond + ' countsec: ',
-            countSec
-          )
-          countSec++
-        }, delay)
+        if (this.countSec >= this.executeEventSecond) {
+          this.$timer.stop('start')
+        }
+
+        console.log(
+          'executesecond: ',
+          this.executeEventSecond + ' countsec: ',
+          this.countSec
+        )
+        this.countSec++
       }
 
       /*       startRoutine() {
@@ -84,8 +84,8 @@
       } */
     },
     computed: {
-      exercisesList: function () {
-        return this.$store.state.exerciseList
+      exercisesArray: function () {
+        return this.$store.state.upperBodyExercises
       },
       nrOfrestIntervals: function () {
         return this.nrOfSets < 1 ? 0 : this.nrOfSets - 1
@@ -102,20 +102,7 @@
         console.log(result) // 👉️ "00:10:00" (hh:mm:ss)
       } */
     },
-    props: {
-      nrOfSets: {
-        type: Number,
-        default: 5
-      },
-      activeTimeSec: {
-        type: Number,
-        default: 7
-      },
-      restTimeSec: {
-        type: Number,
-        default: 8
-      }
-    }
+    props: {}
   }
 </script>
 

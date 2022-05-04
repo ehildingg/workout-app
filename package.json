@@ -2,6 +2,7 @@
   "dependencies": {
     "vue": "^3.2.31",
     "vue-router": "^4.0.14",
+    "vue-timers": "^2.0.4",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
