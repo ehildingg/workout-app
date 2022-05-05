@@ -8,13 +8,13 @@
   <nav>
     <ul>
       <li>
-        <RouterLink to="/">StartView</RouterLink>
+        <RouterLink to="/">RoutineView</RouterLink>
+      </li>
+      <li>
+        <RouterLink to="/exercise">ExerciseView</RouterLink>
       </li>
       <li>
         <RouterLink to="/edit">EditView</RouterLink>
-      </li>
-      <li>
-        <RouterLink to="/timer">TimerView</RouterLink>
       </li>
     </ul>
   </nav>

@@ -13,7 +13,7 @@ export default createRouter({
     },
     {
       component: ExerciseView,
-      path: '/timer'
+      path: '/exercise'
     },
     {
       component: EditView,
