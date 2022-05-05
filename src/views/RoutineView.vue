@@ -37,6 +37,8 @@
       NAME: {{ $store.state.routineList[index].blockName }} <br />
       ROUTINE-TIME:
       {{ $store.state.routineList[index].seconds }} sec<br />
+      <button @click="$router.push('/edit')">Edit</button>
+      <button @click="$router.push('/exercise')">Start</button>
     </li>
 
     <!-- RENDERAR EXERCISES -->

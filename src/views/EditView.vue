@@ -42,7 +42,7 @@
     />
   </section>
   <div class="menu-container">
-    <button class="startbtn" @click="$router.push('/')">Start</button>
+    <button class="startbtn" @click="$router.push('/exercise')">Start</button>
 
     <div class="dropup">
       <button class="dropbtn" @click="toggleMenu">
