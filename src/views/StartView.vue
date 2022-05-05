@@ -27,8 +27,21 @@
 
 <template>
   <h1>RouterPath: {{ getRoutePathName }}</h1>
+  <h3>WORKOUT ROUTINES</h3>
   <ol class="list-container" v-if="workoutList">
     <li
+      class="list-item"
+      :key="workoutId"
+      v-for="(workoutId, index) in workoutList"
+    >
+      NAME: {{ $store.state.workoutList[index].blockName }} <br />
+      ROUTINE-TIME:
+      {{ $store.state.workoutList[index].seconds }} sec<br />
+    </li>
+
+    <!-- RENDERAR EXERCISES -->
+
+    <!-- <li
       class="list-item"
       :key="exerciseId"
       v-for="exerciseId in workoutList[0].exercises"
@@ -39,7 +52,8 @@
       REST: {{ $store.state.exerciseList[exerciseId].resting }}<br />
       COLOR: {{ $store.state.exerciseList[exerciseId].color }}<br />
       EXCERCISES: {{ $store.state.exerciseList[exerciseId] }}<br />
-    </li>
+
+    </li> -->
   </ol>
 </template>
 
@@ -55,3 +69,4 @@ GLOBALA STYLES I APP.VUE */
     margin: 0.3rem;
   }
 </style>
+-->
