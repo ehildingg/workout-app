@@ -1,16 +1,6 @@
 <script>
-  /*   import CitiesList from './components/CitiesList.vue'
-  import CounterButton from './components/CounterButton.vue'
-  import HelloWorld from './components/HelloWorld.vue' */
-
   export default {
-    components: {
-      /*
-      CitiesList,
-      CounterButton,
-      HelloWorld
-      */
-    }
+    components: {}
   }
 </script>
 
@@ -18,13 +8,13 @@
   <nav>
     <ul>
       <li>
-        <RouterLink to="/">StartView</RouterLink>
+        <RouterLink to="/">RoutineView</RouterLink>
+      </li>
+      <li>
+        <RouterLink to="/exercise">ExerciseView</RouterLink>
       </li>
       <li>
         <RouterLink to="/edit">EditView</RouterLink>
-      </li>
-      <li>
-        <RouterLink to="/timer">TimerView</RouterLink>
       </li>
     </ul>
   </nav>
