@@ -7,6 +7,17 @@ const mutations = {
   },
   state = {
     counter: 0,
+
+    settings: {
+      default: {
+        initialCoundown: 5,
+        cycleCountdown: 45
+      },
+      customized: {
+        initialCoundown: 5,
+        cycleCountdown: 45
+      }
+    },
     // fullBodyExercies: [
     //   { id: 1, blockName: 'pullups', seconds: 6, resting: true, color: 'blue' },
     //   { id: 2, blockName: 'rest', seconds: 5, resting: false, color: 'red' },
@@ -23,28 +34,28 @@ const mutations = {
       {
         id: 1,
         blockName: 'pullups',
-        durationInSeconds: 6,
+        durationInSeconds: 2,
         resting: true,
         color: 'blue'
       },
       {
         id: 2,
         blockName: 'rest',
-        durationInSeconds: 5,
+        durationInSeconds: 2,
         resting: false,
         color: 'red'
       },
       {
         id: 3,
         blockName: 'jump',
-        durationInSeconds: 6,
+        durationInSeconds: 2,
         resting: true,
         color: 'green'
       },
       {
         id: 4,
         blockName: 'rest',
-        durationInSeconds: 5,
+        durationInSeconds: 2,
         resting: false,
         color: 'red'
       }

@@ -2,14 +2,10 @@
   export default {
     created() {
       this.exerciseArray = this.$store.state.upperBodyExercises
-      /*       this.totalCounter = this.exerciseArray.reduce(
-        (previousValue, currentValue) => previousValue + currentValue.seconds,
-        0
-      )
-      console.log(this.totalCounter) */
       this.exerciseArray.forEach((exercise) => {
         this.totalCounter += exercise.durationInSeconds
       })
+      this.counterInSeconds = this.exerciseArray[0].durationInSeconds
     },
     beforeUnmount() {
       this.$timer.stop('exerciseTimer')
@@ -25,14 +21,8 @@
       return {
         exerciseArray: null,
         totalCounter: null,
-        counterInSeconds: 5,
+        counterInSeconds: null,
         currentExercise: 0
-
-        /*         sec: 20,
-        min: 1,
-        hour: 0,
-        intervals: [],
-        timer: null */
       }
     },
     methods: {
@@ -42,12 +32,12 @@
         this.totalCounter--
         console.log('Total Timer:' + this.totalCounter)
 
-        if (this.counterInSeconds == 0) {
+        if (this.counterInSeconds == 0 && this.totalCounter != 0) {
           this.$timer.stop('exerciseTimer')
           this.prepareNextExercise()
           this.startNextExercise()
         }
-        if (this.totalCounter == 0) {
+        if (this.totalCounter <= 0) {
           this.finishWorkout()
         }
       },
@@ -64,48 +54,23 @@
       },
       finishWorkout() {
         this.$timer.stop('exerciseTimer')
-      }
+      },
 
-      /*       startRoutine() {
-        if (this.timer === null) {
-          this.onGoingRoutine()
-          this.timer = setInterval(() => this.onGoingRoutine(), 1000)
+      playPauseBtnClick() {
+        if (this.totalCounter > 0) {
+          this.timers.exerciseTimer.isRunning
+            ? this.$timer.stop('exerciseTimer')
+            : this.$timer.start('exerciseTimer')
+          console.log(this.timers.exerciseTimer.isRunning)
         } else {
-          clearInterval(this.timer)
-          this.timer = null
-          this.pause()
+          console.log('Exercise is done')
         }
-      }, */
-      /*
-      onGoingRoutine() {
-        this.totalTimeCounter()
-      }, */
-
-      /*       onGoingRoutine() {
-        this.sec--
-        if (this.sec == 0) {
-          this.sec = 60
-          this.min--
-        }
-        if (this.min == 0) {
-          this.min = 60
-          this.hour--
-        }
-        if (this.hour == 0 && this.min == 0 && this.sec == 0) {
-          clearInterval(this.timer)
-          this.timer = null
-        }
-      } */
+      }
     },
     computed: {
-      /*       exercisesArray: function () {
-        return this.$store.state.upperBodyExercises
-      } */
-      /*       totalTimeLeft: function () {
-        (this.hour * 3600) + (this.min * 60) + (this.sec)
-        const result = new Date(seconds * 1000).toISOString().slice(11, 19)
-        console.log(result) // 👉️ "00:10:00" (hh:mm:ss)
-      } */
+      totalTimeLeft: function () {
+        return new Date(this.totalCounter * 1000).toISOString().slice(14, 19)
+      }
     },
     props: {}
   }
@@ -117,6 +82,8 @@
     <h1>{{ this.counterInSeconds }}</h1>
     <h1>Totaltimer:</h1>
     <h1>{{ this.totalCounter }}</h1>
+    <p>{{ totalTimeLeft }}</p>
+    <button @click="playPauseBtnClick()">Pause</button>
   </div>
 </template>
 
@@ -125,3 +92,12 @@
     border: 1px solid black;
   }
 </style>
+
+<!--
+      btnState: function () {
+        return this.timers.exerciseTimer.isRunning
+      }, -->
+
+<!--             /*       exercisesArray: function () {
+        return this.$store.state.upperBodyExercises
+      }, */ -->
