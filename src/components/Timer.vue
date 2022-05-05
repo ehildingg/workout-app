@@ -1,11 +1,9 @@
 <script>
+  import TimerList from './TimerList.vue'
   export default {
+    components: { TimerList },
     created() {
-      this.exerciseArray = this.$store.state.upperBodyExercises
-      this.exerciseArray.forEach((exercise) => {
-        this.totalCounter += exercise.durationInSeconds
-      })
-      this.counterInSeconds = this.exerciseArray[0].durationInSeconds
+      this.initData()
     },
     beforeUnmount() {
       this.$timer.stop('exerciseTimer')
@@ -19,7 +17,9 @@
     },
     data() {
       return {
-        exerciseArray: null,
+        exerciseArrayIds: null,
+        /*     exerciseListToUse: null, */
+        exerciseArray: [],
         totalCounter: null,
         counterInSeconds: null,
         currentExercise: 0
@@ -65,6 +65,22 @@
         } else {
           console.log('Exercise is done')
         }
+      },
+      initData() {
+        //Router index
+        let routerString = '0'
+        this.exerciseArrayIds =
+          this.$store.state.routineList[Number(routerString)].exercises
+
+        this.exerciseArrayIds.forEach((id) => {
+          this.exerciseArray.push(this.$store.state.exerciseList[id])
+        })
+
+        this.exerciseArray.forEach((exercise) => {
+          this.totalCounter += exercise.durationInSeconds
+        })
+
+        this.counterInSeconds = this.exerciseArray[0].durationInSeconds
       }
     },
     computed: {
@@ -83,11 +99,33 @@
     <h1>Totaltimer:</h1>
     <h1>{{ this.totalCounter }}</h1>
     <p>{{ totalTimeLeft }}</p>
-    <button @click="playPauseBtnClick()">Pause</button>
   </div>
+
+  <div class="dot-container">
+    <span :key="exercise.id" v-for="exercise in exerciseArray" />
+  </div>
+  <button @click="playPauseBtnClick()">Pause</button>
 </template>
 
 <style scoped>
+  .dot-container {
+    overflow: scroll;
+    white-space: nowrap;
+  }
+  .dot-active {
+    opacity: 1;
+  }
+  .dot-inactive {
+    opacity: 0.5;
+  }
+  span {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    margin: 5px;
+    border-radius: 50%;
+    background-color: rgb(41, 82, 119);
+  }
   .div {
     border: 1px solid black;
   }

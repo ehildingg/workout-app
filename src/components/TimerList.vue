@@ -1,9 +1,6 @@
 <script>
-  import Timer from '../components/Timer.vue'
   export default {
-    components: {
-      Timer
-    },
+    components: {},
     created() {},
     data() {
       return {
@@ -29,7 +26,16 @@
 </script>
 
 <template>
-  <Timer />
+  <h1>RouterPath: {{ getRoutePathName }}</h1>
+  <ol class="list-container" v-if="exercisesList">
+    <li class="list-item" :key="exercise.id" v-for="exercise in exercisesList">
+      ID: {{ exercise.id }}<br />
+      NAME: {{ exercise.blockName }}<br />
+      INTERVAL: {{ exercise.seconds }} sec<br />
+      REST: {{ exercise.resting }}<br />
+      COLOR: {{ exercise.color }}<br />
+    </li>
+  </ol>
 </template>
 
 <style scoped>
