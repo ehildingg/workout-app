@@ -66,7 +66,9 @@
       initData() {
         //Router index
         let routerString = '0'
-        console.log(this.$store.state.routineList[0].exercises)
+        console.log(
+          this.$store.state.routineList[Number(routerString)].exercises
+        )
         this.exerciseArrayIds = this.$store.state.routineList[0].exercises
         console.log(this.exerciseArrayIds)
 
