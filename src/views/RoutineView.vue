@@ -69,4 +69,3 @@ GLOBALA STYLES I APP.VUE */
     margin: 0.3rem;
   }
 </style>
--->
