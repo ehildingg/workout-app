@@ -28,12 +28,17 @@
 <template>
   <h1>RouterPath: {{ getRoutePathName }}</h1>
   <ol class="list-container" v-if="workoutList">
-    <li class="list-item" :key="exercise.id" v-for="exercise in workoutList">
-      ID: {{ exercise.id }}<br />
-      NAME: {{ exercise.blockName }}<br />
-      INTERVAL: {{ exercise.seconds }} sec<br />
-      REST: {{ exercise.resting }}<br />
-      COLOR: {{ exercise.color }}<br />
+    <li
+      class="list-item"
+      :key="exerciseId"
+      v-for="exerciseId in workoutList[0].exercises"
+    >
+      ID: {{ $store.state.exerciseList[exerciseId].id }}<br />
+      NAME: {{ $store.state.exerciseList[exerciseId].blockName }}<br />
+      INTERVAL: {{ $store.state.exerciseList[exerciseId].seconds }} sec<br />
+      REST: {{ $store.state.exerciseList[exerciseId].resting }}<br />
+      COLOR: {{ $store.state.exerciseList[exerciseId].color }}<br />
+      EXCERCISES: {{ $store.state.exerciseList[exerciseId] }}<br />
     </li>
   </ol>
 </template>
