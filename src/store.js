@@ -155,7 +155,7 @@ const mutations = {
       }
     },
 
-    workoutList: [
+    routineList: [
       {
         id: 1,
         blockName: 'Full body',

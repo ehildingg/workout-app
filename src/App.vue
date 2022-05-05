@@ -1,16 +1,6 @@
 <script>
-  /*   import CitiesList from './components/CitiesList.vue'
-  import CounterButton from './components/CounterButton.vue'
-  import HelloWorld from './components/HelloWorld.vue' */
-
   export default {
-    components: {
-      /*
-      CitiesList,
-      CounterButton,
-      HelloWorld
-      */
-    }
+    components: {}
   }
 </script>
 
