@@ -43,8 +43,7 @@
       prepareNextExercise() {
         this.currentExercise++
         console.log(this.exerciseArray[this.currentExercise].blockName)
-        this.counterInSeconds =
-          this.exerciseArray[this.currentExercise].durationInSeconds
+        this.counterInSeconds = this.exerciseArray[this.currentExercise].seconds
       },
 
       startNextExercise() {
