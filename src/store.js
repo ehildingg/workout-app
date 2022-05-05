@@ -1,123 +1,158 @@
-import { createStore } from 'vuex'
+import { createStore /*storeKey */ } from 'vuex'
 
 const mutations = {
     increment(state) {
       state.counter += 1
     }
   },
+  rest = { blockName: 'Rest', seconds: 15, resting: false, color: 'red' },
+  recovery = {
+    blockName: 'Recovery',
+    seconds: 45,
+    resting: false,
+    color: 'red'
+  },
+  fullBodyExercies = [
+    { id: 1, blockName: 'Push-Ups', seconds: 30, resting: true, color: 'blue' },
+    { id: 2, rest },
+    { id: 3, blockName: 'Squats', seconds: 30, resting: true, color: 'green' },
+    { id: 4, rest },
+    { id: 5, blockName: 'Burpees', seconds: 30, resting: true, color: 'blue' },
+    { id: 6, rest },
+    {
+      id: 7,
+      blockName: 'Bicycle Crunches',
+      seconds: 30,
+      resting: true,
+      color: 'green'
+    },
+    { id: 8, rest },
+    {
+      id: 9,
+      blockName: 'Mountain Climbers',
+      seconds: 30,
+      resting: true,
+      color: 'blue'
+    },
+    { id: 10, rest },
+    { id: 11, blockName: 'Plank', seconds: 30, resting: true, color: 'green' },
+    { id: 12, recovery }
+  ],
+  upperBodyExercises = [
+    {
+      id: 1,
+      blockName: 'Push-Ups Side Plank',
+      seconds: 30,
+      resting: true,
+      color: 'blue'
+    },
+    { id: 2, rest },
+    { id: 3, blockName: 'Situps', seconds: 30, resting: true, color: 'green' },
+    { id: 4, rest },
+    { id: 5, blockName: 'Superman', seconds: 30, resting: true, color: 'blue' },
+    { id: 6, rest },
+    {
+      id: 7,
+      blockName: 'Leg Raises',
+      seconds: 30,
+      resting: true,
+      color: 'green'
+    },
+    { id: 8, rest },
+    {
+      id: 9,
+      blockName: 'Elbow Lifts',
+      seconds: 30,
+      resting: true,
+      color: 'blue'
+    },
+    { id: 10, rest },
+    {
+      id: 11,
+      blockName: 'Triceps Dips',
+      seconds: 30,
+      resting: true,
+      color: 'green'
+    },
+    { id: 12, recovery }
+  ],
+  lowerBodyExercises = [
+    {
+      id: 1,
+      blockName: 'Jumping Lunges',
+      seconds: 30,
+      resting: true,
+      color: 'blue'
+    },
+    { id: 2, rest },
+    {
+      id: 3,
+      blockName: 'Side Squats',
+      seconds: 30,
+      resting: true,
+      color: 'green'
+    },
+    { id: 4, rest },
+    {
+      id: 5,
+      blockName: 'High Knees',
+      seconds: 30,
+      resting: true,
+      color: 'blue'
+    },
+    { id: 6, rest },
+    {
+      id: 7,
+      blockName: 'Glute Bridge March',
+      seconds: 30,
+      resting: true,
+      color: 'green'
+    },
+    { id: 8, rest },
+    {
+      id: 9,
+      blockName: 'Toe Raises',
+      seconds: 30,
+      resting: true,
+      color: 'blue'
+    },
+    { id: 10, rest },
+    {
+      id: 11,
+      blockName: 'Bulgarian Split Squats',
+      seconds: 30,
+      resting: true,
+      color: 'green'
+    },
+    { id: 12, recovery }
+  ],
   state = {
     counter: 0,
-    // fullBodyExercies: [
-    //   { id: 1, blockName: 'pullups', seconds: 6, resting: true, color: 'blue' },
-    //   { id: 2, blockName: 'rest', seconds: 5, resting: false, color: 'red' },
-    //   { id: 3, blockName: 'jump', seconds: 6, resting: true, color: 'green' },
-    //   { id: 4, blockName: 'rest', seconds: 5, resting: false, color: 'red' }
-    // ],
-    // lowerBodyExercises: [
-    //   { id: 1, blockName: 'pullups', seconds: 6, resting: true, color: 'blue' },
-    //   { id: 2, blockName: 'rest', seconds: 5, resting: false, color: 'red' },
-    //   { id: 3, blockName: 'jump', seconds: 6, resting: true, color: 'green' },
-    //   { id: 4, blockName: 'rest', seconds: 5, resting: false, color: 'red' }
-    // ],
-    upperBodyExercises: [
-      { id: 1, blockName: 'pullups', seconds: 6, resting: true, color: 'blue' },
-      { id: 2, blockName: 'rest', seconds: 5, resting: false, color: 'red' },
-      { id: 3, blockName: 'jump', seconds: 6, resting: true, color: 'green' },
-      { id: 4, blockName: 'rest', seconds: 5, resting: false, color: 'red' }
-    ],
+
     workoutList: [
       {
         id: 1,
-        blockName: 'fullBody',
-        seconds: 6,
+        blockName: 'Full body',
+        seconds: 5,
         resting: true,
         color: 'blue',
-        exercises: [
-          {
-            id: 1,
-            blockName: 'pullups',
-            seconds: 6,
-            resting: true,
-            color: 'blue'
-          },
-          {
-            id: 2,
-            blockName: 'rest',
-            seconds: 5,
-            resting: false,
-            color: 'red'
-          },
-          {
-            id: 3,
-            blockName: 'jump',
-            seconds: 6,
-            resting: true,
-            color: 'green'
-          },
-          { id: 4, blockName: 'rest', seconds: 5, resting: false, color: 'red' }
-        ]
-      },
-      {
-        id: 2,
-        blockName: 'lowerBody',
-        seconds: 5,
-        resting: false,
-        color: 'red',
-        exercises: [
-          {
-            id: 1,
-            blockName: 'pullups',
-            seconds: 6,
-            resting: true,
-            color: 'blue'
-          },
-          {
-            id: 2,
-            blockName: 'rest',
-            seconds: 5,
-            resting: false,
-            color: 'red'
-          },
-          {
-            id: 3,
-            blockName: 'jump',
-            seconds: 6,
-            resting: true,
-            color: 'green'
-          },
-          { id: 4, blockName: 'rest', seconds: 5, resting: false, color: 'red' }
-        ]
+        exercises: fullBodyExercies
       },
       {
         id: 3,
-        blockName: 'upperBody',
-        seconds: 6,
+        blockName: 'Upper body',
+        seconds: 5,
         resting: true,
         color: 'green',
-        exercises: [
-          {
-            id: 1,
-            blockName: 'pullups',
-            seconds: 6,
-            resting: true,
-            color: 'blue'
-          },
-          {
-            id: 2,
-            blockName: 'rest',
-            seconds: 5,
-            resting: false,
-            color: 'red'
-          },
-          {
-            id: 3,
-            blockName: 'jump',
-            seconds: 6,
-            resting: true,
-            color: 'green'
-          },
-          { id: 4, blockName: 'rest', seconds: 5, resting: false, color: 'red' }
-        ]
+        exercises: upperBodyExercises
+      },
+      {
+        id: 2,
+        blockName: 'Lower Body',
+        seconds: 5,
+        resting: false,
+        color: 'red',
+        exercises: lowerBodyExercises
       }
     ]
   }
