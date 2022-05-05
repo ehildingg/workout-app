@@ -1,13 +1,33 @@
 import { createStore /*storeKey */ } from 'vuex'
 
-const mutations = {
-    increment(state) {
-      state.counter += 1
-    }
-  },
+const mutations = {},
   state = {
-    counter: 0,
-
+    routineList: [
+      {
+        id: 1,
+        blockName: 'Full body',
+        seconds: 5,
+        resting: true,
+        color: 'blue',
+        exercises: [3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8, 2]
+      },
+      {
+        id: 3,
+        blockName: 'Upper body',
+        seconds: 5,
+        resting: true,
+        color: 'green',
+        exercises: [9, 1, 10, 1, 11, 1, 12, 1, 13, 1, 14, 2]
+      },
+      {
+        id: 2,
+        blockName: 'Lower Body',
+        seconds: 5,
+        resting: false,
+        color: 'red',
+        exercises: [15, 1, 16, 1, 17, 1, 18, 1, 19, 1, 20, 2]
+      }
+    ],
     exerciseList: {
       // REST
       1: {
@@ -153,34 +173,7 @@ const mutations = {
         resting: true,
         color: 'blue'
       }
-    },
-
-    routineList: [
-      {
-        id: 1,
-        blockName: 'Full body',
-        seconds: 5,
-        resting: true,
-        color: 'blue',
-        exercises: [3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8, 2]
-      },
-      {
-        id: 3,
-        blockName: 'Upper body',
-        seconds: 5,
-        resting: true,
-        color: 'green',
-        exercises: [9, 1, 10, 1, 11, 1, 12, 1, 13, 1, 14, 2]
-      },
-      {
-        id: 2,
-        blockName: 'Lower Body',
-        seconds: 5,
-        resting: false,
-        color: 'red',
-        exercises: [15, 1, 16, 1, 17, 1, 18, 1, 19, 1, 20, 2]
-      }
-    ]
+    }
   }
 
 export default createStore({ mutations, state, strict: true })
