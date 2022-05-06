@@ -17,11 +17,7 @@
         return this.$route.fullPath
       }
     },
-    methods: {
-      hejFunction() {
-        console.log('hej')
-      }
-    }
+    methods: {}
   }
 </script>
 
