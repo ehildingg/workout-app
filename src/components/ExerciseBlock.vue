@@ -2,7 +2,20 @@
   export default {
     components: {},
     created() {},
-    props: ['id', 'blockName', 'exercises']
+    props: {
+      id: {
+        type: Number,
+        default: null
+      },
+      blockName: {
+        type: String,
+        default: null
+      },
+      exercises: {
+        type: Object,
+        default: null
+      }
+    }
   }
 </script>
 

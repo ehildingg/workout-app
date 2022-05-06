@@ -5,7 +5,7 @@
     created() {
       this.$watch(
         () => this.$route.params.id,
-        (newValue, oldValue) => {
+        (newValue) => {
           /*           console.log('OLD ' + oldValue + ' NEW ' + newValue) */
           if (newValue) {
             this.init()
@@ -64,7 +64,20 @@
       }
     },
 
-    props: ['id', 'blockName', 'exercises']
+    props: {
+      id: {
+        type: Number,
+        default: null
+      },
+      blockName: {
+        type: String,
+        default: null
+      },
+      exercises: {
+        type: Object,
+        default: null
+      }
+    }
   }
 </script>
 
