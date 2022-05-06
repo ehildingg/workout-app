@@ -13,11 +13,25 @@ export default createRouter({
     },
     {
       component: ExerciseView,
-      path: '/exercise/:id'
+      path: '/exercise/:id',
+      name: 'exercise'
+    },
+    {
+      component: ExerciseView,
+      path: '/exercise',
+      name: 'testcaseexercise'
     },
     {
       component: EditView,
-      path: '/edit'
+      path: '/edit/:id',
+      name: 'details',
+      props: true
+    },
+    {
+      component: EditView,
+      path: '/edit',
+      name: 'create',
+      props: true
     }
   ]
 })

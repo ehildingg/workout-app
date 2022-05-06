@@ -11,7 +11,7 @@
         <RouterLink to="/">RoutineView</RouterLink>
       </li>
       <li>
-        <RouterLink to="/exercise">ExerciseView</RouterLink>
+        <RouterLink to="/exercise/1">ExerciseView</RouterLink>
       </li>
       <li>
         <RouterLink to="/edit">EditView</RouterLink>

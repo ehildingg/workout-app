@@ -1,9 +1,23 @@
 <script>
   export default {
     components: {},
-    created() {
+    /*     created() {
+      console.log(this.$route.params)
       this.initData()
+    }, */
+    created() {
+      this.$watch(
+        () => this.$route.params.id,
+        (newValue, oldValue) => {
+          console.log('OLD ' + oldValue + ' NEW ' + newValue)
+          this.$store.getters.chekIfRoutineExists(newValue)
+            ? this.initData()
+            : (this.doesRoutineExist = false)
+        },
+        { immediate: true }
+      )
     },
+
     beforeUnmount() {
       if (this.timers.exerciseTimer.isRunning) {
         this.$timer.stop('exerciseTimer')
@@ -20,6 +34,7 @@
     },
     data() {
       return {
+        doesRoutineExist: true,
         exerciseArrayIds: null,
         exerciseArray: null,
         totalCounter: null,
@@ -30,6 +45,9 @@
     methods: {
       // Timer methods
       exerciseTimer() {
+        if (!this.doesRoutineExist) {
+          this.$timer.stop('exerciseTimer')
+        }
         console.log('ÖvningsTimer: ' + this.counterInSeconds)
         this.counterInSeconds--
         this.totalCounter--
@@ -81,7 +99,7 @@
       },
       getExerciseArrayIds() {
         this.exerciseArrayIds = this.$store.state.routineList
-          .filter((el) => el.id == Number(this.$route.params.id))
+          .filter((el) => el.id == this.routeRoutineId)
           .map((ele) => ele.exercises)
           .flat()
       },
@@ -109,28 +127,46 @@
     computed: {
       totalTimeLeft: function () {
         return new Date(this.totalCounter * 1000).toISOString().slice(14, 19)
+      },
+      routeRoutineId: function () {
+        return Number(this.$route.params.id)
+      },
+      routineName: function () {
+        return this.$route.params.blockName
+      },
+      isDisabled() {
+        return !this.doesRoutineExist
       }
-    },
-    props: {}
+    }
   }
 </script>
 
 <template>
-  <div v-if="exerciseArray">
-    <h1>{{ this.exerciseArray[this.currentExercise].blockName }}</h1>
-    <h1>{{ this.counterInSeconds }}</h1>
-    <h1>Totaltimer:</h1>
-    <h1>{{ this.totalCounter }}</h1>
-    <p>{{ totalTimeLeft }}</p>
-  </div>
+  <div v-if="exerciseArray && doesRoutineExist">
+    <div>
+      <h1>{{ routineName }} routine</h1>
+      <p>{{ this.exerciseArray[this.currentExercise].blockName }}</p>
+      <h2>{{ this.counterInSeconds }}</h2>
+      <p>Totaltimer:</p>
+      <!--     <h2>{{ this.totalCounter }}</h2> -->
+      <h2>{{ totalTimeLeft }}</h2>
+    </div>
 
-  <div class="dot-container">
-    <span :key="exercise.id" v-for="exercise in exerciseArray" />
+    <div class="dot-container">
+      <span :key="exercise.id" v-for="exercise in exerciseArray" />
+    </div>
+    <button @click="playPauseBtnClick()" :disabled="isDisabled">Pause</button>
   </div>
-  <button @click="playPauseBtnClick()">Pause</button>
+  <div v-else>Sorry, the exercise does not exist</div>
 </template>
 
 <style scoped>
+  button:disabled,
+  button[disabled] {
+    background-color: #aeaeae35;
+    color: #84848455;
+  }
+
   .dot-container {
     overflow: scroll;
     white-space: nowrap;
