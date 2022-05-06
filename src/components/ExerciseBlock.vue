@@ -2,34 +2,16 @@
   export default {
     components: {},
     created() {},
-    data() {
-      return {
-        hej: null
-      }
-    },
-    computed: {},
-    methods: {
-      hejFunction() {
-        console.log('hej')
-      }
-    },
-    props: {
-      exercise: {
-        type: Object,
-        default: null
-      }
-    }
+    props: ['id', 'blockName', 'exercises']
   }
-  // Test
 </script>
 
 <template>
   <article class="list-item">
-    ID: {{ exercise.id }}<br />
-    NAME: {{ exercise.blockName }}<br />
-    INTERVAL: {{ exercise.seconds }} sec<br />
-    REST: {{ exercise.resting }}<br />
-    COLOR: {{ exercise.color }}<br />
+    <p>Details</p>
+    {{ id }}
+    {{ blockName }}
+    {{ exercises }}
   </article>
 </template>
 

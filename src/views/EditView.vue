@@ -2,17 +2,34 @@
   import ExerciseBlock from '../components/ExerciseBlock.vue'
   export default {
     components: { ExerciseBlock },
-    created() {},
+    created() {
+      this.$watch(
+        () => this.$route.params.id,
+        (newValue, oldValue) => {
+          /*           console.log('OLD ' + oldValue + ' NEW ' + newValue) */
+          if (newValue) {
+            this.init()
+          }
+        },
+        { immediate: true }
+      )
+    },
+    beforeUnmount() {
+      this.exerciseArrayIds = null
+      this.exerciseArray = null
+    },
     data() {
       return {
         showMenu: 'hideMenu',
-        hideOrShow: false
+        hideOrShow: false,
+        exerciseArrayIds: null,
+        exerciseArray: null
       }
     },
     computed: {
       // Get exercisesArray from vuex
       exercisesList: function () {
-        return this.$store.state.upperBodyExercises
+        return this.$store.state.exerciseList
       },
       // Get data from router
       getRoutePathName: function () {
@@ -27,22 +44,44 @@
         } else {
           this.showMenu = 'hideMenu'
         }
+      },
+      getExerciseArrayIds() {
+        this.exerciseArrayIds = this.$store.state.routineList
+          .filter((el) => el.id == Number(this.$route.params.id))
+          .map((ele) => ele.exercises)
+          .flat()
+        console.log(this.exerciseArrayIds)
+      },
+      getExersices() {
+        this.exerciseArray = this.exerciseArrayIds.map(
+          (id) => this.$store.state.exerciseList[id]
+        )
+        console.log('exercise array', this.exerciseArray)
+      },
+      init() {
+        this.getExerciseArrayIds()
+        this.getExersices()
       }
-    }
+    },
+
+    props: ['id', 'blockName', 'exercises']
   }
 </script>
 
 <template>
   <h1>RouterPath: {{ getRoutePathName }}</h1>
-  <section class="list-container" v-if="exercisesList">
+  <section class="list-container" v-if="exerciseArray">
     <ExerciseBlock
-      :key="exercise.id"
-      v-for="exercise in exercisesList"
-      :exercise="exercise"
-    />
+      :key="exercise + index"
+      v-for="(exercise, index) in exerciseArray"
+      :exercises="exercise"
+    >
+      />
+    </ExerciseBlock>
   </section>
+
   <div class="menu-container">
-    <button class="startbtn" @click="$router.push('/')">Start</button>
+    <button class="startbtn" @click="$router.push('/exercise')">Start</button>
 
     <div class="dropup">
       <button class="dropbtn" @click="toggleMenu">
