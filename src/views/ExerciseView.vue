@@ -5,25 +5,30 @@
       this.initData()
     },
     beforeUnmount() {
-      this.$timer.stop('exerciseTimer')
+      if (this.timers.exerciseTimer.isRunning) {
+        this.$timer.stop('exerciseTimer')
+      }
     },
     timers: {
       exerciseTimer: {
         time: 1000,
         autostart: true,
-        repeat: true
+        immediate: true,
+        repeat: true,
+        isSwitchTab: true
       }
     },
     data() {
       return {
         exerciseArrayIds: null,
-        exerciseArray: [],
+        exerciseArray: null,
         totalCounter: null,
         counterInSeconds: null,
-        currentExercise: 0
+        currentExercise: null
       }
     },
     methods: {
+      // Timer methods
       exerciseTimer() {
         console.log('ÖvningsTimer: ' + this.counterInSeconds)
         this.counterInSeconds--
@@ -39,13 +44,11 @@
           this.finishWorkout()
         }
       },
-
       prepareNextExercise() {
         this.currentExercise++
         console.log(this.exerciseArray[this.currentExercise].blockName)
         this.counterInSeconds = this.exerciseArray[this.currentExercise].seconds
       },
-
       startNextExercise() {
         this.$timer.start('exerciseTimer')
       },
@@ -54,37 +57,53 @@
       },
 
       playPauseBtnClick() {
-        if (this.totalCounter > 0) {
-          this.timers.exerciseTimer.isRunning
-            ? this.$timer.stop('exerciseTimer')
-            : this.$timer.start('exerciseTimer')
-          console.log(this.timers.exerciseTimer.isRunning)
+        /*         if (this.totalCounter > 0) { */
+        console.log(this.timers.exerciseTimer)
+        this.timers.exerciseTimer.isRunning
+          ? this.$timer.stop('exerciseTimer')
+          : this.$timer.start('exerciseTimer')
+        /*           console.log(this.timers.exerciseTimer.isRunning)
         } else {
           console.log('Exercise is done')
-        }
+        } */
       },
+      // Timer methods end
+
       initData() {
-        //Router index
-        let routerString = '0'
-        console.log(
-          this.$store.state.routineList[Number(routerString)].exercises
-        )
-        this.exerciseArrayIds = this.$store.state.routineList[0].exercises
-        console.log(this.exerciseArrayIds)
-
-        this.exerciseArrayIds.forEach((id) => {
-          this.exerciseArray.push(this.$store.state.exerciseList[id])
-        })
-
-        console.log(this.exerciseArray)
-
-        this.exerciseArray.forEach((exercise) => {
-          this.totalCounter += exercise.seconds
-        })
+        this.getExerciseArrayIds()
+        this.getExersices()
+        this.setTotalCounter()
+        this.setFirstCounterInterval()
+        this.currentExercise = 0
+        /*         console.log(this.exerciseArray)
         console.log(this.totalCounter)
-
+        console.log(this.exerciseArray[0].seconds) */
+      },
+      getExerciseArrayIds() {
+        this.exerciseArrayIds = this.$store.state.routineList
+          .filter((el) => el.id == Number(this.$route.params.id))
+          .map((ele) => ele.exercises)
+          .flat()
+      },
+      getExersices() {
+        this.exerciseArray = this.exerciseArrayIds.map(
+          (id) => this.$store.state.exerciseList[id]
+        )
+        /* this.exerciseArrayIds.forEach((id) => {
+          this.exerciseArray.push(this.$store.state.exerciseList[id])
+        }) */
+      },
+      setTotalCounter() {
+        this.totalCounter = this.exerciseArray.reduce(
+          (previousValue, currentValue) => previousValue + currentValue.seconds,
+          0
+        )
+        /* this.exerciseArray.forEach((exercise) => {
+          this.totalCounter += exercise.seconds
+        }) */
+      },
+      setFirstCounterInterval() {
         this.counterInSeconds = this.exerciseArray[0].seconds
-        console.log(this.exerciseArray[0].seconds)
       }
     },
     computed: {

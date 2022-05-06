@@ -30,9 +30,10 @@
   <h3>ROUTINES</h3>
   <ol class="list-container" v-if="routineList">
     <li
+      @click="$router.push('/exercise/' + routine.id)"
       class="list-item"
-      :key="routineId"
-      v-for="(routineId, index) in routineList"
+      :key="routine.id"
+      v-for="(routine, index) in routineList"
     >
       NAME: {{ $store.state.routineList[index].blockName }} <br />
       ROUTINE-TIME:

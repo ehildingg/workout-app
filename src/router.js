@@ -13,7 +13,7 @@ export default createRouter({
     },
     {
       component: ExerciseView,
-      path: '/exercise'
+      path: '/exercise/:id'
     },
     {
       component: EditView,
