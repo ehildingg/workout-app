@@ -1,6 +1,8 @@
 <script>
+  import ExerciseCircle from '../components/ExerciseCircle.vue'
+
   export default {
-    components: {},
+    components: { ExerciseCircle },
     /*     created() {
       console.log(this.$route.params)
       this.initData()
@@ -64,6 +66,7 @@
       },
       prepareNextExercise() {
         this.currentExercise++
+        this.scrollToElement(this.currentExercise)
         console.log(this.exerciseArray[this.currentExercise].blockName)
         this.counterInSeconds = this.exerciseArray[this.currentExercise].seconds
       },
@@ -122,6 +125,20 @@
       },
       setFirstCounterInterval() {
         this.counterInSeconds = this.exerciseArray[0].seconds
+      },
+      scrollToElement(elRefIndex) {
+        console.log('allrefs: ', this.$refs.exercise)
+        /*         console.log('exrefs: ', this.$refs.[elRefIndex]) */
+        /*
+        console.log(this.$refs['asddsadasdsadasdsadsadsan1najddj']) */
+        /*        this.$refs[this.$refs.exercise[elRefIndex]].scrollIntoView({
+          behavior: 'smooth'
+        }) */
+        this.$refs.exercise[elRefIndex].scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center'
+        })
       }
     },
     computed: {
@@ -143,7 +160,7 @@
 
 <template>
   <div v-if="exerciseArray && doesRoutineExist">
-    <div>
+    <div ref="asddsadasdsadasdsadsadsan1najddj">
       <h1>{{ routineName }} routine</h1>
       <p>{{ this.exerciseArray[this.currentExercise].blockName }}</p>
       <h2>{{ this.counterInSeconds }}</h2>
@@ -153,7 +170,27 @@
     </div>
 
     <div class="dot-container">
-      <span :key="exercise.id" v-for="exercise in exerciseArray" />
+      <span
+        :key="exercise.id"
+        v-for="(exercise, index) in exerciseArray"
+        ref="exercise"
+      >
+        <ExerciseCircle
+          :refp="index + 'circle'"
+          :activeindex="currentExercise"
+          :circlecolor="exercise.color"
+          :circleindex="index"
+        />
+        <!--       <ExerciseCircle
+        ref="exercise"
+        :refp="index + 'circle'"
+        :activeindex="currentExercise"
+        :circlecolor="exercise.color"
+        :circleindex="index"
+        :key="exercise.id"
+        v-for="(exercise, index) in exerciseArray"
+      /> -->
+      </span>
     </div>
     <button @click="playPauseBtnClick()" :disabled="isDisabled">Pause</button>
   </div>
@@ -177,14 +214,14 @@
   .dot-inactive {
     opacity: 0.5;
   }
-  span {
+  /*   span {
     display: inline-block;
     width: 2rem;
     height: 2rem;
     margin: 5px;
     border-radius: 50%;
     background-color: rgb(41, 82, 119);
-  }
+  } */
   .div {
     border: 1px solid black;
   }
