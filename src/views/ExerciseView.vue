@@ -29,7 +29,7 @@
       exerciseTimer: {
         time: 1000,
         autostart: true,
-        immediate: true,
+        /*         immediate: true, */
         repeat: true,
         isSwitchTab: true
       }
