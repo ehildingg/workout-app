@@ -9,10 +9,11 @@
       }
     },
     mounted() {
-      this.ex = this.exercises
+      this.ex = this.exercises.seconds
+      console.log(this.ex)
     },
     data() {
-      return { ex: '0' }
+      return { ex: null }
     }
   }
 </script>
@@ -20,10 +21,9 @@
 <template>
   <article class="list-item">
     {{ exercises.blockName }}<br />
-    {{ exercises.seconds }} Sec
     <div class="slide-container">
       <!-- EJ KLAR -->
-      <span class="rangeValue" /> {{ ex.seconds }} sec
+      <span class="rangeValue" /> {{ ex }} sec
       <input
         v-model="ex"
         type="range"
