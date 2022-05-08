@@ -11,7 +11,7 @@
         <RouterLink to="/">RoutineView</RouterLink>
       </li>
       <li>
-        <RouterLink to="/exercise">ExerciseView</RouterLink>
+        <RouterLink to="/exercise/1">ExerciseView</RouterLink>
       </li>
       <li>
         <RouterLink to="/edit">EditView</RouterLink>
@@ -31,7 +31,11 @@
     margin: 0;
     width: 100%;
     min-height: 100vh;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
   button {
     background: rgba(8, 193, 39, 0.1);
     cursor: pointer;

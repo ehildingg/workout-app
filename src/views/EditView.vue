@@ -1,3 +1,4 @@
+@
 <script>
   import ExerciseBlock from '../components/ExerciseBlock.vue'
   export default {
@@ -5,11 +6,11 @@
     created() {
       this.$watch(
         () => this.$route.params.id,
-        (newValue) => {
-          /*           console.log('OLD ' + oldValue + ' NEW ' + newValue) */
-          if (newValue) {
-            this.init()
-          }
+        (newValue, oldValue) => {
+          console.log('OLD ' + oldValue + ' NEW ' + newValue)
+          this.$store.getters.chekIfRoutineExists(newValue)
+            ? this.init()
+            : (this.doesRoutineExist = false)
         },
         { immediate: true }
       )
@@ -22,8 +23,10 @@
       return {
         showMenu: 'hideMenu',
         hideOrShow: false,
+        routineId: null,
         exerciseArrayIds: null,
-        exerciseArray: null
+        exerciseArray: null,
+        doesRoutineExist: true
       }
     },
     computed: {
@@ -34,6 +37,15 @@
       // Get data from router
       getRoutePathName: function () {
         return this.$route.fullPath
+      },
+      routeRoutineId: function () {
+        return Number(this.$route.params.id)
+      },
+      routeRoutineName: function () {
+        return this.$route.params.blockName
+      },
+      isDisabled() {
+        return !this.doesRoutineExist
       }
     },
     methods: {
@@ -47,7 +59,7 @@
       },
       getExerciseArrayIds() {
         this.exerciseArrayIds = this.$store.state.routineList
-          .filter((el) => el.id == Number(this.$route.params.id))
+          .filter((el) => el.id == this.routeRoutineId)
           .map((ele) => ele.exercises)
           .flat()
         console.log(this.exerciseArrayIds)
@@ -61,12 +73,25 @@
       init() {
         this.getExerciseArrayIds()
         this.getExersices()
+      },
+
+      startRoutineRouterLink() {
+        this.$router.push({
+          name: 'exercise',
+          params: {
+            id: this.routeRoutineId,
+            blockName: this.routeRoutineName
+          }
+        })
       }
+      /*       doesRoutineExist(id) {
+        return this.$store.getters.chekIfRoutineExists(id);
+      } */
     },
 
     props: {
       id: {
-        type: Number,
+        type: String,
         default: null
       },
       blockName: {
@@ -83,7 +108,8 @@
 
 <template>
   <h1>RouterPath: {{ getRoutePathName }}</h1>
-  <section class="list-container" v-if="exerciseArray">
+  <h2>{{ routeRoutineName }} routine</h2>
+  <section class="list-container" v-if="exerciseArray && doesRoutineExist">
     <ExerciseBlock
       :key="exercise + index"
       v-for="(exercise, index) in exerciseArray"
@@ -92,9 +118,37 @@
       />
     </ExerciseBlock>
   </section>
+  <section v-else>Sorry, this routine does not exist</section>
 
   <div class="menu-container">
-    <button class="startbtn" @click="$router.push('/exercise')">Start</button>
+    <!--     <router-link
+      :to="{
+        name: 'exercise',
+        params: {
+          id: routeRoutineId,
+          blockName: routeRoutineName
+        }
+      }"
+    >
+      <button class="startbtn" id="start-btn" :disabled="isDisabled">
+        Start
+      </button>
+    </router-link> -->
+
+    <button
+      class="startbtn"
+      id="start-btn"
+      :disabled="isDisabled"
+      @click="startRoutineRouterLink"
+    >
+      Start
+    </button>
+    <!--     <button
+      class="startbtn"
+      @click="$router.push('/exercise/' + routeRoutineId)"
+    >
+      Start
+    </button> -->
 
     <div class="dropup">
       <button class="dropbtn" @click="toggleMenu">
@@ -113,6 +167,12 @@
 <style scoped>
   /* SCOOPED STYLE/CSS, GÄLLER BARA DENNA KOMPONENTEN
 GLOBALA STYLES I APP.VUE */
+
+  button:disabled,
+  button[disabled] {
+    background-color: #aeaeae35;
+    color: #84848455;
+  }
   .list-container {
     border: 1px solid black;
   }
@@ -188,3 +248,4 @@ GLOBALA STYLES I APP.VUE */
     background-color: #35bd49;
   }
 </style>
+-->

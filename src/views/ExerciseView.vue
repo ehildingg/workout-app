@@ -1,30 +1,55 @@
 <script>
+  import ExerciseCircle from '../components/ExerciseCircle.vue'
+
   export default {
-    components: {},
-    created() {
+    components: { ExerciseCircle },
+    /*     created() {
+      console.log(this.$route.params)
       this.initData()
+    }, */
+    created() {
+      this.$watch(
+        () => this.$route.params.id,
+        (newValue, oldValue) => {
+          console.log('OLD ' + oldValue + ' NEW ' + newValue)
+          this.$store.getters.chekIfRoutineExists(newValue)
+            ? this.initData()
+            : (this.doesRoutineExist = false)
+        },
+        { immediate: true }
+      )
     },
+
     beforeUnmount() {
-      this.$timer.stop('exerciseTimer')
+      if (this.timers.exerciseTimer.isRunning) {
+        this.$timer.stop('exerciseTimer')
+      }
     },
     timers: {
       exerciseTimer: {
         time: 1000,
         autostart: true,
-        repeat: true
+        /*         immediate: true, */
+        repeat: true,
+        isSwitchTab: true
       }
     },
     data() {
       return {
+        doesRoutineExist: true,
         exerciseArrayIds: null,
-        exerciseArray: [],
+        exerciseArray: null,
         totalCounter: null,
         counterInSeconds: null,
-        currentExercise: 0
+        currentExercise: null
       }
     },
     methods: {
+      // Timer methods
       exerciseTimer() {
+        if (!this.doesRoutineExist) {
+          this.$timer.stop('exerciseTimer')
+        }
         console.log('ÖvningsTimer: ' + this.counterInSeconds)
         this.counterInSeconds--
         this.totalCounter--
@@ -39,13 +64,12 @@
           this.finishWorkout()
         }
       },
-
       prepareNextExercise() {
         this.currentExercise++
+        this.scrollToElement(this.currentExercise)
         console.log(this.exerciseArray[this.currentExercise].blockName)
         this.counterInSeconds = this.exerciseArray[this.currentExercise].seconds
       },
-
       startNextExercise() {
         this.$timer.start('exerciseTimer')
       },
@@ -54,63 +78,132 @@
       },
 
       playPauseBtnClick() {
-        if (this.totalCounter > 0) {
-          this.timers.exerciseTimer.isRunning
-            ? this.$timer.stop('exerciseTimer')
-            : this.$timer.start('exerciseTimer')
-          console.log(this.timers.exerciseTimer.isRunning)
+        /*         if (this.totalCounter > 0) { */
+        console.log(this.timers.exerciseTimer)
+        this.timers.exerciseTimer.isRunning
+          ? this.$timer.stop('exerciseTimer')
+          : this.$timer.start('exerciseTimer')
+        /*           console.log(this.timers.exerciseTimer.isRunning)
         } else {
           console.log('Exercise is done')
-        }
+        } */
       },
+      // Timer methods end
+
       initData() {
-        //Router index
-        let routerString = '0'
-        console.log(
-          this.$store.state.routineList[Number(routerString)].exercises
-        )
-        this.exerciseArrayIds = this.$store.state.routineList[0].exercises
-        console.log(this.exerciseArrayIds)
-
-        this.exerciseArrayIds.forEach((id) => {
-          this.exerciseArray.push(this.$store.state.exerciseList[id])
-        })
-
-        console.log(this.exerciseArray)
-
-        this.exerciseArray.forEach((exercise) => {
-          this.totalCounter += exercise.seconds
-        })
+        this.getExerciseArrayIds()
+        this.getExersices()
+        this.setTotalCounter()
+        this.setFirstCounterInterval()
+        this.currentExercise = 0
+        /*         console.log(this.exerciseArray)
         console.log(this.totalCounter)
-
+        console.log(this.exerciseArray[0].seconds) */
+      },
+      getExerciseArrayIds() {
+        this.exerciseArrayIds = this.$store.state.routineList
+          .filter((el) => el.id == this.routeRoutineId)
+          .map((ele) => ele.exercises)
+          .flat()
+      },
+      getExersices() {
+        this.exerciseArray = this.exerciseArrayIds.map(
+          (id) => this.$store.state.exerciseList[id]
+        )
+        /* this.exerciseArrayIds.forEach((id) => {
+          this.exerciseArray.push(this.$store.state.exerciseList[id])
+        }) */
+      },
+      setTotalCounter() {
+        this.totalCounter = this.exerciseArray.reduce(
+          (previousValue, currentValue) => previousValue + currentValue.seconds,
+          0
+        )
+        /* this.exerciseArray.forEach((exercise) => {
+          this.totalCounter += exercise.seconds
+        }) */
+      },
+      setFirstCounterInterval() {
         this.counterInSeconds = this.exerciseArray[0].seconds
-        console.log(this.exerciseArray[0].seconds)
+      },
+      scrollToElement(elRefIndex) {
+        console.log('allrefs: ', this.$refs.exercise)
+        /*         console.log('exrefs: ', this.$refs.[elRefIndex]) */
+        /*
+        console.log(this.$refs['asddsadasdsadasdsadsadsan1najddj']) */
+        /*        this.$refs[this.$refs.exercise[elRefIndex]].scrollIntoView({
+          behavior: 'smooth'
+        }) */
+        this.$refs.exercise[elRefIndex].scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center'
+        })
       }
     },
     computed: {
       totalTimeLeft: function () {
         return new Date(this.totalCounter * 1000).toISOString().slice(14, 19)
+      },
+      routeRoutineId: function () {
+        return Number(this.$route.params.id)
+      },
+      routineName: function () {
+        return this.$route.params.blockName
+      },
+      isDisabled() {
+        return !this.doesRoutineExist
       }
     }
   }
 </script>
 
 <template>
-  <div v-if="exerciseArray">
-    <h1>{{ this.exerciseArray[this.currentExercise].blockName }}</h1>
-    <h1>{{ this.counterInSeconds }}</h1>
-    <h1>Totaltimer:</h1>
-    <h1>{{ this.totalCounter }}</h1>
-    <p>{{ totalTimeLeft }}</p>
-  </div>
+  <div v-if="exerciseArray && doesRoutineExist">
+    <div ref="asddsadasdsadasdsadsadsan1najddj">
+      <h1>{{ routineName }} routine</h1>
+      <p>{{ this.exerciseArray[this.currentExercise].blockName }}</p>
+      <h2>{{ this.counterInSeconds }}</h2>
+      <p>Totaltimer:</p>
+      <!--     <h2>{{ this.totalCounter }}</h2> -->
+      <h2>{{ totalTimeLeft }}</h2>
+    </div>
 
-  <div class="dot-container">
-    <span :key="exercise.id" v-for="exercise in exerciseArray" />
+    <div class="dot-container">
+      <span
+        :key="exercise.id"
+        v-for="(exercise, index) in exerciseArray"
+        ref="exercise"
+      >
+        <ExerciseCircle
+          :refp="index + 'circle'"
+          :activeindex="currentExercise"
+          :circlecolor="exercise.color"
+          :circleindex="index"
+        />
+        <!--       <ExerciseCircle
+        ref="exercise"
+        :refp="index + 'circle'"
+        :activeindex="currentExercise"
+        :circlecolor="exercise.color"
+        :circleindex="index"
+        :key="exercise.id"
+        v-for="(exercise, index) in exerciseArray"
+      /> -->
+      </span>
+    </div>
+    <button @click="playPauseBtnClick()" :disabled="isDisabled">Pause</button>
   </div>
-  <button @click="playPauseBtnClick()">Pause</button>
+  <div v-else>Sorry, the exercise does not exist</div>
 </template>
 
 <style scoped>
+  button:disabled,
+  button[disabled] {
+    background-color: #aeaeae35;
+    color: #84848455;
+  }
+
   .dot-container {
     overflow: scroll;
     white-space: nowrap;
@@ -121,14 +214,14 @@
   .dot-inactive {
     opacity: 0.5;
   }
-  span {
+  /*   span {
     display: inline-block;
     width: 2rem;
     height: 2rem;
     margin: 5px;
     border-radius: 50%;
     background-color: rgb(41, 82, 119);
-  }
+  } */
   .div {
     border: 1px solid black;
   }

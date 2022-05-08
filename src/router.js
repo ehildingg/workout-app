@@ -18,6 +18,11 @@ export default createRouter({
       props: true
     },
     {
+      component: ExerciseView,
+      path: '/exercise',
+      name: 'testcaseexercise'
+    },
+    {
       component: EditView,
       path: '/edit/:id',
       name: 'details',

@@ -21,8 +21,23 @@
       }
     },
     methods: {
-      hejFunction() {
-        console.log('hej')
+      editRoutineRouterLink(selectedId, blockName) {
+        this.$router.push({
+          name: 'details',
+          params: {
+            id: selectedId,
+            blockName: blockName
+          }
+        })
+      },
+      startRoutineRouterLink(selectedId, blockName) {
+        this.$router.push({
+          name: 'exercise',
+          params: {
+            id: selectedId,
+            blockName: blockName
+          }
+        })
       }
     }
   }
@@ -44,7 +59,7 @@
       </td>
 
       <div class="edit-start">
-        <router-link
+        <!--         <router-link
           :to="{
             name: 'details',
             params: {
@@ -54,11 +69,11 @@
             }
           }"
           ><button class="routine-btn" id="edit-btn">Edit</button></router-link
-        >
+        > -->
 
         <!-- <button @click="$router.push('/edit/' + routineId.id)">Edit</button> -->
 
-        <router-link
+        <!--         <router-link
           :to="{
             name: 'exercise',
             params: {
@@ -71,7 +86,21 @@
           ><button class="routine-btn" id="start-btn">
             Start
           </button></router-link
+        > -->
+        <button
+          class="routine-btn"
+          id="edit-btn"
+          @click="editRoutineRouterLink(routineId.id, routineId.blockName)"
         >
+          Edit
+        </button>
+        <button
+          class="routine-btn"
+          id="start-btn"
+          @click="startRoutineRouterLink(routineId.id, routineId.blockName)"
+        >
+          Start
+        </button>
       </div>
     </tr>
   </table>
