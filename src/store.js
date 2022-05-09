@@ -179,32 +179,52 @@ const mutations = {},
     }
   },
   getters = {
-    chekIfRoutineExists: (state) => (id) => {
+    checkIfRoutineExists: (state) => (id) => {
       return state.routineList.some((routine) => routine.id == id)
     },
 
-    getRoutineById: (state) => (id) => {
-      let routine = state.routineList.find((element) => element.id === id)
+    getRoutineById: (state, getters) => (id) => {
+      let routine = null
+
+      if (getters.checkIfRoutineExists(id)) {
+        routine = state.routineList.find((element) => element.id === id)
+      } else {
+        console.log('Routine ID does not exist!')
+      }
+
       return routine
     },
 
-    getListOfExercisesByRoutineId: (state) => (id) => {
+    getListOfExercisesByRoutineId: (state, getters) => (id) => {
       let exercisesList = []
-      let routine = state.routineList.find((element) => element.id === id)
-      routine.exercises.forEach((exerciseId) => {
-        exercisesList.push(state.exerciseList[exerciseId])
-      })
+
+      if (getters.checkIfRoutineExists(id)) {
+        let routine = state.routineList.find((element) => element.id === id)
+        routine.exercises.forEach((exerciseId) => {
+          exercisesList.push(state.exerciseList[exerciseId])
+        })
+      } else {
+        console.log('Routine ID does not exist!')
+      }
+
       return exercisesList
     },
 
     calculateRoutineTimeByRoutineId: (state, getters) => (id) => {
       let timeInSeconds = 0
       let timeInMinutes = 0
-      let listOfExercises = getters.getListOfExercisesByRoutineId(id)
-      listOfExercises.forEach((exercise) => {
-        timeInSeconds += exercise.seconds
-      })
-      timeInMinutes = Math.round(timeInSeconds / 60)
+
+      if (getters.checkIfRoutineExists(id)) {
+        let listOfExercises = getters.getListOfExercisesByRoutineId(id)
+        listOfExercises.forEach((exercise) => {
+          timeInSeconds += exercise.seconds
+        })
+
+        timeInMinutes = Math.round(timeInSeconds / 60)
+      } else {
+        console.log('Routine ID does not exist!')
+      }
+
       return timeInMinutes
     }
   }
