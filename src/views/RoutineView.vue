@@ -54,8 +54,17 @@
     >
       <td>
         <p>{{ $store.state.routineList[index].blockName }}</p>
-        <p>{{ $store.state.routineList[index].seconds }} Min</p>
-        <!-- <p>{{ $store.state.routineList[index].exercises }}</p> -->
+        <p>
+          {{
+            this.$store.getters.calculateRoutineTimeByRoutineId(routineId.id)
+          }}
+          Minutes
+        </p>
+
+        <!-- <p>{{ $store.state.routineList[index].exercises }}</p>
+        <p>
+          {{ this.$store.getters.getListOfExercisesByRoutineId(routineId.id) }}
+        </p> -->
       </td>
 
       <div class="edit-start">
