@@ -1,6 +1,7 @@
 @
 <script>
   import ExerciseBlock from '../components/ExerciseBlock.vue'
+
   export default {
     components: { ExerciseBlock },
     created() {
