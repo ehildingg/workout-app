@@ -172,7 +172,7 @@ const mutations = {},
       20: {
         id: 20,
         blockName: 'Bulgarian Split Squats',
-        seconds: 3,
+        seconds: 4,
         resting: true,
         color: 'orchid'
       }
@@ -181,6 +181,31 @@ const mutations = {},
   getters = {
     chekIfRoutineExists: (state) => (id) => {
       return state.routineList.some((routine) => routine.id == id)
+    },
+
+    getRoutineById: (state) => (id) => {
+      let routine = state.routineList.find((element) => element.id === id)
+      return routine
+    },
+
+    getListOfExercisesByRoutineId: (state) => (id) => {
+      let exercisesList = []
+      let routine = state.routineList.find((element) => element.id === id)
+      routine.exercises.forEach((exerciseId) => {
+        exercisesList.push(state.exerciseList[exerciseId])
+      })
+      return exercisesList
+    },
+
+    calculateRoutineTimeByRoutineId: (state, getters) => (id) => {
+      let timeInSeconds = 0
+      let timeInMinutes = 0
+      let listOfExercises = getters.getListOfExercisesByRoutineId(id)
+      listOfExercises.forEach((exercise) => {
+        timeInSeconds += exercise.seconds
+      })
+      timeInMinutes = Math.round(timeInSeconds / 60)
+      return timeInMinutes
     }
   }
 

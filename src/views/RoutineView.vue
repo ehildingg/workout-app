@@ -8,10 +8,6 @@
         hej: null,
         input: '',
         list: this.$store.state.routineList
-        // list: [
-        //   { id: 1, word: 'hej' },
-        //   { id: 2, word: 'hejdå' }
-        // ]
       }
     },
 
@@ -72,7 +68,6 @@
       placeholder="Search Routine"
     />
     <div />
-    <p>Sökord {{ input }}</p>
   </div>
   <table class="list-container" v-if="list">
     <tr
@@ -80,17 +75,19 @@
       v-for="(routineId, index) in filteredList"
       :key="routineId.id"
     >
-      <!-- <tr
-      class="list-item"
-      :key="routineId.id"
-      v-for="(routineId, index) in routineList"
-    > -->
       <td>
         <p>{{ filteredList[index].blockName }}</p>
-        <p>{{ filteredList[index].seconds }} Min</p>
-        <!-- <p>{{ $store.state.routineList[index].blockName }}</p>
-        <p>{{ $store.state.routineList[index].seconds }} Min</p> -->
-        <!-- <p>{{ $store.state.routineList[index].exercises }}</p> -->
+        <p>
+          {{
+            this.$store.getters.calculateRoutineTimeByRoutineId(routineId.id)
+          }}
+          Minutes
+        </p>
+
+        <!-- <p>{{ $store.state.routineList[index].exercises }}</p>
+        <p>
+          {{ this.$store.getters.getListOfExercisesByRoutineId(routineId.id) }}
+        </p> -->
       </td>
 
       <div class="edit-start">
@@ -145,9 +142,6 @@
 </template>
 
 <style scoped>
-  /* SCOOPED STYLE/CSS, GÄLLER BARA DENNA KOMPONENTEN
-  GLOBALA STYLES I APP.VUE */
-
   .search-routine {
     margin-left: auto;
     margin-right: auto;
