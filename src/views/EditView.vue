@@ -8,7 +8,7 @@
         () => this.$route.params.id,
         (newValue, oldValue) => {
           console.log('OLD ' + oldValue + ' NEW ' + newValue)
-          this.$store.getters.chekIfRoutineExists(newValue)
+          this.$store.getters.checkIfRoutineExists(newValue)
             ? this.init()
             : (this.doesRoutineExist = false)
         },
@@ -85,7 +85,7 @@
         })
       }
       /*       doesRoutineExist(id) {
-        return this.$store.getters.chekIfRoutineExists(id);
+        return this.$store.getters.checkIfRoutineExists(id);
       } */
     },
 
