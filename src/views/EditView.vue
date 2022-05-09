@@ -152,9 +152,6 @@
 </template>
 
 <style scoped>
-  /* SCOOPED STYLE/CSS, GÄLLER BARA DENNA KOMPONENTEN
-GLOBALA STYLES I APP.VUE */
-
   button:disabled,
   button[disabled] {
     background-color: #aeaeae35;
@@ -235,4 +232,3 @@ GLOBALA STYLES I APP.VUE */
     background-color: #35bd49;
   }
 </style>
--->

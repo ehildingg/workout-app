@@ -20,6 +20,4 @@
     border: 1px solid gray;
     margin: 0.3rem;
   }
-  /* SCOOPED STYLE/CSS, GÄLLER BARA DENNA KOMPONENTEN
-GLOBALA STYLES I APP.VUE */
 </style>
