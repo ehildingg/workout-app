@@ -2,11 +2,15 @@
   export default {
     components: {},
     created() {},
+
     data() {
       return {
-        hej: null
+        hej: null,
+        input: '',
+        list: this.$store.state.routineList
       }
     },
+
     computed: {
       // Get exercisesArray from vuex
       routineList: function () {
@@ -18,8 +22,18 @@
       // Get data from router
       getRoutePathName: function () {
         return this.$route.fullPath
+      },
+      filteredList: function () {
+        return this.list.filter((routineId) =>
+          this.list.length
+            ? Object.keys(this.list[0]).some((key) =>
+                ('' + routineId[key]).toLowerCase().includes(this.input)
+              )
+            : true
+        )
       }
     },
+
     methods: {
       editRoutineRouterLink(selectedId, blockName) {
         this.$router.push({
@@ -44,16 +58,25 @@
 </script>
 
 <template>
-  <h1>RouterPath: {{ getRoutePathName }}</h1>
-  <h3>ROUTINES</h3>
-  <table class="list-container" v-if="routineList">
+  <h3>(RouterPath: {{ getRoutePathName }})</h3>
+  <div class="search-routine">
+    <h3>ROUTINES</h3>
+    <input
+      id="serach-btn"
+      type="text"
+      v-model="input"
+      placeholder="Search Routine"
+    />
+    <div />
+  </div>
+  <table class="list-container" v-if="list">
     <tr
       class="list-item"
+      v-for="(routineId, index) in filteredList"
       :key="routineId.id"
-      v-for="(routineId, index) in routineList"
     >
       <td>
-        <p>{{ $store.state.routineList[index].blockName }}</p>
+        <p>{{ filteredList[index].blockName }}</p>
         <p>
           {{
             this.$store.getters.calculateRoutineTimeByRoutineId(routineId.id)
@@ -119,6 +142,13 @@
 </template>
 
 <style scoped>
+  .search-routine {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    max-width: 230px;
+  }
   .list-container {
     border: 1px solid black;
     display: inline;

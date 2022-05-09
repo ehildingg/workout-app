@@ -10,7 +10,7 @@
       // Watch router.params. Use router.params.id to get exercise from vuex-store
       this.$watch(
         () => this.$route.params.id,
-        (newValue, oldValue) => {
+        (newValue) => {
           // Check if the exercise exists in vuex-store. If not show error message
           this.$store.getters.chekIfRoutineExists(newValue)
             ? this.initData()
