@@ -110,9 +110,6 @@
 </template>
 
 <style scoped>
-  /* SCOOPED STYLE/CSS, GÄLLER BARA DENNA KOMPONENTEN
-  GLOBALA STYLES I APP.VUE */
-
   .list-container {
     border: 1px solid black;
     display: inline;
