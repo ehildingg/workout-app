@@ -22,7 +22,6 @@
   <article class="list-item">
     {{ exercises.blockName }}<br />
     <div class="slide-container">
-      <!-- EJ KLAR -->
       <span class="rangeValue" /> {{ ex }} sec
       <input
         v-model="ex"
