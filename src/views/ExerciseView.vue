@@ -1,8 +1,9 @@
 <script>
   import ExerciseCircle from '../components/ExerciseCircle.vue'
+  import CircleTimer from '../components/CircleTimer.vue'
 
   export default {
-    components: { ExerciseCircle },
+    components: { ExerciseCircle, CircleTimer },
     /*     beforeCreated() {
       this.$router.go()
     }, */
@@ -42,7 +43,9 @@
         exerciseArray: null,
         totalCounter: null,
         counterInSeconds: null,
-        currentExercise: null
+        currentExercise: null,
+
+        circleTimerInSeconds: null
       }
     },
     methods: {
@@ -70,6 +73,9 @@
         this.scrollToElement(this.currentExercise)
         console.log(this.exerciseArray[this.currentExercise].blockName)
         this.counterInSeconds = this.exerciseArray[this.currentExercise].seconds
+
+        this.circleTimerInSeconds =
+          this.exerciseArray[this.currentExercise].seconds
       },
       startNextExercise() {
         this.$timer.start('exerciseTimer')
@@ -97,6 +103,7 @@
         this.setTotalCounter()
         this.setFirstCounterInterval()
         this.currentExercise = 0
+        this.circleTimerInSeconds = this.exerciseArray[0].seconds
         /*         console.log(this.exerciseArray)
           console.log(this.totalCounter)
           console.log(this.exerciseArray[0].seconds) */
@@ -158,6 +165,7 @@
 </script>
 
 <template>
+  <CircleTimer :count-down-interval="circleTimerInSeconds" />
   <div v-if="exerciseArray && doesRoutineExist">
     <div>
       <h1>{{ routineName }} routine</h1>

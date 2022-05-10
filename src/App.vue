@@ -1,12 +1,12 @@
 <script>
-  import Dragi from './components/Dragi.vue'
+  /*   import Dragi from './components/Dragi.vue' */
   export default {
-    components: { Dragi }
+    /*     components: { Dragi } */
   }
 </script>
 
 <template>
-  <Dragi />
+  <!--   <Dragi /> -->
   <nav>
     <ul>
       <li>

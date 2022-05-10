@@ -51,7 +51,7 @@ const mutations = {},
       3: {
         id: 3,
         blockName: 'Push-Ups',
-        seconds: 3,
+        seconds: 6,
         resting: true,
         color: 'blue'
       },
@@ -65,7 +65,7 @@ const mutations = {},
       5: {
         id: 5,
         blockName: 'Burpees',
-        seconds: 3,
+        seconds: 5,
         resting: true,
         color: 'blue'
       },
