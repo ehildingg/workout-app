@@ -89,7 +89,20 @@
       } */
     },
 
-    props: ['id', 'blockName', 'exercises']
+    props: {
+      id: {
+        type: String,
+        default: null
+      },
+      blockName: {
+        type: String,
+        default: null
+      },
+      exercises: {
+        type: Object,
+        default: null
+      }
+    }
   }
 </script>
 

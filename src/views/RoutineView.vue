@@ -88,14 +88,14 @@
           </button></router-link
         > -->
         <button
-          class="routine-btn"
+          class="routine-btns"
           id="edit-btn"
           @click="editRoutineRouterLink(routineId.id, routineId.blockName)"
         >
           Edit
         </button>
         <button
-          class="routine-btn"
+          class="routine-btns"
           id="start-btn"
           @click="startRoutineRouterLink(routineId.id, routineId.blockName)"
         >
@@ -138,7 +138,7 @@
     display: flex;
     align-items: center;
   }
-  .routine-btn {
+  .routine-btns {
     width: 38px;
     margin-left: 32px;
     margin-right: 32px;
