@@ -4,17 +4,17 @@
 
     created() {},
     mounted() {
-      this.startTimer()
+      // this.startTimer()
     },
     beforeUnmount() {},
     data() {
       return {
         timeIntervalTestSetByProp: null,
-        timeLimit: 20,
-        timePassed: 0,
+        timeLimit: null,
+        timePassed: null,
         timerInterval: null,
-        alertThreshold: 5,
-        warningThreshold: 10
+        alertThreshold: 2,
+        warningThreshold: 4
       }
     },
     props: {
@@ -28,7 +28,10 @@
         immediate: true,
         deep: true,
         handler(val, oldVal) {
-          this.timeIntervalTestSetByProp = val
+          clearInterval(this.timerInterval)
+          this.timeLimit = val
+          this.startTimer()
+          this.timePassed = null
         }
       }
     },
@@ -44,11 +47,7 @@
     methods: {
       startTimer() {
         this.timerInterval = setInterval(() => (this.timePassed += 1), 1000)
-      },
-
-      initData() {},
-      getExerciseArrayIds() {},
-      getExersices() {}
+      }
     },
     computed: {
       formattedTimeLeft() {
@@ -70,7 +69,7 @@
       },
       // Update the dasharray value as time passes, starting with 283
       circleDasharray() {
-        return `71 283`
+        return `${(this.timeFraction * 283).toFixed(0)} 283`
       },
 
       timeFraction() {
@@ -121,29 +120,10 @@
     <div class="base-timer">
       <svg class="svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <g class="circle">
-          <circle class="path-elapsed" cx="50" cy="50" r="46.5" />
+          <circle class="path-elapsed" cx="50" cy="50" r="45" />
           <path
             :stroke-dasharray="circleDasharray"
             :class="remainingPathColor"
-            class="path-remaining"
-            d="
-      M 50, 50
-      m -45, 0
-      a 45,45 0 1,0 90,0
-      a 45,45 0 1,0 -90,0
-    "
-          />
-          <path
-            class="path-remaining"
-            d="
-            M 50, 50
-            m -45, 0
-            a 45,45 0 1,0 90,0
-            a 45,45 0 1,0 -90,0
-          "
-          />
-          <path
-            :stroke-dasharray="circleDasharray"
             class="path-remaining"
             d="
       M 50, 50
