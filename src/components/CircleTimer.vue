@@ -21,6 +21,10 @@
       countDownInterval: {
         type: Number,
         default: 3
+      },
+      countDownSec: {
+        type: Number,
+        default: 5
       }
     },
     watch: {
@@ -28,26 +32,33 @@
         immediate: true,
         deep: true,
         handler(val, oldVal) {
-          clearInterval(this.timerInterval)
+          /*    clearInterval(this.timerInterval) */
           this.timeLimit = val
-          this.startTimer()
-          this.timePassed = null
+          /*           this.startTimer() */
+          /* this.timePassed = null */
+        }
+      },
+      countDownSec: {
+        immediate: true,
+        deep: true,
+        handler(newValue, oldValue) {
+          this.timePassed = newValue
         }
       }
     },
     /*     watch: {
-        ciecleTimerInSeconds: function () {
-            immediate: true,
-            deep: true,
-            handler(newValue, oldValue) {
-                console.log(newValue);
-            }
-        }
-    }, */
+          ciecleTimerInSeconds: function () {
+              immediate: true,
+              deep: true,
+              handler(newValue, oldValue) {
+                  console.log(newValue);
+              }
+          }
+      }, */
     methods: {
-      startTimer() {
-        this.timerInterval = setInterval(() => (this.timePassed += 1), 1000)
-      }
+      /*       startTimer() {
+          this.timerInterval = setInterval(() => (this.timePassed += 1), 1000)
+        } */
     },
     computed: {
       formattedTimeLeft() {
@@ -81,9 +92,9 @@
       // ------------------------------- circle timer
 
       /*       timerIsRunning: function () {},
-      totalTimeLeft: function () {},
-      routeRoutineId: function () {},
-      routineName: function () {}, */
+        totalTimeLeft: function () {},
+        routeRoutineId: function () {},
+        routineName: function () {}, */
 
       colorCodes() {
         return {
@@ -115,32 +126,32 @@
   }
 </script>
 <template>
-  <section class="just-a-border">
-    <p>CURRENT ROUTINE INTERVAL(seconds) {{ timeIntervalTestSetByProp }}</p>
-    <div class="base-timer">
-      <svg class="svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <g class="circle">
-          <circle class="path-elapsed" cx="50" cy="50" r="45" />
-          <path
-            :stroke-dasharray="circleDasharray"
-            :class="remainingPathColor"
-            class="path-remaining"
-            d="
+  <!--   <section class="just-a-border">
+    <p>CURRENT ROUTINE INTERVAL(seconds) {{ timeIntervalTestSetByProp }}</p> -->
+  <div class="base-timer">
+    <svg class="svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <g class="circle">
+        <circle class="path-elapsed" cx="50" cy="50" r="45" />
+        <path
+          :stroke-dasharray="circleDasharray"
+          :class="remainingPathColor"
+          class="path-remaining"
+          d="
       M 50, 50
       m -45, 0
       a 45,45 0 1,0 90,0
       a 45,45 0 1,0 -90,0
     "
-          />
-        </g>
-      </svg>
-      <span class="label">
-        {{ formattedTimeLeft }}
-      </span>
-    </div>
+        />
+      </g>
+    </svg>
+    <span class="label">
+      {{ formattedTimeLeft }}
+    </span>
+  </div>
 
-    <!--   <div>Sorry, the exercise does not exist</div> -->
-  </section>
+  <!--   <div>Sorry, the exercise does not exist</div> -->
+  <!--   </section> -->
 </template>
 
 <style scoped>
@@ -217,14 +228,18 @@
   }
 
   .green {
-    color: rgb(65, 184, 131);
+    /* color: rgb(65, 184, 131); */
+    color: #0467ba;
   }
 
   .orange {
-    color: orange;
+    /* color: orange; */
+    color: #0467ba;
   }
 
   .red {
-    color: red;
+    /* color: red; */
+
+    color: #4be8f2;
   }
 </style>

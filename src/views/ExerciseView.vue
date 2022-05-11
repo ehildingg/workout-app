@@ -77,8 +77,8 @@
         console.log(this.exerciseArray[this.currentExercise].blockName)
         this.counterInSeconds = this.exerciseArray[this.currentExercise].seconds
 
-        this.circleTimerInSeconds =
-          this.exerciseArray[this.currentExercise].seconds
+        that.circleTimerInSeconds =
+          that.exerciseArray[that.currentExercise].seconds
       },
       startNextExercise() {
         this.$timer.start('exerciseTimer')
@@ -181,7 +181,6 @@
 </script>
 
 <template>
-  <CircleTimer :count-down-interval="circleTimerInSeconds" />
   <div v-if="exerciseArray && doesRoutineExist">
     <div>
       <h1>{{ routineName }} routine</h1>
@@ -189,7 +188,10 @@
         <span>Total time left:</span>
         <h3>{{ totalTimeLeft + ' ' }}</h3>
       </div>
-
+      <CircleTimer
+        :count-down-interval="circleTimerInSeconds"
+        :count-down-sec="counterInSeconds"
+      />
       <span>Exercise</span>
       <p>{{ this.exerciseArray[this.currentExercise].blockName }}</p>
       <!--      <h2>{{ this.counterInSeconds }}</h2>

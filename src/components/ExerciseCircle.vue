@@ -114,7 +114,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 2.5rem;
+    width: 4rem;
     height: 7rem;
   }
   /* Alt 1 circle animation */
@@ -151,24 +151,24 @@
   }
   @-webkit-keyframes pulse {
     0% {
-      -webkit-transform: scale(0.7);
+      -webkit-transform: scale(1);
     }
     70% {
       -webkit-transform: scale(0.8);
     }
     100% {
-      -webkit-transform: scale(0.7);
+      -webkit-transform: scale(1);
     }
   }
   @keyframes pulse {
     0% {
-      -webkit-transform: scale(0.7);
+      -webkit-transform: scale(1);
     }
     70% {
       -webkit-transform: scale(0.8);
     }
     100% {
-      -webkit-transform: scale(0.7);
+      -webkit-transform: scale(1);
     }
   }
 </style>
