@@ -27,24 +27,19 @@
 
 <style>
   /* GLOBAL STYLES HERE, STYLE CSS FÖR ALLA KOMPONENTER */
+  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
   body,
   html {
     padding: 0;
     margin: 0;
     width: 100%;
     min-height: 100vh;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: 'Quicksand', sans-serif, 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  button {
-    background: rgba(8, 193, 39, 0.1);
-    cursor: pointer;
-  }
-  button:hover,
-  button:focus {
-    background: rgba(4, 118, 32, 0.3);
+    background-color: #343434;
+    color: white;
   }
 </style>
 

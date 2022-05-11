@@ -73,7 +73,7 @@
       },
       prepareNextExercise() {
         this.currentExercise++
-        /*         this.scrollToElement(this.currentExercise) */
+        this.scrollToElement(this.currentExercise)
         console.log(this.exerciseArray[this.currentExercise].blockName)
         this.counterInSeconds = this.exerciseArray[this.currentExercise].seconds
 
@@ -122,6 +122,13 @@
         this.exerciseArray = this.exerciseArrayIds.map(
           (id) => this.$store.state.exerciseList[id]
         )
+        this.exerciseArray.unshift({
+          id: 0,
+          blockName: 'Prepare',
+          seconds: 5,
+          resting: false,
+          color: 'yellow'
+        })
         /* this.exerciseArrayIds.forEach((id) => {
             this.exerciseArray.push(this.$store.state.exerciseList[id])
           }) */
@@ -151,6 +158,11 @@
       timerIsRunning: function () {
         return this.timers.exerciseTimer.isRunning
       },
+      playOrPause: function () {
+        return this.timerIsRunning
+          ? '/assets/pause-button.svg'
+          : '/assets/play-button.svg'
+      },
       totalTimeLeft: function () {
         return new Date(this.totalCounter * 1000).toISOString().slice(14, 19)
       },
@@ -173,15 +185,21 @@
   <div v-if="exerciseArray && doesRoutineExist">
     <div>
       <h1>{{ routineName }} routine</h1>
+      <div class="in-row">
+        <span>Total time left:</span>
+        <h3>{{ totalTimeLeft + ' ' }}</h3>
+      </div>
+
+      <span>Exercise</span>
       <p>{{ this.exerciseArray[this.currentExercise].blockName }}</p>
-      <h2>{{ this.counterInSeconds }}</h2>
-      <p>Totaltimer:</p>
-      <h2>{{ this.totalCounter }}</h2>
-      <h2>{{ totalTimeLeft }}</h2>
+      <!--      <h2>{{ this.counterInSeconds }}</h2>
+
+      <h2>{{ this.totalCounter }}</h2> -->
     </div>
 
     <div class="dot-container">
       <span
+        class="circle"
         :key="exercise.id"
         v-for="(exercise, index) in exerciseArray"
         ref="exercise"
@@ -195,25 +213,63 @@
       </span>
     </div>
     <button @click="playPauseBtnClick()" :disabled="isDisabled">
-      {{ timerIsRunning ? 'Pause' : 'Play' }}
+      <!--       {{ timerIsRunning ? 'Pause' : 'Play' }} -->
+      <img alt="playOrPause" :src="playOrPause" />
     </button>
   </div>
   <div v-else>Sorry, the exercise does not exist</div>
 </template>
 
 <style scoped>
+  p,
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+  }
+
+  p {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  h1 {
+    /* font-size: 30px; */
+    font-size: 1.9rem;
+  }
+  .in-row {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  }
   button:disabled,
   button[disabled] {
     background-color: #aeaeae35;
     color: #84848455;
   }
   .dot-container {
+    /*  min-height: 200px; */
     position: relative;
     overflow: scroll;
     white-space: nowrap;
     display: flex;
     align-items: center;
   }
+  .circle:nth-child(2) {
+    padding-left: 1rem;
+  }
+  .circle:last-child {
+    padding-left: 1rem;
+  }
+
   .div {
     border: 1px solid black;
   }
