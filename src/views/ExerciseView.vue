@@ -169,7 +169,7 @@
 </script>
 
 <template>
-  <!--   <CircleTimer :count-down-interval="circleTimerInSeconds" /> -->
+  <CircleTimer :count-down-interval="circleTimerInSeconds" />
   <div v-if="exerciseArray && doesRoutineExist">
     <div>
       <h1>{{ routineName }} routine</h1>
