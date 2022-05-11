@@ -1,13 +1,14 @@
 <script>
   import ExerciseCircle from '../components/ExerciseCircle.vue'
   import CircleTimer from '../components/CircleTimer.vue'
-
+  let that
   export default {
     components: { ExerciseCircle, CircleTimer },
     /*     beforeCreated() {
       this.$router.go()
     }, */
     created() {
+      that = this
       // Watch router.params. Use router.params.id to get exercise from vuex-store
       this.$watch(
         () => this.$route.params.id,
@@ -21,6 +22,7 @@
       )
     },
     beforeUnmount() {
+      console.log('before pause ?')
       // Always stop timer when leaving route
       if (this.timerIsRunning) {
         this.$timer.stop('exerciseTimer')
@@ -51,26 +53,27 @@
     methods: {
       // Method that executes every second, connected to the timerdeclaration() in timers(row 28)
       exerciseTimer() {
-        if (!this.doesRoutineExist) {
-          this.$timer.stop('exerciseTimer')
+        console.log('Timer', that.$timer)
+        if (!that.doesRoutineExist) {
+          that.$timer.stop('exerciseTimer')
         }
-        console.log('ÖvningsTimer: ' + this.counterInSeconds)
-        this.counterInSeconds--
-        this.totalCounter--
-        console.log('Total Timer:' + this.totalCounter)
+        console.log('ÖvningsTimer: ' + that.counterInSeconds)
+        that.counterInSeconds--
+        that.totalCounter--
+        console.log('Total Timer:' + that.totalCounter)
 
-        if (this.counterInSeconds == 0 && this.totalCounter != 0) {
+        if (that.counterInSeconds == 0 && that.totalCounter != 0) {
           // this.$timer.stop('exerciseTimer')
-          this.prepareNextExercise()
+          that.prepareNextExercise()
           // this.startNextExercise()
         }
-        if (this.totalCounter <= 0) {
-          this.finishWorkout()
+        if (that.totalCounter <= 0) {
+          that.finishWorkout()
         }
       },
       prepareNextExercise() {
         this.currentExercise++
-        this.scrollToElement(this.currentExercise)
+        /*         this.scrollToElement(this.currentExercise) */
         console.log(this.exerciseArray[this.currentExercise].blockName)
         this.counterInSeconds = this.exerciseArray[this.currentExercise].seconds
 
@@ -98,6 +101,7 @@
       },
 
       initData() {
+        this.$timer.stop('exerciseTimer')
         this.getExerciseArrayIds()
         this.getExersices()
         this.setTotalCounter()
@@ -165,7 +169,7 @@
 </script>
 
 <template>
-  <CircleTimer :count-down-interval="circleTimerInSeconds" />
+  <!--   <CircleTimer :count-down-interval="circleTimerInSeconds" /> -->
   <div v-if="exerciseArray && doesRoutineExist">
     <div>
       <h1>{{ routineName }} routine</h1>

@@ -67,7 +67,6 @@
       v-model="input"
       placeholder="Search Routine"
     />
-    <div />
   </div>
   <table class="list-container" v-if="list">
     <tr
@@ -83,42 +82,9 @@
           }}
           Minutes
         </p>
-
-        <!-- <p>{{ $store.state.routineList[index].exercises }}</p>
-        <p>
-          {{ this.$store.getters.getListOfExercisesByRoutineId(routineId.id) }}
-        </p> -->
       </td>
 
       <div class="edit-start">
-        <!--         <router-link
-          :to="{
-            name: 'details',
-            params: {
-              id: routineId.id,
-              blockName: routineId.blockName,
-              exercises: routineId.exercises
-            }
-          }"
-          ><button class="routine-btn" id="edit-btn">Edit</button></router-link
-        > -->
-
-        <!-- <button @click="$router.push('/edit/' + routineId.id)">Edit</button> -->
-
-        <!--         <router-link
-          :to="{
-            name: 'exercise',
-            params: {
-              id: routineId.id,
-              blockName: routineId.blockName,
-              exercises: routineId.exercises,
-              seconds: routineId.seconds
-            }
-          }"
-          ><button class="routine-btn" id="start-btn">
-            Start
-          </button></router-link
-        > -->
         <button
           class="routine-btns"
           id="edit-btn"
