@@ -8,17 +8,19 @@
 <template>
   <!--   <Dragi /> -->
   <nav>
-    <ul>
-      <li>
-        <RouterLink to="/">RoutineView</RouterLink>
-      </li>
-      <li>
-        <RouterLink to="/exercise/1">ExerciseView</RouterLink>
-      </li>
-      <li>
-        <RouterLink to="/edit">EditView</RouterLink>
-      </li>
-    </ul>
+    <!--   <ul> -->
+    <span>
+      <RouterLink to="/">RoutineView</RouterLink>
+    </span>
+    <span>||</span>
+    <span>
+      <RouterLink to="/exercise/1">ExerciseView</RouterLink>
+    </span>
+    <span>||</span>
+    <span>
+      <RouterLink to="/edit">EditView</RouterLink>
+    </span>
+    <!--  </ul> -->
   </nav>
   <main>
     <RouterView />
@@ -48,9 +50,9 @@
 
   /*Borders så att man ser olika views enklare*/
   nav {
-    border: 2px solid blue;
+    /*  border: 2px solid blue; */
   }
   main {
-    border: 3px solid rgb(0, 205, 58);
+    /*  border: 3px solid rgb(0, 205, 58); */
   }
 </style>

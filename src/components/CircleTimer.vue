@@ -157,7 +157,7 @@
 <style scoped>
   /* Sets the containers height and width */
   .just-a-border {
-    border: 1px solid black;
+    /* border: 1px solid black; */
   }
   .base-timer {
     position: relative;

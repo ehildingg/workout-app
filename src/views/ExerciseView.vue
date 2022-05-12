@@ -188,10 +188,12 @@
         <span>Total time left:</span>
         <h3>{{ totalTimeLeft + ' ' }}</h3>
       </div>
-      <CircleTimer
-        :count-down-interval="circleTimerInSeconds"
-        :count-down-sec="counterInSeconds"
-      />
+      <div class="center-temp">
+        <CircleTimer
+          :count-down-interval="circleTimerInSeconds"
+          :count-down-sec="counterInSeconds"
+        />
+      </div>
       <span>Exercise</span>
       <p>{{ this.exerciseArray[this.currentExercise].blockName }}</p>
       <!--      <h2>{{ this.counterInSeconds }}</h2>
@@ -214,15 +216,21 @@
         />
       </span>
     </div>
-    <button @click="playPauseBtnClick()" :disabled="isDisabled">
-      <!--       {{ timerIsRunning ? 'Pause' : 'Play' }} -->
-      <img alt="playOrPause" :src="playOrPause" />
-    </button>
+    <div class="center-temp">
+      <button @click="playPauseBtnClick()" :disabled="isDisabled">
+        <!--       {{ timerIsRunning ? 'Pause' : 'Play' }} -->
+        <img alt="playOrPause" :src="playOrPause" />
+      </button>
+    </div>
   </div>
   <div v-else>Sorry, the exercise does not exist</div>
 </template>
 
 <style scoped>
+  .center-temp {
+    display: flex;
+    justify-content: center;
+  }
   p,
   h1,
   h2,
@@ -240,6 +248,7 @@
   }
   .in-row {
     margin-top: 1rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
   }
@@ -273,6 +282,6 @@
   }
 
   .div {
-    border: 1px solid black;
+    /* border: 1px solid black; */
   }
 </style>
