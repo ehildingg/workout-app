@@ -235,6 +235,8 @@
   h1,
   h2,
   h3 {
+    border: 1px solid white;
+    line-height: 3rem;
     margin: 0;
   }
 

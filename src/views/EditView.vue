@@ -172,7 +172,7 @@
     color: #84848455;
   }
   .list-container {
-    border: 1px solid black;
+    /* border: 1px solid black; */
   }
 
   .menu-container {

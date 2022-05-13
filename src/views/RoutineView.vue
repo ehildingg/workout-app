@@ -116,7 +116,7 @@
     max-width: 230px;
   }
   .list-container {
-    border: 1px solid black;
+    /*  border: 1px solid black; */
     display: inline;
   }
   .list-item {
