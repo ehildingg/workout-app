@@ -109,7 +109,15 @@
 
 <template>
   <h1>RouterPath: {{ getRoutePathName }}</h1>
-  <h2>{{ routeRoutineName }} routine</h2>
+  <!-- <img id="pencil" src="/assets/pencil.svg" /> -->
+  <input
+    class="routine-name"
+    id="pencil"
+    type="text"
+    v-model="this.routeRoutineName"
+  />
+  <br />
+
   <section class="list-container" v-if="exerciseArray && doesRoutineExist">
     <ExerciseBlock
       :key="exercise + index"
@@ -166,6 +174,32 @@
 </template>
 
 <style scoped>
+  .routine-name {
+    border: none;
+    height: 50px;
+    background: transparent;
+    color: white;
+    font-size: x-large;
+    font-family: 'Quicksand', sans-serif, 'Avenir', Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+  }
+
+  #pencil {
+    position: relative;
+    width: 230px;
+    height: 30px;
+    background-image: url('/assets/pencil.svg');
+    background-repeat: no-repeat;
+    background-position-x: 95%;
+    background-position-y: 20%;
+    background-size: 10px;
+    padding: 2px;
+  }
+
   button:disabled,
   button[disabled] {
     background-color: #aeaeae35;
