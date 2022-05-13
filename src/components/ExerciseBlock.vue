@@ -9,22 +9,23 @@
       }
     },
     mounted() {
-      this.ex = this.exercises.seconds
+      this.sec = this.exercises.seconds
+      this.name = this.exercises.blockName
       console.log(this.ex)
     },
     data() {
-      return { ex: null }
+      return { sec: null, name: this.name }
     }
   }
 </script>
 
 <template>
   <article class="list-item">
-    {{ exercises.blockName }}<br />
     <div class="slide-container">
-      <span class="rangeValue" /> {{ ex }} sec
+      <input id="exercise-name" type="text" v-model="name" /><br />
+      <span class="rangeValue" /> {{ sec }} sec
       <input
-        v-model="ex"
+        v-model="sec"
         type="range"
         min="1"
         max="100"
@@ -37,7 +38,16 @@
 
 <style scoped>
   /* SCOOPED STYLE/CSS, GÄLLER BARA DENNA KOMPONENTEN
-GLOBALA STYLES I APP.VUE */
+  GLOBALA STYLES I APP.VUE */
+
+  #exercise-name {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: medium;
+    font-family: 'Quicksand', sans-serif, 'Avenir', Helvetica, Arial, sans-serif;
+    text-align: center;
+  }
   .list-item {
     border: 1px solid gray;
     border-radius: 8px;
