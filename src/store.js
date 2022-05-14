@@ -9,7 +9,7 @@ const mutations = {},
         seconds: 30,
         resting: true,
         color: 'blue',
-        exercises: [3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8, 2]
+        exercises: [3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8]
       },
       {
         id: 2,
@@ -17,7 +17,7 @@ const mutations = {},
         seconds: 30,
         resting: true,
         color: 'green',
-        exercises: [9, 1, 10, 1, 11, 1, 12, 1, 13, 1, 14, 2]
+        exercises: [9, 1, 10, 1, 11, 1, 12, 1, 13, 1, 14]
       },
       {
         id: 3,
@@ -25,7 +25,7 @@ const mutations = {},
         seconds: 30,
         resting: false,
         color: 'red',
-        exercises: [15, 1, 16, 1, 17, 1, 18, 1, 19, 1, 20, 2]
+        exercises: [15, 1, 16, 1, 17, 1, 18, 1, 19, 1, 20]
       }
     ],
     exerciseList: {
@@ -33,6 +33,13 @@ const mutations = {},
       // Har lagt den ursprungliga exerciseList med längre sekundintervall borkommenterat längre ner i koden
 
       // REST
+      0: {
+        id: 0,
+        blockName: 'Prepare',
+        seconds: 5,
+        resting: false,
+        color: 'red'
+      },
       1: {
         id: 1,
         blockName: 'Rest',
@@ -43,7 +50,7 @@ const mutations = {},
       2: {
         id: 2,
         blockName: 'Recovery',
-        seconds: 3,
+        seconds: 20,
         resting: false,
         color: 'darkred'
       },
@@ -183,16 +190,39 @@ const mutations = {},
       return state.routineList.some((routine) => routine.id == id)
     },
 
+    checkIExerciseExists: (state) => (id) => {
+      let exists = false
+      for (const value of Object.values(state.exerciseList)) {
+        if (value.id == id) {
+          exists = true
+          break
+        }
+      }
+      return exists
+    },
+
     getRoutineById: (state, getters) => (id) => {
       let routine = null
 
       if (getters.checkIfRoutineExists(id)) {
-        routine = state.routineList.find((element) => element.id === id)
+        routine = state.routineList.find((element) => element.id == id)
       } else {
         console.log('Routine ID does not exist!')
       }
 
       return routine
+    },
+
+    getExerciseById: (state, getters) => (id) => {
+      let exercise = null
+
+      if (getters.checkIExerciseExists(id)) {
+        exercise = state.exerciseList[id]
+      } else {
+        console.log('Routine ID does not exist!')
+      }
+
+      return exercise
     },
 
     getListOfExercisesByRoutineId: (state, getters) => (id) => {

@@ -5,8 +5,8 @@
   export default {
     components: { ExerciseCircle, CircleTimer },
     /*     beforeCreated() {
-      this.$router.go()
-    }, */
+        this.$router.go()
+      }, */
     created() {
       that = this
       // Watch router.params. Use router.params.id to get exercise from vuex-store
@@ -20,6 +20,25 @@
         },
         { immediate: true }
       )
+      window.addEventListener('resize', this.screenSizeEvent)
+    },
+    mounted() {
+      /*       console.log(this.$refs.dots.clientWidth)
+        console.log(
+          this.$refs.exercise.reduce(
+            (previousValue, currentValue) =>
+              previousValue + currentValue.clientWidth,
+            0
+          )
+        ) */
+
+      this.totalWidthCircles = this.$refs.exercise.reduce(
+        (previousValue, currentValue) =>
+          previousValue + currentValue.clientWidth,
+        0
+      )
+
+      this.initialScreenSizeEvent(window.innerWidth)
     },
     beforeUnmount() {
       console.log('before pause ?')
@@ -27,6 +46,9 @@
       if (this.timerIsRunning) {
         this.$timer.stop('exerciseTimer')
       }
+    },
+    unmounted() {
+      window.removeEventListener('resize', this.screenSizeEvent)
     },
     timers: {
       // This is the timer
@@ -43,24 +65,30 @@
         doesRoutineExist: true,
         exerciseArrayIds: null,
         exerciseArray: null,
+        tempaArr: null,
         totalCounter: null,
         counterInSeconds: null,
         currentExercise: null,
 
-        circleTimerInSeconds: null
+        circleTimerInSeconds: null,
+
+        totalWidthCircles: null,
+        centerOrNot: null,
+
+        pos: { top: 0, left: 0, x: 0, y: 0 }
       }
     },
     methods: {
       // Method that executes every second, connected to the timerdeclaration() in timers(row 28)
       exerciseTimer() {
-        console.log('Timer', that.$timer)
+        /* console.log('Timer', that.$timer) */
         if (!that.doesRoutineExist) {
           that.$timer.stop('exerciseTimer')
         }
-        console.log('ÖvningsTimer: ' + that.counterInSeconds)
+        /* console.log('ÖvningsTimer: ' + that.counterInSeconds) */
         that.counterInSeconds--
         that.totalCounter--
-        console.log('Total Timer:' + that.totalCounter)
+        /* console.log('Total Timer:' + that.totalCounter) */
 
         if (that.counterInSeconds == 0 && that.totalCounter != 0) {
           // this.$timer.stop('exerciseTimer')
@@ -74,7 +102,7 @@
       prepareNextExercise() {
         this.currentExercise++
         this.scrollToElement(this.currentExercise)
-        console.log(this.exerciseArray[this.currentExercise].blockName)
+        /* console.log(this.exerciseArray[this.currentExercise].blockName) */
         this.counterInSeconds = this.exerciseArray[this.currentExercise].seconds
 
         that.circleTimerInSeconds =
@@ -89,15 +117,15 @@
 
       playPauseBtnClick() {
         /*         if (this.totalCounter > 0) { */
-        console.log(this.timers.exerciseTimer)
+        /* console.log(this.timers.exerciseTimer) */
         this.timerIsRunning
           ? this.$timer.stop('exerciseTimer')
           : this.$timer.start('exerciseTimer')
 
         /*           console.log(this.timers.exerciseTimer.isRunning)
-          } else {
-            console.log('Exercise is done')
-          } */
+            } else {
+              console.log('Exercise is done')
+            } */
       },
 
       initData() {
@@ -109,8 +137,8 @@
         this.currentExercise = 0
         this.circleTimerInSeconds = this.exerciseArray[0].seconds
         /*         console.log(this.exerciseArray)
-          console.log(this.totalCounter)
-          console.log(this.exerciseArray[0].seconds) */
+            console.log(this.totalCounter)
+            console.log(this.exerciseArray[0].seconds) */
       },
       getExerciseArrayIds() {
         this.exerciseArrayIds = this.$store.state.routineList
@@ -119,39 +147,115 @@
           .flat()
       },
       getExersices() {
-        this.exerciseArray = this.exerciseArrayIds.map(
-          (id) => this.$store.state.exerciseList[id]
-        )
-        this.exerciseArray.unshift({
-          id: 0,
-          blockName: 'Prepare',
-          seconds: 5,
-          resting: false,
-          color: 'yellow'
-        })
-        /* this.exerciseArrayIds.forEach((id) => {
+        /*     if (this.routeValueCycles > 1) { */
+        this.exerciseArray = []
+        let prepareOrRecovery = 0
+        for (let i = 0; i < this.routeValueCycles; i++) {
+          this.exerciseArrayIds.forEach((id, index) => {
             this.exerciseArray.push(this.$store.state.exerciseList[id])
-          }) */
+            if (index == this.exerciseArrayIds.length - 1) {
+              /* console.log('lastindex') */
+              this.exerciseArray.splice(
+                i == 0 ? 0 : (this.exerciseArrayIds.length + 1) * i,
+                0,
+                this.$store.getters.getExerciseById(prepareOrRecovery)
+                /* {
+                      id: 0,
+                      blockName: 'Prepare',
+                      seconds: 5,
+                      resting: false,
+                      color: 'yellow'
+                    } */
+              )
+              if (prepareOrRecovery === 0) {
+                prepareOrRecovery = 2
+              }
+            }
+          })
+        }
+        console.log(this.exerciseArrayIds)
+
+        /*         } else {
+            console.log('else cycles', this.routeValueCycles)
+            this.exerciseArray = this.exerciseArrayIds.map(
+              (id) => this.$store.state.exerciseList[id]
+            )
+
+            this.exerciseArray.unshift(
+              this.$store.getters.getExerciseById(0)
+              // {
+              // id: 0,
+              //  blockName: 'Prepare',
+              // seconds: 5,
+              //  resting: false,
+              //  color: 'yellow'
+              }
+            )
+          } */
       },
       setTotalCounter() {
         this.totalCounter = this.exerciseArray.reduce(
           (previousValue, currentValue) => previousValue + currentValue.seconds,
           0
         )
-        /* this.exerciseArray.forEach((exercise) => {
-            this.totalCounter += exercise.seconds
-          }) */
       },
       setFirstCounterInterval() {
         this.counterInSeconds = this.exerciseArray[0].seconds
       },
       scrollToElement(elRefIndex) {
-        console.log('allrefs: ', this.$refs.exercise)
+        /* console.log('allrefs: ', this.$refs.exercise) */
         this.$refs.exercise[elRefIndex].scrollIntoView({
           behavior: 'smooth',
           block: 'center',
           inline: 'center'
         })
+      },
+      screenSizeEvent(e) {
+        /* console.log(e.currentTarget.innerWidth) */
+        e.currentTarget.innerWidth > this.totalWidthCircles
+          ? (this.centerOrNot = 'center-temp')
+          : (this.centerOrNot = '')
+      },
+      initialScreenSizeEvent(width) {
+        console.log(
+          'screen: ' + width + ' ' + ' circles: ' + this.totalWidthCircles
+        )
+        width > this.totalWidthCircles
+          ? (this.centerOrNot = 'center-temp')
+          : (this.centerOrNot = '')
+      },
+
+      mouseDownHandler(e) {
+        this.$refs.dots.style.cursor = 'grabbing'
+        this.$refs.dots.style.userSelect = 'none'
+
+        this.pos = {
+          // The current scroll
+          left: this.$refs.dots.scrollLeft,
+          top: this.$refs.dots.scrollTop,
+          // Get the current mouse position
+          x: e.clientX,
+          y: e.clientY
+        }
+
+        this.$refs.dots.addEventListener('mousemove', this.mouseMoveHandler)
+        this.$refs.dots.addEventListener('mouseup', this.mouseUpHandler)
+      },
+
+      mouseMoveHandler(e) {
+        // How far the mouse has been moved
+        const dx = e.clientX - this.pos.x
+        const dy = e.clientY - this.pos.y
+
+        this.$refs.dots.scrollTop = this.pos.top - dy
+        this.$refs.dots.scrollLeft = this.pos.left - dx
+      },
+      mouseUpHandler() {
+        this.$refs.dots.removeEventListener('mousemove', this.mouseMoveHandler)
+        this.$refs.dots.removeEventListener('mouseup', this.mouseUpHandler)
+
+        this.$refs.dots.style.cursor = 'grab'
+        this.$refs.dots.style.removeProperty('user-select')
       }
     },
     computed: {
@@ -169,31 +273,40 @@
       routeRoutineId: function () {
         return Number(this.$route.params.id)
       },
+      routeValueCycles: function () {
+        return this.$route.params.cycles ? Number(this.$route.params.cycles) : 1
+      },
       routineName: function () {
         return this.$route.params.blockName
+          ? this.$route.params.blockName
+          : 'No name'
       },
       isDisabled() {
         // Disable start/pause-btn
         return !this.doesRoutineExist
       }
+      /*       centerOrNot() {
+          return this.$refs.dots.clientHeight
+        } */
     }
   }
 </script>
 
 <template>
   <div v-if="exerciseArray && doesRoutineExist">
-    <div>
-      <h1>{{ routineName }} routine</h1>
+    <!--    {{ dotsWidth }} -->
+    <div class="center-temp">
+      <h1>{{ routineName }}</h1>
       <div class="in-row">
         <span>Total time left:</span>
         <h3>{{ totalTimeLeft + ' ' }}</h3>
       </div>
-      <div class="center-temp">
-        <CircleTimer
-          :count-down-interval="circleTimerInSeconds"
-          :count-down-sec="counterInSeconds"
-        />
-      </div>
+
+      <CircleTimer
+        :count-down-interval="circleTimerInSeconds"
+        :count-down-sec="counterInSeconds"
+      />
+
       <span>Exercise</span>
       <p>{{ this.exerciseArray[this.currentExercise].blockName }}</p>
       <!--      <h2>{{ this.counterInSeconds }}</h2>
@@ -201,20 +314,22 @@
       <h2>{{ this.totalCounter }}</h2> -->
     </div>
 
-    <div class="dot-container">
-      <span
-        class="circle"
-        :key="exercise.id"
-        v-for="(exercise, index) in exerciseArray"
-        ref="exercise"
-      >
-        <ExerciseCircle
-          :timer-is-running="timerIsRunning"
-          :activeindex="currentExercise"
-          :circleindex="index"
-          :exercise="exercise"
-        />
-      </span>
+    <div :class="centerOrNot">
+      <div ref="dots" class="dot-container" @mousedown="mouseDownHandler">
+        <span
+          class="circle"
+          :key="exercise.id"
+          v-for="(exercise, index) in exerciseArray"
+          ref="exercise"
+        >
+          <ExerciseCircle
+            :timer-is-running="timerIsRunning"
+            :activeindex="currentExercise"
+            :circleindex="index"
+            :exercise="exercise"
+          />
+        </span>
+      </div>
     </div>
     <div class="center-temp">
       <button @click="playPauseBtnClick()" :disabled="isDisabled">
@@ -229,13 +344,14 @@
 <style scoped>
   .center-temp {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
   p,
   h1,
   h2,
   h3 {
-    border: 1px solid white;
+    /*  border: 1px solid white; */
     line-height: 3rem;
     margin: 0;
   }
@@ -276,11 +392,14 @@
     display: flex;
     align-items: center;
   }
+  .circle {
+    pointer-events: none;
+  }
   .circle:nth-child(2) {
     padding-left: 1rem;
   }
   .circle:last-child {
-    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .div {
