@@ -128,7 +128,7 @@
             } */
       },
 
-      backButtonClick(goToExerciseIndex) {
+      fastForwardRewindBtnClick(goToExerciseIndex) {
         // Calculate values to previous or next exercise. Simulate the timer in for-loop, set values orig-timer
 
         that.$timer.stop('exerciseTimer')
