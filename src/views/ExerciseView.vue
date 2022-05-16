@@ -91,9 +91,9 @@
         /* console.log('Total Timer:' + that.totalCounter) */
 
         if (that.counterInSeconds == 0 && that.totalCounter != 0) {
-          // this.$timer.stop('exerciseTimer')
+          this.$timer.stop('exerciseTimer')
           that.prepareNextExercise()
-          // this.startNextExercise()
+          this.startNextExercise()
         }
         if (that.totalCounter <= 0) {
           that.finishWorkout()
@@ -126,6 +126,57 @@
             } else {
               console.log('Exercise is done')
             } */
+      },
+
+      backButtonClick(goToExerciseIndex) {
+        // Calculate values to previous or next exercise. Simulate the timer in for-loop, set values orig-timer
+
+        that.$timer.stop('exerciseTimer')
+
+        // Make copy of orginal exercise-array
+        let exerciseArrayCopy = this.exerciseArray
+        // Count total seconds to selected exercise
+        let secondsToSelectedExersice = this.exerciseArray
+          .slice(0, goToExerciseIndex)
+          .reduce(
+            (previousValue, currentValue) =>
+              previousValue + currentValue.seconds,
+            0
+          )
+        // Sum up totalseconds on routine/workout
+        let totalCounterCopy = this.exerciseArray.reduce(
+          (previousValue, currentValue) => previousValue + currentValue.seconds,
+          0
+        )
+        // Set initial seconds to first interval
+        let counterInSecondsCopy = this.exerciseArray[0].seconds
+        // Set intial current-exercise index
+        let currentExerciseCopy = 0
+
+        // Simulate timer, make it go to selected exercise
+        for (let i = 0; i < secondsToSelectedExersice; i++) {
+          counterInSecondsCopy--
+          totalCounterCopy--
+
+          if (counterInSecondsCopy == 0 && totalCounterCopy != 0) {
+            currentExerciseCopy++
+            counterInSecondsCopy =
+              exerciseArrayCopy[currentExerciseCopy].seconds
+          }
+        }
+        // Set simulted timer-values to orignal timer-values
+        this.counterInSeconds = counterInSecondsCopy
+        this.totalCounter = totalCounterCopy
+        this.currentExercise = currentExerciseCopy
+
+        // Scroll to selected exercise-dot
+        this.scrollToElement(this.currentExercise)
+
+        /* this.$timer.start('exerciseTimer') */
+
+        /*         console.log('counterInSecondsCopy', counterInSecondsCopy)
+        console.log('totalCounterCopy', totalCounterCopy)
+        console.log('currentExerciseCopy', currentExerciseCopy) */
       },
 
       initData() {
@@ -202,6 +253,14 @@
       setFirstCounterInterval() {
         this.counterInSeconds = this.exerciseArray[0].seconds
       },
+
+      checkIfResting(blockName) {
+        return (
+          blockName == 'Rest' ||
+          blockName == 'Recovery' ||
+          blockName == 'Prepare'
+        )
+      },
       scrollToElement(elRefIndex) {
         /* console.log('allrefs: ', this.$refs.exercise) */
         this.$refs.exercise[elRefIndex].scrollIntoView({
@@ -267,6 +326,17 @@
           ? '/assets/pause-button.svg'
           : '/assets/play-button.svg'
       },
+      playOrPauseBack: function () {
+        return this.timerIsRunning
+          ? '/assets/back-btn-active.svg'
+          : '/assets/back-btn-pause.svg'
+      },
+      playOrPauseForward: function () {
+        return this.timerIsRunning
+          ? '/assets/forward-btn-active.svg'
+          : '/assets/forward-btn-pause.svg'
+      },
+
       totalTimeLeft: function () {
         return new Date(this.totalCounter * 1000).toISOString().slice(14, 19)
       },
@@ -285,9 +355,6 @@
         // Disable start/pause-btn
         return !this.doesRoutineExist
       }
-      /*       centerOrNot() {
-          return this.$refs.dots.clientHeight
-        } */
     }
   }
 </script>
@@ -307,8 +374,41 @@
         :count-down-sec="counterInSeconds"
       />
 
-      <span>Exercise</span>
-      <p>{{ this.exerciseArray[this.currentExercise].blockName }}</p>
+      <!-- <span>Routine</span> -->
+      <p>
+        {{ this.exerciseArray[this.currentExercise].blockName }}
+        {{ this.exerciseArray[this.currentExercise].seconds + ' s' }}
+      </p>
+      <!--       <Transition>
+        <span
+          class="next-routine"
+          v-if="
+            checkIfResting(this.exerciseArray[this.currentExercise].blockName)
+          "
+          >{{
+            'Next ' +
+            this.exerciseArray[this.currentExercise + 1].blockName +
+            ' ' +
+            this.exerciseArray[this.currentExercise + 1].seconds +
+            ' s'
+          }}</span
+        >
+      </Transition> -->
+
+      <span class="next-routine">{{
+        checkIfResting(this.exerciseArray[this.currentExercise].blockName)
+          ? 'Next ' +
+            this.exerciseArray[this.currentExercise + 1].blockName +
+            ' ' +
+            this.exerciseArray[this.currentExercise + 1].seconds +
+            ' s'
+          : '.'
+      }}</span>
+
+      <!--
+              v-if="
+          checkIfResting(this.exerciseArray[this.currentExercise].blockName)
+        " -->
       <!--      <h2>{{ this.counterInSeconds }}</h2>
 
       <h2>{{ this.totalCounter }}</h2> -->
@@ -332,16 +432,28 @@
       </div>
     </div>
     <div class="center-temp">
-      <button @click="playPauseBtnClick()" :disabled="isDisabled">
-        <!--       {{ timerIsRunning ? 'Pause' : 'Play' }} -->
-        <img alt="playOrPause" :src="playOrPause" />
-      </button>
+      <nav>
+        <button @click="fastForwardRewindBtnClick(this.currentExercise - 1)">
+          <img alt="back-btn" :src="playOrPauseBack" />
+        </button>
+        <button @click="playPauseBtnClick()" :disabled="isDisabled">
+          <img alt="playOrPause" :src="playOrPause" />
+        </button>
+        <button @click="fastForwardRewindBtnClick(this.currentExercise + 1)">
+          <img alt="forward-btn" :src="playOrPauseForward" />
+        </button>
+      </nav>
     </div>
   </div>
   <div v-else>Sorry, the exercise does not exist</div>
 </template>
 
 <style scoped>
+  nav {
+    border: 1px solid white;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
   .center-temp {
     display: flex;
     flex-direction: column;
@@ -401,8 +513,19 @@
   .circle:last-child {
     padding-right: 1rem;
   }
+  .next-routine {
+    opacity: 0.7;
+    font-size: 0.9rem;
+  }
 
-  .div {
-    /* border: 1px solid black; */
+  /* Vue Transitions */
+  .v-enter-active,
+  .v-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .v-enter-from,
+  .v-leave-to {
+    opacity: 0;
   }
 </style>
