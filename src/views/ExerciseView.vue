@@ -450,7 +450,7 @@
 
 <style scoped>
   nav {
-    border: 1px solid white;
+    /* border: 1px solid white; */
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
   }
