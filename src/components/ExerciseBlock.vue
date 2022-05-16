@@ -26,6 +26,7 @@
         class="exercise-name"
         id="pencil"
         type="text"
+        placeholder="Edit"
         v-model="name"
       /><br />
       <span class="rangeValue" /> {{ sec }} sec

@@ -1,5 +1,6 @@
 @
 <script>
+  // import { ModuleGraph } from 'vite'
   import ExerciseBlock from '../components/ExerciseBlock.vue'
 
   export default {
@@ -27,7 +28,8 @@
         routineId: null,
         exerciseArrayIds: null,
         exerciseArray: null,
-        doesRoutineExist: true
+        doesRoutineExist: true,
+        isSaved: false
       }
     },
     computed: {
@@ -84,6 +86,10 @@
             blockName: this.routeRoutineName
           }
         })
+      },
+      saveEditedRoutine() {
+        this.isSaved = true
+        console.log('saved')
       }
       /*       doesRoutineExist(id) {
         return this.$store.getters.checkIfRoutineExists(id);
@@ -109,11 +115,11 @@
 
 <template>
   <h1>RouterPath: {{ getRoutePathName }}</h1>
-  <!-- <img id="pencil" src="/assets/pencil.svg" /> -->
   <input
     class="routine-name"
     id="pencil"
     type="text"
+    placeholder="ROUTINE"
     v-model="this.routeRoutineName"
   />
   <br />
@@ -130,20 +136,15 @@
   <section v-else>Sorry, this routine does not exist</section>
 
   <div class="menu-container">
-    <!--     <router-link
-      :to="{
-        name: 'exercise',
-        params: {
-          id: routeRoutineId,
-          blockName: routeRoutineName
-        }
-      }"
+    <button
+      class="save-btn"
+      id="save-btn"
+      :disabled="isDisabled"
+      :class="{ 'save-btn': !isSaved, 'saved-btn': isSaved }"
+      @click="saveEditedRoutine"
     >
-      <button class="startbtn" id="start-btn" :disabled="isDisabled">
-        Start
-      </button>
-    </router-link> -->
-
+      {{ isSaved ? 'Saved!' : 'Save' }}
+    </button>
     <button
       class="startbtn"
       id="start-btn"
@@ -152,12 +153,6 @@
     >
       Start
     </button>
-    <!--     <button
-      class="startbtn"
-      @click="$router.push('/exercise/' + routeRoutineId)"
-    >
-      Start
-    </button> -->
 
     <div class="dropup">
       <button class="dropbtn" @click="toggleMenu">
@@ -232,6 +227,24 @@
     border: none;
     border-radius: 10px;
     min-width: 140px;
+  }
+
+  .save-btn {
+    background-color: rgb(200, 11, 11);
+    color: white;
+    padding: 35px;
+    font-size: 16px;
+    border: none;
+    border-radius: 50%;
+  }
+
+  .saved-btn {
+    background-color: rgb(52, 151, 77);
+    color: white;
+    padding: 35px;
+    font-size: 16px;
+    border: none;
+    border-radius: 50%;
   }
 
   .startbtn {
