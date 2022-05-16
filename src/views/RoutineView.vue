@@ -2,16 +2,33 @@
   export default {
     components: {},
     created() {
-      let clone = JSON.parse(JSON.stringify(this.$store.state.routineList))
-      this.list = clone.map((el) => Object.assign(el, { cycles: 2 }))
+      // Make copy of routineList(must use JSONParse, otherwise errors when changing it )
+      let routineListCopy = JSON.parse(
+        JSON.stringify(this.$store.state.routineList)
+      )
+      // Add cycles to routineListCopy
+      this.routineListWithAddedCycles = routineListCopy.map((el) =>
+        Object.assign(el, { cycles: 2 })
+      )
     },
-
+    beforeUnmount() {
+      /* this.routineListWithAddedCycles.forEach((element) => {
+        if (
+          element.cycles <= 0 ||
+          element.cycles == typeof 'undefined' ||
+          element.cycles == '' ||
+          element.cycles === null ||
+          element.cycles == typeof 'undefined'
+        ) {
+          element.cycles = 1
+        }
+      }) */
+    },
     data() {
       return {
-        hej: null,
         input: '',
-        /* list: this.$store.state.routineList */
-        list: null
+        /* routineListWithAddedCycles: this.$store.state.routineList */
+        routineListWithAddedCycles: null
       }
     },
 
@@ -28,9 +45,9 @@
         return this.$route.fullPath
       },
       filteredList: function () {
-        return this.list.filter((routineId) =>
-          this.list.length
-            ? Object.keys(this.list[0]).some((key) =>
+        return this.routineListWithAddedCycles.filter((routineId) =>
+          this.routineListWithAddedCycles.length
+            ? Object.keys(this.routineListWithAddedCycles[0]).some((key) =>
                 ('' + routineId[key]).toLowerCase().includes(this.input)
               )
             : true
@@ -41,17 +58,29 @@
     methods: {
       myChangeFunction(e, id) {
         /* console.log(id)
+
         console.log(e.target.value) */
         let newCycleValue = e.target.value
-        if (newCycleValue == '0' || newCycleValue == '') {
-          newCycleValue = 1
+        console.log('newCyclevalue: ', newCycleValue)
+        console.log('typeof cycle', typeof newCycleValue)
+        if (
+          newCycleValue == '0' ||
+          newCycleValue == '' ||
+          newCycleValue === null ||
+          newCycleValue == typeof 'undefined'
+        ) {
+          console.log('refs', this.$refs[id + 'editbtn'])
+          this.$refs[id + 'editbtn'][0].disabled = true
+        } else {
+          this.$refs[id + 'editbtn'][0].disabled = false
+          this.routineListWithAddedCycles.forEach((element) => {
+            if (element.id == id) {
+              element.cycles = Number(newCycleValue)
+            }
+          })
         }
-        this.list.forEach((element) => {
-          if (element.id == id) {
-            element.cycles = Number(e.target.value)
-          }
-        })
-        /* this.list = this.list.map((el) =>
+
+        /* this.routineListWithAddedCycles = this.routineListWithAddedCycles.map((el) =>
           el.id == id ? (el.cycles = Number(e.target.value)) : el
         ) */
       },
@@ -73,6 +102,9 @@
             cycles: cycles
           }
         })
+      },
+      isDisabled(id) {
+        return !this.doesRoutineExist
       }
     }
   }
@@ -115,10 +147,12 @@
               <span class="cycle-label">Cycles</span>
               <input
                 class="input-cycles"
-                type="text"
+                min="1"
+                max="100"
+                type="number"
                 :value="routineId.cycles"
                 :v-model="routineId.cycles"
-                @change="myChangeFunction($event, routineId.id)"
+                @input="myChangeFunction($event, routineId.id)"
               />
             </div>
             <button
@@ -128,9 +162,11 @@
             >
               Edit
             </button>
+            <!--  :disabled="isDisabled" -->
             <button
               class="routine-btns"
               id="start-btn"
+              :ref="routineId.id + 'editbtn'"
               @click="
                 startRoutineRouterLink(
                   routineId.id,

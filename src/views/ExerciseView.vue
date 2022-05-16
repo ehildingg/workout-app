@@ -344,7 +344,18 @@
         return Number(this.$route.params.id)
       },
       routeValueCycles: function () {
-        return this.$route.params.cycles ? Number(this.$route.params.cycles) : 1
+        if (
+          this.$route.params.cycles == '' ||
+          this.$route.params.cycles == null ||
+          this.$route.params.cycles == typeof 'undefined'
+        ) {
+          return 1
+        } else if (this.$route.params.cycles <= Number('0')) {
+          return 1
+        } else {
+          return Number(this.$route.params.cycles)
+        }
+        /* return this.$route.params.cycles ? Number(this.$route.params.cycles) : 1 */
       },
       routineName: function () {
         return this.$route.params.blockName
