@@ -14,17 +14,22 @@
         timePassed: null,
         timerInterval: null,
         alertThreshold: 2,
-        warningThreshold: 4
+        warningThreshold: 4,
+        pauseThreshold: true,
+        hideOrShow: true
       }
     },
     props: {
       countDownInterval: {
         type: Number,
-        default: 3
+        default: 0
       },
       countDownSec: {
         type: Number,
-        default: 5
+        default: 0
+      },
+      timerIsRunning: {
+        type: Boolean
       }
     },
     watch: {
@@ -32,19 +37,17 @@
         immediate: true,
         deep: true,
         handler(val, oldVal) {
-          /*    clearInterval(this.timerInterval) */
+          this.forceRerender()
           this.timeLimit = val
-          /*           this.startTimer() */
-          /* this.timePassed = null */
-        }
-      },
-      countDownSec: {
-        immediate: true,
-        deep: true,
-        handler(newValue, oldValue) {
-          this.timePassed = newValue
         }
       }
+      // countDownSec: {
+      //   immediate: true,
+      //   deep: true,
+      //   handler(newValue, oldValue) {
+      //     this.timePassed = newValue
+      //   }
+      // }
     },
     /*     watch: {
           ciecleTimerInSeconds: function () {
@@ -59,6 +62,16 @@
       /*       startTimer() {
           this.timerInterval = setInterval(() => (this.timePassed += 1), 1000)
         } */
+
+      forceRerender() {
+        // remove the my-component component from the DOM
+        this.hideOrShow = false
+
+        this.$nextTick(() => {
+          // add my-component component in DOM
+          this.hideOrShow = true
+        })
+      }
     },
     computed: {
       formattedTimeLeft() {
@@ -74,9 +87,12 @@
 
         // The output in MM:SS format
         return `${minutes}:${seconds}`
-      },
+      }, // timelimit = 6 sek - timepassed = 6sek
+      // 6 - 6
+      // 6 - 5
+      // 6 - 4
       timeLeft() {
-        return this.timeLimit - this.timePassed
+        return this.countDownSec
       },
       // Update the dasharray value as time passes, starting with 283
       circleDasharray() {
@@ -99,27 +115,31 @@
       colorCodes() {
         return {
           info: {
-            color: 'green'
+            color: this.timerIsRunning ? 'darkBlue' : 'red'
           },
           warning: {
             color: 'orange',
             threshold: this.warningThreshold
           },
           alert: {
-            color: 'red',
+            color: 'lightBlue',
             threshold: this.alertThreshold
+          },
+          paused: {
+            color: 'red',
+            threshold: this.pauseThreshold
           }
         }
       },
 
       remainingPathColor() {
-        const { alert, warning, info } = this.colorCodes
+        const { alert, warning, info, paused } = this.colorCodes
         if (this.timeLeft <= alert.threshold) {
-          return alert.color
+          return this.timerIsRunning ? alert.color : paused.color
         } else if (this.timeLeft <= warning.threshold) {
-          return warning.color
+          return this.timerIsRunning ? warning.color : paused.color
         } else {
-          return info.color
+          return this.timerIsRunning ? info.color : paused.color
         }
       }
     }
@@ -128,7 +148,7 @@
 <template>
   <!--   <section class="just-a-border">
     <p>CURRENT ROUTINE INTERVAL(seconds) {{ timeIntervalTestSetByProp }}</p> -->
-  <div class="base-timer">
+  <div class="base-timer" v-if="hideOrShow">
     <svg class="svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <g class="circle">
         <circle class="path-elapsed" cx="50" cy="50" r="45" />
@@ -163,23 +183,6 @@
     position: relative;
     width: 300px;
     height: 300px;
-  }
-  .path-remaining {
-    /* Just as thick as the original ring */
-    stroke-width: 7px;
-
-    /* Rounds the line endings to create a seamless circle */
-    stroke-linecap: round;
-
-    /* Makes sure the animation starts at the top of the circle */
-    transform: rotate(90deg);
-    transform-origin: center;
-
-    /* One second aligns with the speed of the countdown timer */
-    transition: 1s linear all;
-
-    /* Allows the ring to change color when the color value updates */
-    stroke: rgb(65, 184, 131);
   }
 
   svg {
@@ -227,7 +230,7 @@
     color: rgb(65, 184, 131);
   }
 
-  .green {
+  .darkBlue {
     /* color: rgb(65, 184, 131); */
     color: #0467ba;
   }
@@ -237,9 +240,13 @@
     color: #0467ba;
   }
 
-  .red {
+  .lightBlue {
     /* color: red; */
 
     color: #4be8f2;
+  }
+
+  .red {
+    color: #f73c5d;
   }
 </style>
