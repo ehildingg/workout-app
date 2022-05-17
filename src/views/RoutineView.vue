@@ -218,6 +218,7 @@
     display: flex;
     flex-direction: column;
     max-width: 230px;
+    margin-bottom: 18px;
   }
   .list-container {
     /*  border: 1px solid black; */

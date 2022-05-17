@@ -114,6 +114,7 @@
 </script>
 
 <template>
+  <button id="back-btn" @click="$router.push('/')" />
   <h1>RouterPath: {{ getRoutePathName }}</h1>
   <input
     class="routine-name"
@@ -169,6 +170,16 @@
 </template>
 
 <style scoped>
+  #back-btn {
+    background-image: url('/assets/back-btn.svg');
+    background-repeat: no-repeat;
+    width: 35px;
+    height: 35px;
+    background-size: 20px;
+    border: none;
+    background-position: 40%;
+    background-color: transparent;
+  }
   .routine-name {
     border: none;
     height: 50px;
