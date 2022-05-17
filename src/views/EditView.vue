@@ -9,7 +9,7 @@
       this.$watch(
         () => this.$route.params.id,
         (newValue, oldValue) => {
-          console.log('OLD ' + oldValue + ' NEW ' + newValue)
+          /* console.log('OLD ' + oldValue + ' NEW ' + newValue) */
           this.$store.getters.checkIfRoutineExists(newValue)
             ? this.init()
             : (this.doesRoutineExist = false)
@@ -65,13 +65,13 @@
           .filter((el) => el.id == this.routeRoutineId)
           .map((ele) => ele.exercises)
           .flat()
-        console.log(this.exerciseArrayIds)
+        /* console.log(this.exerciseArrayIds) */
       },
       getExersices() {
         this.exerciseArray = this.exerciseArrayIds.map(
           (id) => this.$store.state.exerciseList[id]
         )
-        console.log('exercise array', this.exerciseArray)
+        /* console.log('exercise array', this.exerciseArray) */
       },
       init() {
         this.getExerciseArrayIds()

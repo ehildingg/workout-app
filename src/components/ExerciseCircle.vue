@@ -38,7 +38,7 @@
         return this.activeindex === this.circleindex
       },
       intervalDone() {
-        console.log('deefe' + this.activeindex + ' + ' + this.circleindex)
+        /* console.log('deefe' + this.activeindex + ' + ' + this.circleindex) */
         if (this.activeindex > this.circleindex) {
           return 'tranparent-color'
         } else {
