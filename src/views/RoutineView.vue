@@ -111,16 +111,19 @@
 </script>
 
 <template>
+  <div class="header">
+    <button id="timata-icon" />
+    <button id="hamburger-btn" />
+  </div>
   <div class="container">
     <div class="content-container">
       <h3>(RouterPath: {{ getRoutePathName }})</h3>
       <div class="search-routine">
-        <h3>ROUTINES</h3>
         <input
-          id="serach-btn"
+          id="search-btn"
           type="text"
           v-model="input"
-          placeholder="Search Routine"
+          placeholder="  Search Routine"
         />
       </div>
       <table class="list-container" v-if="filteredList">
@@ -130,16 +133,16 @@
           :key="routineId.id"
         >
           <td>
-            <p>{{ filteredList[index].blockName }}</p>
+            <h2 class="info">{{ filteredList[index].blockName }}</h2>
             <p>{{ filteredList[index].cycle }}</p>
-            <p>
+            <h2 class="info">
               {{
                 this.$store.getters.calculateRoutineTimeByRoutineId(
                   routineId.id
                 )
               }}
               Minutes
-            </p>
+            </h2>
           </td>
           <!-- :value="routineId.cycles" -->
           <div class="button-input-row">
@@ -181,13 +184,43 @@
         </tr>
       </table>
       <div id="create">
-        <button class="create-btn" @click="$router.push('/edit')">+</button>
+        <button class="create-btn" @click="$router.push('/edit')" />
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+  .header {
+    margin-right: 30px;
+    margin-left: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #timata-icon {
+    height: 63px;
+    width: 64px;
+    background-image: url('/assets/timata-icon.svg');
+    background-repeat: no-repeat;
+    border: none;
+    background-color: transparent;
+    background-position: 50%;
+    background-size: 50px;
+    padding: 2px;
+  }
+
+  #hamburger-btn {
+    height: 38px;
+    width: 44px;
+    background-image: url('/assets/hamburger-icon.svg');
+    background-repeat: no-repeat;
+    border: none;
+    background-color: transparent;
+    background-size: 35px;
+    background-position: 50%;
+    padding: 2px;
+  }
   .container {
     display: flex;
     border: 1px solid white;
@@ -196,7 +229,15 @@
   .content-container {
     display: flex;
     flex-direction: column;
-    flex-basis: 200px;
+    flex-basis: 311px;
+  }
+
+  .info {
+    text-align: left;
+    text-indent: 1em;
+    font-size: 30px;
+    font-weight: lighter;
+    color: black;
   }
   .input-cycles-container {
     width: 2rem;
@@ -214,10 +255,23 @@
   }
   .search-routine {
     /*     margin-left: auto;
-    margin-right: auto; */
+      margin-right: auto; */
     display: flex;
     flex-direction: column;
-    max-width: 230px;
+    margin-bottom: 36px;
+    width: 304px;
+  }
+
+  #search-btn {
+    border-radius: 15px;
+    height: 34px;
+    background-image: url('/assets/glass-icon.svg');
+    background-repeat: no-repeat;
+    background-color: #a6a6a6;
+    background-position-x: 95%;
+    background-position-y: 50%;
+    background-size: 20px;
+    padding: 2px;
   }
   .list-container {
     /*  border: 1px solid black; */
@@ -226,20 +280,15 @@
   .list-item {
     border-radius: 8px;
     background: rgb(126, 133, 147);
-    background: linear-gradient(
-      17deg,
-      rgba(126, 133, 147, 1) 0%,
-      rgba(136, 147, 148, 1) 38%,
-      rgba(160, 174, 180, 1) 63%,
-      rgba(136, 147, 148, 1) 99%
-    );
+    background: linear-gradient(17deg, #0467ba, #4be8f2);
     width: 100%;
+    height: 215px;
     /*     margin-left: auto;
-    margin-right: auto; */
-    margin-bottom: 1em;
+      margin-right: auto; */
+    margin-bottom: 48px;
     display: flex;
     /* align-items: center; */
-    text-align: center;
+
     flex-direction: column;
   }
   .button-input-row {
@@ -252,7 +301,7 @@
   .routine-btns {
     width: 38px;
     /*     margin-left: 32px;
-    margin-right: 32px; */
+      margin-right: 32px; */
     border: none;
     padding: 0.4em;
   }
@@ -270,25 +319,23 @@
   }
 
   .create-btn {
-    background-color: green;
-    color: white;
-    border-radius: 50%;
-    height: 38px;
-    width: 38px;
+    background-image: url('/assets/create-btn.svg');
+    background-repeat: no-repeat;
+    background-color: transparent;
+    height: 60px;
+    width: 60px;
+    background-size: 48px;
+    border: none;
+    background-position: 55%;
   }
 
   #create {
     display: flex;
     justify-content: right;
-    margin-right: 3%;
-    margin-bottom: 3%;
+    margin-bottom: 2%;
   }
 
   td {
     margin: 0.4em;
-  }
-
-  p {
-    font-size: 17px;
   }
 </style>

@@ -1,5 +1,6 @@
 @
 <script>
+  // import { ModuleGraph } from 'vite'
   import ExerciseBlock from '../components/ExerciseBlock.vue'
 
   export default {
@@ -27,7 +28,8 @@
         routineId: null,
         exerciseArrayIds: null,
         exerciseArray: null,
-        doesRoutineExist: true
+        doesRoutineExist: true,
+        isSaved: false
       }
     },
     computed: {
@@ -84,6 +86,10 @@
             blockName: this.routeRoutineName
           }
         })
+      },
+      saveEditedRoutine() {
+        this.isSaved = true
+        console.log('saved')
       }
       /*       doesRoutineExist(id) {
         return this.$store.getters.checkIfRoutineExists(id);
@@ -108,8 +114,17 @@
 </script>
 
 <template>
+  <button id="back-btn" @click="$router.push('/')" />
   <h1>RouterPath: {{ getRoutePathName }}</h1>
-  <h2>{{ routeRoutineName }} routine</h2>
+  <input
+    class="routine-name"
+    id="pencil"
+    type="text"
+    placeholder="ROUTINE"
+    v-model="this.routeRoutineName"
+  />
+  <br />
+
   <section class="list-container" v-if="exerciseArray && doesRoutineExist">
     <ExerciseBlock
       :key="exercise + index"
@@ -122,20 +137,15 @@
   <section v-else>Sorry, this routine does not exist</section>
 
   <div class="menu-container">
-    <!--     <router-link
-      :to="{
-        name: 'exercise',
-        params: {
-          id: routeRoutineId,
-          blockName: routeRoutineName
-        }
-      }"
+    <button
+      class="save-btn"
+      id="save-btn"
+      :disabled="isDisabled"
+      :class="{ 'save-btn': !isSaved, 'saved-btn': isSaved }"
+      @click="saveEditedRoutine"
     >
-      <button class="startbtn" id="start-btn" :disabled="isDisabled">
-        Start
-      </button>
-    </router-link> -->
-
+      {{ isSaved ? 'Saved!' : 'Save' }}
+    </button>
     <button
       class="startbtn"
       id="start-btn"
@@ -144,12 +154,6 @@
     >
       Start
     </button>
-    <!--     <button
-      class="startbtn"
-      @click="$router.push('/exercise/' + routeRoutineId)"
-    >
-      Start
-    </button> -->
 
     <div class="dropup">
       <button class="dropbtn" @click="toggleMenu">
@@ -166,6 +170,42 @@
 </template>
 
 <style scoped>
+  #back-btn {
+    background-image: url('/assets/back-btn.svg');
+    background-repeat: no-repeat;
+    width: 35px;
+    height: 35px;
+    background-size: 20px;
+    border: none;
+    background-position: 40%;
+    background-color: transparent;
+  }
+  .routine-name {
+    border: none;
+    height: 50px;
+    background: transparent;
+    color: white;
+    font-size: x-large;
+    font-family: 'Quicksand', sans-serif, 'Avenir', Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+  }
+
+  #pencil {
+    position: relative;
+    width: 230px;
+    height: 30px;
+    background-image: url('/assets/pencil.svg');
+    background-repeat: no-repeat;
+    background-position-x: 95%;
+    background-position-y: 20%;
+    background-size: 10px;
+    padding: 2px;
+  }
+
   button:disabled,
   button[disabled] {
     background-color: #aeaeae35;
@@ -198,6 +238,24 @@
     border: none;
     border-radius: 10px;
     min-width: 140px;
+  }
+
+  .save-btn {
+    background-color: rgb(200, 11, 11);
+    color: white;
+    padding: 35px;
+    font-size: 16px;
+    border: none;
+    border-radius: 50%;
+  }
+
+  .saved-btn {
+    background-color: rgb(52, 151, 77);
+    color: white;
+    padding: 35px;
+    font-size: 16px;
+    border: none;
+    border-radius: 50%;
   }
 
   .startbtn {

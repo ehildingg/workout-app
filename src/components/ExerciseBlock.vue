@@ -9,22 +9,29 @@
       }
     },
     mounted() {
-      this.ex = this.exercises.seconds
+      this.sec = this.exercises.seconds
+      this.name = this.exercises.blockName
       console.log(this.ex)
     },
     data() {
-      return { ex: null }
+      return { sec: null, name: this.name }
     }
   }
 </script>
 
 <template>
   <article class="list-item">
-    {{ exercises.blockName }}<br />
     <div class="slide-container">
-      <span class="rangeValue" /> {{ ex }} sec
       <input
-        v-model="ex"
+        class="exercise-name"
+        id="pencil"
+        type="text"
+        placeholder="Edit"
+        v-model="name"
+      /><br />
+      <span class="rangeValue" /> {{ sec }} sec
+      <input
+        v-model="sec"
         type="range"
         min="1"
         max="100"
@@ -37,7 +44,29 @@
 
 <style scoped>
   /* SCOOPED STYLE/CSS, GÄLLER BARA DENNA KOMPONENTEN
-GLOBALA STYLES I APP.VUE */
+  GLOBALA STYLES I APP.VUE */
+
+  .exercise-name {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: medium;
+    font-family: 'Quicksand', sans-serif, 'Avenir', Helvetica, Arial, sans-serif;
+    text-align: center;
+    margin: 0.2em;
+  }
+
+  #pencil {
+    position: relative;
+    width: 200px;
+    height: 25px;
+    background-image: url('/assets/pencil.svg');
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: 20%;
+    background-size: 8px;
+    padding: 2px;
+  }
   .list-item {
     border: 1px solid gray;
     border-radius: 8px;
@@ -53,7 +82,7 @@ GLOBALA STYLES I APP.VUE */
     margin: 0.3rem;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 1em;
+    margin-bottom: 1.1em;
     display: flex;
     align-items: center;
     text-align: center;
@@ -70,6 +99,7 @@ GLOBALA STYLES I APP.VUE */
     opacity: 0.7;
     -webkit-transition: 0.2s;
     transition: opacity 0.2s;
+    margin-bottom: 1em;
   }
 
   .slider::-webkit-slider-thumb {
@@ -83,8 +113,8 @@ GLOBALA STYLES I APP.VUE */
   }
 
   .slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background: #04aa6d;
     cursor: pointer;
