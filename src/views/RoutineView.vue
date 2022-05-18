@@ -92,10 +92,10 @@
           newCycleValue === null ||
           newCycleValue == typeof 'undefined'
         ) {
-          console.log('refs', this.$refs[id + 'editbtn'])
-          this.$refs[id + 'editbtn'][0].disabled = true
+          console.log('refs', this.$refs[id + 'playbtn'])
+          this.$refs[id + 'playbtn'][0].disabled = true
         } else {
-          this.$refs[id + 'editbtn'][0].disabled = false
+          this.$refs[id + 'playbtn'][0].disabled = false
           this.routineListWithAddedCycles.forEach((element) => {
             if (element.id == id) {
               element.cycles = Number(newCycleValue)
@@ -199,7 +199,7 @@
             <!--  :disabled="isDisabled" -->
             <button
               class="routine-btns start-btn"
-              :ref="routineId.id + 'editbtn'"
+              :ref="routineId.id + 'playbtn'"
               @click="
                 startRoutineRouterLink(
                   routineId.id,
