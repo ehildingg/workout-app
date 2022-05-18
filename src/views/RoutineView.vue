@@ -54,8 +54,31 @@
         )
       }
     },
-
+    /*             if (element.cycles <= 1) {
+              element.cycles = 1
+            } else if (element.cycles >= 10) {
+              element.cycles = 10
+            } */
     methods: {
+      cycleClickChange(eventClick, id) {
+        this.routineListWithAddedCycles.forEach((element) => {
+          if (element.id == id) {
+            if (eventClick == 'down') {
+              if (element.cycles <= 1) {
+                element.cycles = 1
+              } else {
+                element.cycles -= 1
+              }
+            } else if (eventClick == 'up') {
+              if (element.cycles >= 10) {
+                element.cycles = 10
+              } else {
+                element.cycles += 1
+              }
+            }
+          }
+        })
+      },
       myChangeFunction(e, id) {
         /* console.log(id)
 
@@ -144,18 +167,27 @@
               Minutes
             </h2>
           </td>
-          <!-- :value="routineId.cycles" -->
+
           <div class="button-input-row">
             <div class="input-cycles-container">
-              <span class="cycle-label">Cycles</span>
+              <!-- <span class="cycle-label">Cycles</span> -->
+              <span
+                @click="cycleClickChange('down', routineId.id)"
+                class="down-a"
+              />
+
               <input
                 class="input-cycles"
                 min="1"
-                max="100"
+                max="10"
                 type="number"
                 :value="routineId.cycles"
                 :v-model="routineId.cycles"
                 @input="myChangeFunction($event, routineId.id)"
+              />
+              <span
+                @click="cycleClickChange('up', routineId.id)"
+                class="up-a"
               />
             </div>
             <button
@@ -236,12 +268,19 @@
     font-weight: 400;
     color: #343434;
   }
+
+  /*   Input cycles start */
   .input-cycles-container {
-    width: 2rem;
+    /* width: 2rem; */
+
+    margin: 0;
+    padding: 0;
+    display: flex;
+    /* border: 1px solid white; */
     position: relative;
   }
   .input-cycles {
-    width: 2rem;
+    width: 1.6rem;
   }
   .cycle-label {
     right: 10px;
@@ -250,6 +289,54 @@
     left: 0px;
     font-size: 0.8rem;
   }
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  input[type='number'] {
+    width: 1.6rem;
+    height: 1.6rem;
+    background: transparent;
+    background-image: url('/assets/cyc.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    color: #f6f5f3;
+    background-size: cover;
+    border: none;
+  }
+
+  .input-cycles-container input:focus {
+    outline: 0;
+  }
+
+  .down-a {
+    width: 10px;
+    height: 10px;
+    background-image: url('/assets/down-a.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    /*   border: 1px solid white; */
+    align-self: flex-start;
+  }
+  .up-a {
+    width: 10px;
+    height: 10px;
+    background-image: url('/assets/up-a.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    /* border: 1px solid white; */
+    align-self: flex-end;
+  }
+  /*   Input cycles end */
   .search-routine {
     /*     margin-left: auto;
       margin-right: auto; */
