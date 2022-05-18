@@ -464,9 +464,9 @@
   #back-btn {
     background-image: url('/assets/back-btn.svg');
     background-repeat: no-repeat;
-    width: 35px;
-    height: 35px;
-    background-size: 20px;
+    width: 38px;
+    height: 38px;
+    background-size: 24px;
     border: none;
     background-position: 40%;
     background-color: transparent;

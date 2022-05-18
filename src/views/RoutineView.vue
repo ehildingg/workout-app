@@ -112,7 +112,7 @@
 
 <template>
   <div class="header">
-    <button id="timata-icon" />
+    <button id="timata-icon" @click="$router.push('/')" />
     <button id="hamburger-btn" />
   </div>
   <div class="container">
@@ -162,9 +162,8 @@
               class="routine-btns"
               id="edit-btn"
               @click="editRoutineRouterLink(routineId.id, routineId.blockName)"
-            >
-              Edit
-            </button>
+            />
+
             <!--  :disabled="isDisabled" -->
             <button
               class="routine-btns"
@@ -177,9 +176,7 @@
                   routineId.cycles
                 )
               "
-            >
-              Start
-            </button>
+            />
           </div>
         </tr>
       </table>
@@ -234,10 +231,10 @@
 
   .info {
     text-align: left;
-    text-indent: 1em;
+    text-indent: 0.7em;
     font-size: 30px;
-    font-weight: lighter;
-    color: black;
+    font-weight: 400;
+    color: #343434;
   }
   .input-cycles-container {
     width: 2rem;
@@ -273,14 +270,18 @@
     background-size: 20px;
     padding: 2px;
   }
+
+  ::placeholder {
+    color: #343434;
+    font-size: 15px;
+  }
   .list-container {
     /*  border: 1px solid black; */
     display: inline;
   }
   .list-item {
-    border-radius: 8px;
+    border-radius: 10px;
     background: rgb(126, 133, 147);
-    background: linear-gradient(17deg, #0467ba, #4be8f2);
     width: 100%;
     height: 215px;
     /*     margin-left: auto;
@@ -303,39 +304,58 @@
     /*     margin-left: 32px;
       margin-right: 32px; */
     border: none;
-    padding: 0.4em;
   }
 
   #edit-btn {
-    background-color: lightgrey;
-    border-radius: 10%;
-    height: 30px;
+    background-color: transparent;
+    height: 25px;
+    width: 60px;
+    background-image: url('/assets/edit-icon.svg'), url('/assets/edit-text.svg');
+    background-position: left top, right center;
+    background-repeat: no-repeat;
+    border: none;
+    background-size: 25px;
   }
 
   #start-btn {
-    background-color: grey;
-    border-radius: 50%;
-    height: 38px;
+    background-color: transparent;
+    height: 60px;
+    width: 60px;
+    background-image: url('/assets/start-icon.svg'),
+      url('/assets/start-background.svg');
+    background-position: center, center;
+    background-repeat: no-repeat;
+    border: none;
+    background-size: 20px, 50px;
+    background-position-x: 52%, center;
+    background-position-y: 55%, center;
   }
 
   .create-btn {
     background-image: url('/assets/create-btn.svg');
     background-repeat: no-repeat;
     background-color: transparent;
-    height: 60px;
-    width: 60px;
-    background-size: 48px;
+    height: 65px;
+    width: 65px;
+    background-size: 63px;
     border: none;
     background-position: 55%;
   }
 
   #create {
-    display: flex;
-    justify-content: right;
-    margin-bottom: 2%;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
   }
 
-  td {
-    margin: 0.4em;
+  tr:nth-child(1n) {
+    background: linear-gradient(17deg, #0467ba, #4be8f2);
+  }
+  tr:nth-child(2n) {
+    background: linear-gradient(17deg, #f85642, #ff767e);
+  }
+
+  tr:nth-child(3n) {
+    background: linear-gradient(17deg, #04b76b, #6bff9d);
   }
 </style>

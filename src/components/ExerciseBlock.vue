@@ -29,15 +29,17 @@
         placeholder="Edit"
         v-model="name"
       /><br />
-      <span class="rangeValue" /> {{ sec }} sec
-      <input
-        v-model="sec"
-        type="range"
-        min="1"
-        max="100"
-        class="slider"
-        id="myRange"
-      />
+      <span class="rangeValue">
+        <output id="output" name="sec">{{ sec }}s</output>
+        <input
+          v-model="sec"
+          type="range"
+          min="1"
+          max="100"
+          class="slider"
+          id="myRange"
+        />
+      </span>
     </div>
   </article>
 </template>
@@ -45,20 +47,20 @@
 <style scoped>
   /* SCOOPED STYLE/CSS, GÄLLER BARA DENNA KOMPONENTEN
   GLOBALA STYLES I APP.VUE */
-
   .exercise-name {
     border: none;
     background: transparent;
-    color: white;
-    font-size: medium;
+    color: #000000;
+    font-size: 14px;
     font-family: 'Quicksand', sans-serif, 'Avenir', Helvetica, Arial, sans-serif;
-    text-align: center;
+    text-align: left;
     margin: 0.2em;
+    margin-bottom: 10px;
   }
 
   #pencil {
     position: relative;
-    width: 200px;
+    width: 250px;
     height: 25px;
     background-image: url('/assets/pencil.svg');
     background-repeat: no-repeat;
@@ -70,15 +72,9 @@
   .list-item {
     border: 1px solid gray;
     border-radius: 8px;
-    background: rgb(126, 133, 147);
-    background: linear-gradient(
-      17deg,
-      rgba(126, 133, 147, 1) 0%,
-      rgba(136, 147, 148, 1) 38%,
-      rgba(160, 174, 180, 1) 63%,
-      rgba(136, 147, 148, 1) 99%
-    );
-    max-width: 230px;
+    background: #ffffffab;
+    max-width: 319px;
+    height: 95px;
     margin: 0.3rem;
     margin-left: auto;
     margin-right: auto;
@@ -92,14 +88,14 @@
   .slider {
     -webkit-appearance: none;
     width: 100%;
-    height: 8px;
-    border-radius: 5px;
-    background: #d3d3d3;
+    height: 10px;
+    border-radius: 10px;
+    background: #993be0;
     outline: none;
     opacity: 0.7;
     -webkit-transition: 0.2s;
     transition: opacity 0.2s;
-    margin-bottom: 1em;
+    background-position-y: 10px;
   }
 
   .slider::-webkit-slider-thumb {
@@ -107,20 +103,44 @@
     appearance: none;
     width: 25px;
     height: 25px;
-    border-radius: 20%;
-    background: #04aa6d;
+    border-radius: 10%;
+    background: linear-gradient(17deg, #000000, #222222);
     cursor: pointer;
   }
 
   .slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #04aa6d;
+    width: 25px;
+    height: 25px;
+    border-radius: 10%;
+    background: linear-gradient(17deg, #000000, #222222);
     cursor: pointer;
   }
-
   .slide-container .rangeValue {
-    position: absolute;
+    position: relative;
+    display: block;
+  }
+
+  output {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border-radius: 10%;
+    background-color: white;
+    color: #000000;
+    line-height: 24px;
+    font-size: 14px;
+    text-align: center;
+    top: -4px;
+    display: inline-block;
+  }
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+  .slider::after + output {
+    display: block;
+    transform: translateX(-50%);
   }
 </style>
