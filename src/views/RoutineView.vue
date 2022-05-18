@@ -195,11 +195,10 @@
               id="edit-btn"
               @click="editRoutineRouterLink(routineId.id, routineId.blockName)"
             />
-
+            <!--  id="start-btn" -->
             <!--  :disabled="isDisabled" -->
             <button
-              class="routine-btns"
-              id="start-btn"
+              class="routine-btns start-btn"
               :ref="routineId.id + 'editbtn'"
               @click="
                 startRoutineRouterLink(
@@ -404,7 +403,7 @@
     background-size: 25px;
   }
 
-  #start-btn {
+  .start-btn {
     background-color: transparent;
     height: 60px;
     width: 60px;
@@ -416,6 +415,9 @@
     background-size: 20px, 50px;
     background-position-x: 52%, center;
     background-position-y: 55%, center;
+  }
+  .start-btn:disabled {
+    opacity: 0.15;
   }
 
   .create-btn {
