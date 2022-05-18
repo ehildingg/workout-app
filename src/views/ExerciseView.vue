@@ -1,9 +1,10 @@
 <script>
   import ExerciseCircle from '../components/ExerciseCircle.vue'
   import CircleTimer from '../components/CircleTimer.vue'
+  import FinishedExerciseDialog from '../components/FinishedExerciseDialog.vue'
   let that
   export default {
-    components: { ExerciseCircle, CircleTimer },
+    components: { ExerciseCircle, CircleTimer, FinishedExerciseDialog },
     /*     beforeCreated() {
         this.$router.go()
       }, */
@@ -74,6 +75,7 @@
 
         totalWidthCircles: null,
         centerOrNot: null,
+        showDialog: false,
 
         pos: { top: 0, left: 0, x: 0, y: 0 }
       }
@@ -109,10 +111,20 @@
           that.exerciseArray[that.currentExercise].seconds
       },
       startNextExercise() {
-        this.$timer.start('exerciseTimer')
+        that.$timer.start('exerciseTimer')
       },
       finishWorkout() {
-        this.$timer.stop('exerciseTimer')
+        that.$timer.stop('exerciseTimer')
+        this.showDialog = true
+      },
+
+      dialogStayOnPage() {
+        console.log('stay on page')
+        this.showDialog = false
+      },
+      dialogBackToRoutines() {
+        console.log('Go back to routines')
+        this.$router.push('/')
       },
 
       playPauseBtnClick() {
@@ -457,9 +469,53 @@
     </div>
   </div>
   <div v-else>Sorry, the exercise does not exist</div>
+
+  <FinishedExerciseDialog
+    :show="showDialog"
+    :stay="dialogStayOnPage"
+    :go="dialogBackToRoutines"
+    title="Good job!"
+    description="Want to start another routine, or stay here?"
+  />
 </template>
 
 <style scoped>
+  overlay {
+    --tw-bg-opacity: 1;
+    background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
+    --tw-bg-opacity: 0.5;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 10;
+  }
+  .dialog {
+    --tw-bg-opacity: 1;
+    background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+    border-radius: 0.75rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2.5rem;
+    max-width: 100%;
+    width: 24rem;
+  }
+  .dialog__content {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .dialog__footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
   nav {
     /* border: 1px solid white; */
     display: grid;
