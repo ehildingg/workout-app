@@ -114,8 +114,10 @@
 </script>
 
 <template>
-  <button id="back-btn" @click="$router.push('/')" />
-  <h1>RouterPath: {{ getRoutePathName }}</h1>
+  <div class="header">
+    <button id="back-btn" @click="$router.push('/')" />
+  </div>
+  <h3>RouterPath: {{ getRoutePathName }}</h3>
   <input
     class="routine-name"
     id="pencil"
@@ -151,31 +153,33 @@
       id="start-btn"
       :disabled="isDisabled"
       @click="startRoutineRouterLink"
-    >
-      Start
-    </button>
+    />
 
     <div class="dropup">
       <button class="dropbtn" @click="toggleMenu">
-        Add new <br />
-        exercise
+        <br />
       </button>
       <div :class="`dropup-content ${showMenu}`">
-        <a>Exercise</a>
-        <a>Rest</a>
-        <a>Running</a>
+        <a><img src="/assets/exercise-icon.svg" /></a>
+        <a><img src="/assets/rest-icon.svg" /></a>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+  .header {
+    margin-left: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   #back-btn {
     background-image: url('/assets/back-btn.svg');
     background-repeat: no-repeat;
-    width: 35px;
-    height: 35px;
-    background-size: 20px;
+    width: 38px;
+    height: 38px;
+    background-size: 24px;
     border: none;
     background-position: 40%;
     background-color: transparent;
@@ -229,42 +233,45 @@
   .hideMenu {
     display: none;
   }
-
-  .dropbtn {
-    background-color: #0d2bc3;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    border-radius: 10px;
-    min-width: 140px;
-  }
-
   .save-btn {
-    background-color: rgb(200, 11, 11);
-    color: white;
-    padding: 35px;
-    font-size: 16px;
-    border: none;
+    background-color: red;
     border-radius: 50%;
+    color: white;
+    font-size: 16px;
+    height: 70px;
+    width: 70px;
+    background-image: url('/assets/start-background.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    border: none;
+    background-size: 65px;
+    background-position-x: center;
+    background-position-y: center;
+    margin: 10px;
   }
 
   .saved-btn {
     background-color: rgb(52, 151, 77);
     color: white;
-    padding: 35px;
     font-size: 16px;
     border: none;
     border-radius: 50%;
+    text-align: center;
   }
 
   .startbtn {
-    background-color: #1b7934;
-    color: white;
-    padding: 35px;
-    font-size: 16px;
+    background-color: transparent;
+    height: 75px;
+    width: 75px;
+    background-image: url('/assets/start-icon.svg'),
+      url('/assets/start-background.svg');
+    background-position: center, center;
+    background-repeat: no-repeat;
     border: none;
-    border-radius: 50%;
+    background-size: 35px, 65px;
+    background-position-x: 55%, center;
+    background-position-y: 60%, center;
+    margin: 10px;
   }
 
   .dropup {
@@ -275,15 +282,18 @@
   .dropup-content {
     /* display: none; */
     position: absolute;
-    background-color: #a3a3a3;
+    background-color: #343434;
     min-width: 160px;
-    bottom: 70px;
+    bottom: 85px;
+    right: 5px;
     z-index: 1;
   }
 
   .dropup-content a {
     color: black;
-    padding: 12px 16px;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
     display: block;
   }
 
@@ -297,10 +307,22 @@
   }
 
   .dropup:hover .dropbtn {
-    background-color: #2980b9;
+    /* background-color: #2980b9; */
   }
 
   .startbtn:hover {
     background-color: #35bd49;
+  }
+
+  .dropbtn {
+    background-image: url('/assets/create-btn.svg');
+    background-repeat: no-repeat;
+    background-color: transparent;
+    height: 65px;
+    width: 65px;
+    background-size: 63px;
+    border: none;
+    background-position: 50%;
+    margin: 10px;
   }
 </style>

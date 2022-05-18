@@ -282,7 +282,6 @@
   .list-item {
     border-radius: 10px;
     background: rgb(126, 133, 147);
-    background: linear-gradient(17deg, #0467ba, #4be8f2);
     width: 100%;
     height: 215px;
     /*     margin-left: auto;
@@ -336,9 +335,9 @@
     background-image: url('/assets/create-btn.svg');
     background-repeat: no-repeat;
     background-color: transparent;
-    height: 60px;
-    width: 60px;
-    background-size: 48px;
+    height: 65px;
+    width: 65px;
+    background-size: 63px;
     border: none;
     background-position: 55%;
   }
@@ -347,5 +346,16 @@
     position: fixed;
     right: 10px;
     bottom: 10px;
+  }
+
+  tr:nth-child(1n) {
+    background: linear-gradient(17deg, #0467ba, #4be8f2);
+  }
+  tr:nth-child(2n) {
+    background: linear-gradient(17deg, #f85642, #ff767e);
+  }
+
+  tr:nth-child(3n) {
+    background: linear-gradient(17deg, #04b76b, #6bff9d);
   }
 </style>
