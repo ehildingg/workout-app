@@ -1,16 +1,18 @@
 <template>
   <div v-show="show" class="overlay">
-    <div class="dialog">
+    <div class="dialog scale-in-center">
       <div class="dialog__content">
-        <h2 v-text="title" />
-        <p v-text="description" />
-      </div>
-
-      <hr />
-
-      <div class="dialog__footer">
-        <button @click="stay">Stay here</button>
-        <button @click="go">Go back to Routines</button>
+        <h1 v-text="title" class="dialog__title" />
+        <img
+          class="jello-horizontal"
+          src="/assets/timata-logo.svg"
+          alt="timata logo"
+        />
+        <h2 v-text="description" />
+        <div class="buttons">
+          <button class="buttons" @click="go">Routines</button>
+          <button class="buttons" @click="stay">Stay</button>
+        </div>
       </div>
     </div>
   </div>
@@ -44,11 +46,45 @@
 </script>
 
 <style scoped>
+  /* <!-- HTML !-->
+<button class="button-88" role="button">Button 88</button>
+*/
+
+  .button-88 {
+    display: inline;
+    align-items: center;
+    font-family: Quicksand;
+    font-weight: 500;
+    font-size: 16px;
+    width: 6em;
+    margin: 0.5em;
+    padding: 0.7em 1.4em 0.7em 1.1em;
+    color: black;
+    background: #ad5389;
+    background: linear-gradient(17deg, #04b76b, #6bff9d);
+    border: none;
+    box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
+    letter-spacing: 0.05em;
+    border-radius: 20em;
+  }
+  .buttons {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+
   button {
-    background-color: transparent;
+    border-radius: 8px;
+    border-style: none;
+    background-color: white;
     background-image: none;
     color: black;
-    cursor: pointer;
+    background: linear-gradient(17deg, #04b76b, #6bff9d);
+
+    font-family: Quicksand;
+    font-weight: bold;
+    padding: 0.5em 1em 0.5em 1em;
+
+    font-size: 16px;
   }
 
   *,
@@ -60,22 +96,8 @@
     border-color: #e5e7eb;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p {
-    font-size: inherit;
-    font-weight: inherit;
-    color: black;
-  }
-
   .overlay {
-    --tw-bg-opacity: 1;
-    background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
-    --tw-bg-opacity: 0.5;
+    background-color: rgba(0, 0, 0, 0.4);
     height: 100%;
     position: fixed;
     top: 0px;
@@ -86,14 +108,16 @@
     z-index: 10;
   }
   .dialog {
-    --tw-bg-opacity: 1;
-    background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-    border-radius: 0.75rem;
+    background: linear-gradient(17deg, #0467ba, #4be8f2);
+    opacity: 0.95;
+    border-radius: 1rem;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 50%;
+    margin-top: 15em;
     max-width: 80%;
     width: 24rem;
+    font-family: Quicksand;
+    text-align: center;
   }
   .dialog__content {
     padding-left: 0.75rem;
@@ -101,36 +125,120 @@
     padding-top: 1rem;
     padding-bottom: 1rem;
   }
-  .dialog__title {
-    font-weight: 500;
-    font-size: 1.125rem;
+  h1 {
+    font-weight: bold;
+    font-size: 30px;
     line-height: 1.75rem;
-    margin-bottom: 0.5rem;
-    --tw-text-opacity: 1;
-    color: rgba(17, 24, 39, var(--tw-text-opacity));
+    margin-bottom: 1rem;
+    color: black;
   }
-  .dialog__description {
-    font-size: 0.875rem;
+  h2 {
+    font-size: 20px;
     line-height: 1.25rem;
     margin-bottom: 1rem;
-    --tw-text-opacity: 1;
-    color: rgba(107, 114, 128, var(--tw-text-opacity));
-  }
-  .dialog__footer {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+
+    color: black;
   }
 
-  @media (min-width: 640px) {
+  img {
+    height: 50px;
+    width: 50px;
   }
-  @media (min-width: 768px) {
+
+  .jello-horizontal {
+    -webkit-animation: jello-horizontal 0.9s 1.5s both;
+    animation: jello-horizontal 0.9s 1.5s both;
   }
-  @media (min-width: 1024px) {
+
+  @-webkit-keyframes jello-horizontal {
+    0% {
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+    30% {
+      -webkit-transform: scale3d(1.25, 0.75, 1);
+      transform: scale3d(1.25, 0.75, 1);
+    }
+    40% {
+      -webkit-transform: scale3d(0.75, 1.25, 1);
+      transform: scale3d(0.75, 1.25, 1);
+    }
+    50% {
+      -webkit-transform: scale3d(1.15, 0.85, 1);
+      transform: scale3d(1.15, 0.85, 1);
+    }
+    65% {
+      -webkit-transform: scale3d(0.95, 1.05, 1);
+      transform: scale3d(0.95, 1.05, 1);
+    }
+    75% {
+      -webkit-transform: scale3d(1.05, 0.95, 1);
+      transform: scale3d(1.05, 0.95, 1);
+    }
+    100% {
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
   }
-  @media (min-width: 1280px) {
+  @keyframes jello-horizontal {
+    0% {
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+    30% {
+      -webkit-transform: scale3d(1.25, 0.75, 1);
+      transform: scale3d(1.25, 0.75, 1);
+    }
+    40% {
+      -webkit-transform: scale3d(0.75, 1.25, 1);
+      transform: scale3d(0.75, 1.25, 1);
+    }
+    50% {
+      -webkit-transform: scale3d(1.15, 0.85, 1);
+      transform: scale3d(1.15, 0.85, 1);
+    }
+    65% {
+      -webkit-transform: scale3d(0.95, 1.05, 1);
+      transform: scale3d(0.95, 1.05, 1);
+    }
+    75% {
+      -webkit-transform: scale3d(1.05, 0.95, 1);
+      transform: scale3d(1.05, 0.95, 1);
+    }
+    100% {
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
   }
-  @media (min-width: 1536px) {
+
+  .scale-in-center {
+    -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+      both;
+    animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  @-webkit-keyframes scale-in-center {
+    0% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes scale-in-center {
+    0% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 </style>

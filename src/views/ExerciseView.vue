@@ -474,8 +474,8 @@
     :show="showDialog"
     :stay="dialogStayOnPage"
     :go="dialogBackToRoutines"
-    title="Good job!"
-    description="Want to start another routine, or stay here?"
+    title="Great job!"
+    description="Go to Routines or stay?"
   />
 </template>
 
