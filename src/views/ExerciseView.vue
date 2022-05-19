@@ -382,6 +382,7 @@
       </div>
 
       <CircleTimer
+        :timer-is-running="timerIsRunning"
         :count-down-interval="circleTimerInSeconds"
         :count-down-sec="counterInSeconds"
       />
