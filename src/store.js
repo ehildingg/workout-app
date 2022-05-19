@@ -110,14 +110,14 @@ const mutations = {
       3: {
         id: 3,
         blockName: 'Push-Ups',
-        seconds: 6,
+        seconds: 15,
         resting: true,
         color: 'blue'
       },
       4: {
         id: 4,
         blockName: 'Squats',
-        seconds: 3,
+        seconds: 22,
         resting: true,
         color: 'green'
       },

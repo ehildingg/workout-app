@@ -1,9 +1,10 @@
 <script>
   import ExerciseCircle from '../components/ExerciseCircle.vue'
   import CircleTimer from '../components/CircleTimer.vue'
+  import FinishedExerciseDialog from '../components/FinishedExerciseDialog.vue'
   let that
   export default {
-    components: { ExerciseCircle, CircleTimer },
+    components: { ExerciseCircle, CircleTimer, FinishedExerciseDialog },
     /*     beforeCreated() {
         this.$router.go()
       }, */
@@ -74,6 +75,7 @@
 
         totalWidthCircles: null,
         centerOrNot: null,
+        showDialog: false,
 
         pos: { top: 0, left: 0, x: 0, y: 0 }
       }
@@ -109,10 +111,20 @@
           that.exerciseArray[that.currentExercise].seconds
       },
       startNextExercise() {
-        this.$timer.start('exerciseTimer')
+        that.$timer.start('exerciseTimer')
       },
       finishWorkout() {
-        this.$timer.stop('exerciseTimer')
+        that.$timer.stop('exerciseTimer')
+        this.showDialog = true
+      },
+
+      dialogStayOnPage() {
+        console.log('stay on page')
+        this.showDialog = false
+      },
+      dialogBackToRoutines() {
+        console.log('Go back to routines')
+        this.$router.push('/')
       },
 
       playPauseBtnClick() {
@@ -225,24 +237,6 @@
           })
         }
         console.log(this.exerciseArrayIds)
-
-        /*         } else {
-            console.log('else cycles', this.routeValueCycles)
-            this.exerciseArray = this.exerciseArrayIds.map(
-              (id) => this.$store.state.exerciseList[id]
-            )
-
-            this.exerciseArray.unshift(
-              this.$store.getters.getExerciseById(0)
-              // {
-              // id: 0,
-              //  blockName: 'Prepare',
-              // seconds: 5,
-              //  resting: false,
-              //  color: 'yellow'
-              }
-            )
-          } */
       },
       setTotalCounter() {
         this.totalCounter = this.exerciseArray.reduce(
@@ -374,7 +368,6 @@
   <div>
     <button id="back-btn" @click="$router.push('/')" />
     <div v-if="exerciseArray && doesRoutineExist">
-      <!--    {{ dotsWidth }} -->
       <div class="center-temp">
         <h1>{{ routineName }}</h1>
         <div class="in-row">
@@ -383,30 +376,15 @@
         </div>
 
         <CircleTimer
+          :timer-is-running="timerIsRunning"
           :count-down-interval="circleTimerInSeconds"
           :count-down-sec="counterInSeconds"
         />
 
-        <!-- <span>Routine</span> -->
         <p>
           {{ this.exerciseArray[this.currentExercise].blockName }}
           {{ this.exerciseArray[this.currentExercise].seconds + ' s' }}
         </p>
-        <!--       <Transition>
-        <span
-          class="next-routine"
-          v-if="
-            checkIfResting(this.exerciseArray[this.currentExercise].blockName)
-          "
-          >{{
-            'Next ' +
-            this.exerciseArray[this.currentExercise + 1].blockName +
-            ' ' +
-            this.exerciseArray[this.currentExercise + 1].seconds +
-            ' s'
-          }}</span
-        >
-      </Transition> -->
 
         <span class="next-routine">{{
           checkIfResting(this.exerciseArray[this.currentExercise].blockName)
@@ -417,14 +395,6 @@
               ' s'
             : '.'
         }}</span>
-
-        <!--
-              v-if="
-          checkIfResting(this.exerciseArray[this.currentExercise].blockName)
-        " -->
-        <!--      <h2>{{ this.counterInSeconds }}</h2>
-
-      <h2>{{ this.totalCounter }}</h2> -->
       </div>
 
       <div :class="centerOrNot">
@@ -459,6 +429,14 @@
       </div>
     </div>
     <div v-else>Sorry, the exercise does not exist</div>
+
+    <FinishedExerciseDialog
+      :show="showDialog"
+      :stay="dialogStayOnPage"
+      :go="dialogBackToRoutines"
+      title="Great job!"
+      description="Go to Routines or stay?"
+    />
   </div>
 </template>
 
@@ -491,7 +469,6 @@
     line-height: 3rem;
     margin: 0;
   }
-
   p {
     font-size: 20px;
     font-weight: bold;
@@ -541,13 +518,11 @@
     opacity: 0.7;
     font-size: 0.9rem;
   }
-
   /* Vue Transitions */
   .v-enter-active,
   .v-leave-active {
     transition: opacity 0.5s ease;
   }
-
   .v-enter-from,
   .v-leave-to {
     opacity: 0;
