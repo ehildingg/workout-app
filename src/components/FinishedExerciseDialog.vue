@@ -46,27 +46,6 @@
 </script>
 
 <style scoped>
-  /* <!-- HTML !-->
-<button class="button-88" role="button">Button 88</button>
-*/
-
-  .button-88 {
-    display: inline;
-    align-items: center;
-    font-family: Quicksand;
-    font-weight: 500;
-    font-size: 16px;
-    width: 6em;
-    margin: 0.5em;
-    padding: 0.7em 1.4em 0.7em 1.1em;
-    color: black;
-    background: #ad5389;
-    background: linear-gradient(17deg, #04b76b, #6bff9d);
-    border: none;
-    box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
-    letter-spacing: 0.05em;
-    border-radius: 20em;
-  }
   .buttons {
     margin-left: 1em;
     margin-right: 1em;
