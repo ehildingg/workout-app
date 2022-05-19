@@ -162,7 +162,7 @@
               {{
                 this.$store.getters.calculateRoutineTimeByRoutineId(
                   routineId.id
-                )
+                ) * routineId.cycles
               }}
               Minutes
             </h2>
