@@ -480,42 +480,16 @@
 </template>
 
 <style scoped>
-  overlay {
-    --tw-bg-opacity: 1;
-    background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
-    --tw-bg-opacity: 0.5;
-    height: 100%;
-    position: fixed;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-    z-index: 10;
+  #back-btn {
+    background-image: url('/assets/back-btn.svg');
+    background-repeat: no-repeat;
+    width: 38px;
+    height: 38px;
+    background-size: 24px;
+    border: none;
+    background-position: 40%;
+    background-color: transparent;
   }
-  .dialog {
-    --tw-bg-opacity: 1;
-    background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-    border-radius: 0.75rem;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 2.5rem;
-    max-width: 100%;
-    width: 24rem;
-  }
-  .dialog__content {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-  .dialog__footer {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-
   nav {
     /* border: 1px solid white; */
     display: grid;
@@ -534,7 +508,6 @@
     line-height: 3rem;
     margin: 0;
   }
-
   p {
     font-size: 20px;
     font-weight: bold;
@@ -584,13 +557,11 @@
     opacity: 0.7;
     font-size: 0.9rem;
   }
-
   /* Vue Transitions */
   .v-enter-active,
   .v-leave-active {
     transition: opacity 0.5s ease;
   }
-
   .v-enter-from,
   .v-leave-to {
     opacity: 0;
