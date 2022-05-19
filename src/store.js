@@ -9,7 +9,7 @@ const mutations = {},
         seconds: 30,
         resting: true,
         color: 'blue',
-        exercises: [3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8]
+        exercises: [3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8] //
       },
       {
         id: 2,

@@ -1,9 +1,10 @@
 <script>
   import ExerciseCircle from '../components/ExerciseCircle.vue'
   import CircleTimer from '../components/CircleTimer.vue'
+  import FinishedExerciseDialog from '../components/FinishedExerciseDialog.vue'
   let that
   export default {
-    components: { ExerciseCircle, CircleTimer },
+    components: { ExerciseCircle, CircleTimer, FinishedExerciseDialog },
     /*     beforeCreated() {
         this.$router.go()
       }, */
@@ -74,6 +75,7 @@
 
         totalWidthCircles: null,
         centerOrNot: null,
+        showDialog: false,
 
         pos: { top: 0, left: 0, x: 0, y: 0 }
       }
@@ -109,10 +111,20 @@
           that.exerciseArray[that.currentExercise].seconds
       },
       startNextExercise() {
-        this.$timer.start('exerciseTimer')
+        that.$timer.start('exerciseTimer')
       },
       finishWorkout() {
-        this.$timer.stop('exerciseTimer')
+        that.$timer.stop('exerciseTimer')
+        this.showDialog = true
+      },
+
+      dialogStayOnPage() {
+        console.log('stay on page')
+        this.showDialog = false
+      },
+      dialogBackToRoutines() {
+        console.log('Go back to routines')
+        this.$router.push('/')
       },
 
       playPauseBtnClick() {
@@ -459,6 +471,14 @@
     </div>
   </div>
   <div v-else>Sorry, the exercise does not exist</div>
+
+  <FinishedExerciseDialog
+    :show="showDialog"
+    :stay="dialogStayOnPage"
+    :go="dialogBackToRoutines"
+    title="Great job!"
+    description="Go to Routines or stay?"
+  />
 </template>
 
 <style scoped>
@@ -490,7 +510,6 @@
     line-height: 3rem;
     margin: 0;
   }
-
   p {
     font-size: 20px;
     font-weight: bold;
@@ -540,13 +559,11 @@
     opacity: 0.7;
     font-size: 0.9rem;
   }
-
   /* Vue Transitions */
   .v-enter-active,
   .v-leave-active {
     transition: opacity 0.5s ease;
   }
-
   .v-enter-from,
   .v-leave-to {
     opacity: 0;
