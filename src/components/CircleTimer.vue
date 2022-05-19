@@ -198,7 +198,7 @@
   /* The SVG path that displays the timer's progress */
   .path-elapsed {
     stroke-width: 7px;
-    stroke: grey;
+    stroke: #222222;
   }
 
   .label {
