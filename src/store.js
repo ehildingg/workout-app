@@ -1,6 +1,14 @@
 import { createStore /*storeKey */ } from 'vuex'
 
-const mutations = {},
+const mutations = {
+    updateEditedRoutine(state, { exArr, updateId }) {
+      state.routineList[
+        state.routineList.findIndex((element) => element.id == updateId)
+      ].exercisesEdited = { edited: true, exercises: exArr }
+
+      console.log('changed state store', state.routineList)
+    }
+  },
   state = {
     routineList: [
       {
@@ -9,7 +17,51 @@ const mutations = {},
         seconds: 30,
         resting: true,
         color: 'blue',
-        exercises: [3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8]
+        exercises: [3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8],
+        exercisesEdited: {
+          edited: false,
+          exercises: [
+            {
+              id: 1,
+              blockName: 'Rest',
+              seconds: 3,
+              resting: false,
+              color: 'red'
+            },
+            {
+              id: 4,
+              blockName: 'Squats',
+              seconds: 3,
+              resting: true,
+              color: 'green'
+            },
+            {
+              id: 1,
+              blockName: 'Rest',
+              seconds: 3,
+              resting: false,
+              color: 'red'
+            },
+            {
+              id: 4,
+              blockName: 'Squats',
+              seconds: 3,
+              resting: true,
+              color: 'green'
+            }
+            /*             { id: 3, seconds: 4 },
+            { id: 1, seconds: 4 },
+            { id: 4, seconds: 4 },
+            { id: 1, seconds: 4 },
+            { id: 5, seconds: 4 },
+            { id: 1, seconds: 4 },
+            { id: 6, seconds: 4 },
+            { id: 1, seconds: 4 },
+            { id: 7, seconds: 4 },
+            { id: 1, seconds: 4 },
+            { id: 8, seconds: 4 } */
+          ]
+        }
       },
       {
         id: 2,
@@ -43,7 +95,7 @@ const mutations = {},
       1: {
         id: 1,
         blockName: 'Rest',
-        seconds: 3,
+        seconds: 10,
         resting: false,
         color: 'red'
       },
@@ -182,6 +234,13 @@ const mutations = {},
         seconds: 4,
         resting: true,
         color: 'orchid'
+      },
+      21: {
+        id: 21,
+        blockName: '',
+        seconds: 0,
+        resting: false,
+        color: 'red'
       }
     }
   },

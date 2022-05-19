@@ -1,38 +1,119 @@
 <script>
   export default {
     components: {},
+    methods: {
+      downArrow() {
+        console.log('ned', this.exerciseLength)
+        if (this.index <= this.exerciseLength) {
+          this.$emit('down-arrow', this.index)
+        }
+      },
+      upArrow() {
+        console.log('upp')
+        if (this.index > 0) {
+          this.$emit('up-arrow', this.index)
+        }
+      },
+      deleteExercise() {
+        this.$emit('del-exercise', this.index)
+      },
+      changeSec(e) {
+        this.$emit('sec-changed', {
+          sec: e.target.value,
+          childIndex: this.index
+        })
+      },
+      changeName(e) {
+        if (this.timer) {
+          clearTimeout(this.timer)
+          this.timer = null
+        }
+        this.timer = setTimeout(() => {
+          this.$emit('name-changed', {
+            name: e.target.value,
+            childIndex: this.index
+          })
+        }, 800)
+      }
+    },
+    emits: [
+      'sec-changed',
+      'name-changed',
+      'del-exercise',
+      'down-arrow',
+      'up-arrow'
+    ],
     created() {},
     props: {
+      exerciseLength: {
+        type: Number,
+        default: 0
+      },
       exercises: {
         type: Object,
         default: null
+      },
+      index: {
+        type: Number,
+        default: 0
+      },
+      animationdown: {
+        type: String,
+        default: ''
+      },
+      animationup: {
+        type: String,
+        default: ''
       }
     },
-    mounted() {
-      this.sec = this.exercises.seconds
-      this.name = this.exercises.blockName
-      console.log(this.ex)
+    computed: {
+      rest() {
+        return this.exercises.blockName == 'Rest'
+          ? 'rest-color'
+          : 'default-color'
+      }
     },
+    mounted() {},
     data() {
-      return { sec: null, name: this.name }
+      return { timer: null, timerSec: null, secShow: null }
     }
   }
 </script>
 
 <template>
-  <article class="list-item">
+  <article
+    :class="
+      'list-item' +
+      ' ' +
+      this.rest +
+      ' ' +
+      this.animationdown +
+      ' ' +
+      this.animationup
+    "
+    v-if="this.exercises"
+  >
+    <img @click="downArrow" class="down-arrow" src="/assets/arrow-move.svg" />
+    <img @click="upArrow" class="up-arrow" src="/assets/arrow-move-up.svg" />
+
     <div class="slide-container">
       <input
         class="exercise-name"
+        @input="changeName"
         id="pencil"
         type="text"
         placeholder="Edit"
-        v-model="name"
-      /><br />
+        :value="exercises.blockName"
+      />
+
+      <span class="delete-btn" @click="deleteExercise" />
+      <!--      <br /> -->
+
       <span class="rangeValue">
-        <output id="output" name="sec">{{ sec }}s</output>
+        <output id="output" name="sec">{{ exercises.seconds }}s</output>
         <input
-          v-model="sec"
+          :value="String(exercises.seconds)"
+          @input="changeSec"
           type="range"
           min="1"
           max="100"
@@ -47,6 +128,66 @@
 <style scoped>
   /* SCOOPED STYLE/CSS, GÄLLER BARA DENNA KOMPONENTEN
   GLOBALA STYLES I APP.VUE */
+  .animateup {
+    animation: pulseup 0.5s ease-in;
+  }
+
+  .animatedown {
+    animation: pulse 0.5s ease-in;
+  }
+  @keyframes pulseup {
+    0% {
+      transform: translateY(1in);
+    }
+    25% {
+      transform: scale(0.9);
+      /*  transform: translateY(-1in); */
+      opacity: 0.3;
+    }
+    75% {
+      transform: scale(1.05);
+      opacity: 0.5;
+    }
+  }
+  @keyframes pulse {
+    0% {
+      transform: translateY(-1in);
+    }
+    25% {
+      transform: scale(0.9);
+      /*  transform: translateY(-1in); */
+      opacity: 0.3;
+    }
+    75% {
+      transform: scale(1.05);
+      opacity: 0.5;
+    }
+  }
+  @keyframes push {
+    50% {
+      transform: scale(0.8);
+      opacity: 0.8;
+    }
+  }
+  @keyframes pop {
+    50% {
+      transform: scale(1.05);
+      opacity: 1;
+    }
+  }
+  .delete-btn {
+    display: inline-block;
+    /*  background-color: green; */
+    margin-left: 10px;
+    height: 25px;
+    width: 20px;
+    background-image: url('/assets/delete-icon.svg');
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: 100%;
+    background-size: 15px;
+    padding: 2px;
+  }
   .exercise-name {
     border: none;
     background: transparent;
@@ -66,19 +207,46 @@
     background-repeat: no-repeat;
     background-position-x: right;
     background-position-y: 20%;
-    background-size: 8px;
+    background-size: 14px;
     padding: 2px;
   }
-  .list-item {
-    border: 1px solid gray;
-    border-radius: 8px;
+
+  .rest-color {
+    background: linear-gradient(17deg, #fd8e34, #ffca56);
+    height: 50px;
+  }
+
+  .default-color {
     background: #ffffffab;
+  }
+
+  .down-arrow {
+    position: absolute;
+
+    right: -10px;
+    bottom: -12px;
+    z-index: 1;
+  }
+
+  .up-arrow {
+    position: absolute;
+
+    left: -10px;
+    top: -12px;
+    z-index: 1;
+  }
+
+  .list-item {
+    position: relative;
+    /* border: 2px solid white; */
+    border-radius: 8px;
+    /*   background: #ffffffab; */
     max-width: 319px;
     height: 95px;
     margin: 0.3rem;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 1.1em;
+    margin-bottom: 1.4rem;
     display: flex;
     align-items: center;
     text-align: center;
@@ -125,8 +293,10 @@
     width: 25px;
     height: 25px;
     border-radius: 10%;
-    background-color: white;
-    color: #000000;
+    background: linear-gradient(17deg, #000000, #8d8d8d);
+    /*  background-color: white; */
+    /*   color: #000000; */
+    color: white;
     line-height: 24px;
     font-size: 14px;
     text-align: center;
@@ -138,9 +308,5 @@
   *:before,
   *:after {
     box-sizing: border-box;
-  }
-  .slider::after + output {
-    display: block;
-    transform: translateX(-50%);
   }
 </style>

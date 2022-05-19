@@ -28,8 +28,12 @@
         routineId: null,
         exerciseArrayIds: null,
         exerciseArray: null,
+        /* exerciseArrayCopy: null, */
         doesRoutineExist: true,
-        isSaved: false
+        isSaved: false,
+
+        animationIndexDown: null,
+        animationIndexUp: null
       }
     },
     computed: {
@@ -52,6 +56,57 @@
       }
     },
     methods: {
+      upArrow(childIndex) {
+        let numberOfElToDelete = 1
+        let fromIndex = childIndex
+        let toIndex = childIndex - 1
+
+        const pickedElementToMove = this.exerciseArray.splice(
+          fromIndex,
+          numberOfElToDelete
+        )[0]
+
+        numberOfElToDelete = 0
+
+        this.exerciseArray.splice(
+          toIndex,
+          numberOfElToDelete,
+          pickedElementToMove
+        )
+        this.animationIndexUp = toIndex
+      },
+      downArrow(childIndex) {
+        let numberOfElToDelete = 1
+        let fromIndex = childIndex
+        let toIndex = childIndex + 1
+
+        const pickedElementToMove = this.exerciseArray.splice(
+          fromIndex,
+          numberOfElToDelete
+        )[0]
+
+        numberOfElToDelete = 0
+
+        this.exerciseArray.splice(
+          toIndex,
+          numberOfElToDelete,
+          pickedElementToMove
+        )
+        this.animationIndexDown = toIndex
+        /* const activeClass = 'test'
+        console.log('refs', this.$refs.exercise)
+        this.$refs.exercise[toIndex].classList.value = [activeClass] */
+      },
+      createNewBlock(type) {
+        switch (type) {
+          case 'exercise':
+            this.exerciseArray.push(this.$store.state.exerciseList['21'])
+            break
+          case 'rest':
+            this.exerciseArray.push(this.$store.state.exerciseList['1'])
+            break
+        }
+      },
       toggleMenu() {
         this.hideOrShow = !this.hideOrShow
         if (this.hideOrShow) {
@@ -68,14 +123,48 @@
         /* console.log(this.exerciseArrayIds) */
       },
       getExersices() {
-        this.exerciseArray = this.exerciseArrayIds.map(
-          (id) => this.$store.state.exerciseList[id]
+        this.exerciseArray = JSON.parse(
+          JSON.stringify(
+            this.exerciseArrayIds.map(
+              (id) => this.$store.state.exerciseList[id]
+            )
+          )
         )
+        /*         this.exerciseArray = this.exerciseArrayIds.map(
+          (id) => this.$store.state.exerciseList[id]
+        ) */
+        /* console.log('exercise array', this.exerciseArray) */
+      },
+      getEditedExersices() {
+        this.exerciseArray = JSON.parse(
+          JSON.stringify(
+            this.$store.state.routineList[
+              this.$store.state.routineList.findIndex(
+                (element) => element.id == this.routeRoutineId
+              )
+            ].exercisesEdited.exercises.map((el) => el)
+          )
+        )
+        /*         this.exerciseArray = this.$store.state.routineList[
+          this.$store.state.routineList.findIndex(
+            (element) => element.id == this.routeRoutineId
+          )
+        ].exercisesEdited.exercises.map((el) => el) */
         /* console.log('exercise array', this.exerciseArray) */
       },
       init() {
-        this.getExerciseArrayIds()
-        this.getExersices()
+        if (
+          this.$store.state.routineList[
+            this.$store.state.routineList.findIndex(
+              (element) => element.id == this.routeRoutineId
+            )
+          ].exercisesEdited.edited == false
+        ) {
+          this.getExerciseArrayIds()
+          this.getExersices()
+        } else {
+          this.getEditedExersices()
+        }
       },
 
       startRoutineRouterLink() {
@@ -88,12 +177,51 @@
         })
       },
       saveEditedRoutine() {
+        this.$store.commit('updateEditedRoutine', {
+          exArr: this.exerciseArray,
+          updateId: this.routeRoutineId
+        })
+
         this.isSaved = true
         console.log('saved')
-      }
+      },
       /*       doesRoutineExist(id) {
         return this.$store.getters.checkIfRoutineExists(id);
       } */
+      deleteExercise(childIndex) {
+        this.exerciseArray = this.exerciseArray.filter(
+          (exerciceBlockElement, index) => childIndex != index
+        )
+      },
+
+      onSecChanged({ sec, childIndex }) {
+        /*         console.log('onsecchanged ' + sec + childIndex)
+        console.log('hbhe', this.exerciseArray) */
+        this.exerciseArray = this.exerciseArray.map(
+          (exerciceBlockElement, index) =>
+            childIndex == index
+              ? {
+                  ...exerciceBlockElement,
+                  seconds: Number(sec)
+                }
+              : exerciceBlockElement
+        )
+        console.log('after changeeee1', this.exerciseArray)
+      },
+
+      onNameChanged({ name, childIndex }) {
+        console.log('onnamedchane ' + name + childIndex)
+        this.exerciseArray = this.exerciseArray.map(
+          (exerciceBlockElement, index) =>
+            childIndex == index
+              ? {
+                  ...exerciceBlockElement,
+                  blockName: name
+                }
+              : exerciceBlockElement
+        )
+        console.log('after changeeee1', this.exerciseArray)
+      }
     },
 
     props: {
@@ -126,15 +254,25 @@
     v-model="this.routeRoutineName"
   />
   <br />
+  <!-- ref="exercise" -->
 
+  <!-- class="test" -->
   <section class="list-container" v-if="exerciseArray && doesRoutineExist">
+    <!-- ref="exercise" -->
     <ExerciseBlock
       :key="exercise + index"
       v-for="(exercise, index) in exerciseArray"
+      :animationdown="this.animationIndexDown == index ? 'animatedown' : ''"
+      :animationup="this.animationIndexUp == index ? 'animateup' : ''"
       :exercises="exercise"
-    >
-      />
-    </ExerciseBlock>
+      :index="index"
+      :exercise-length="this.exerciseArray.length"
+      @sec-changed="onSecChanged"
+      @name-changed="onNameChanged"
+      @del-exercise="deleteExercise"
+      @up-arrow="upArrow"
+      @down-arrow="downArrow"
+    />
   </section>
   <section v-else>Sorry, this routine does not exist</section>
 
@@ -160,14 +298,21 @@
         <br />
       </button>
       <div :class="`dropup-content ${showMenu}`">
-        <a><img src="/assets/exercise-icon.svg" /></a>
-        <a><img src="/assets/rest-icon.svg" /></a>
+        <a @click="createNewBlock('exercise')"
+          ><img src="/assets/exercise-icon.svg"
+        /></a>
+        <a @click="createNewBlock('rest')"
+          ><img src="/assets/rest-icon.svg"
+        /></a>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+  .test {
+    border: 1px solid white;
+  }
   .header {
     margin-left: 20px;
     display: flex;

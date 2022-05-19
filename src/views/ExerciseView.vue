@@ -371,27 +371,28 @@
 </script>
 
 <template>
-  <button id="back-btn" @click="$router.push('/')" />
-  <div v-if="exerciseArray && doesRoutineExist">
-    <!--    {{ dotsWidth }} -->
-    <div class="center-temp">
-      <h1>{{ routineName }}</h1>
-      <div class="in-row">
-        <span>Total time left:</span>
-        <h3>{{ totalTimeLeft + ' ' }}</h3>
-      </div>
+  <div>
+    <button id="back-btn" @click="$router.push('/')" />
+    <div v-if="exerciseArray && doesRoutineExist">
+      <!--    {{ dotsWidth }} -->
+      <div class="center-temp">
+        <h1>{{ routineName }}</h1>
+        <div class="in-row">
+          <span>Total time left:</span>
+          <h3>{{ totalTimeLeft + ' ' }}</h3>
+        </div>
 
-      <CircleTimer
-        :count-down-interval="circleTimerInSeconds"
-        :count-down-sec="counterInSeconds"
-      />
+        <CircleTimer
+          :count-down-interval="circleTimerInSeconds"
+          :count-down-sec="counterInSeconds"
+        />
 
-      <!-- <span>Routine</span> -->
-      <p>
-        {{ this.exerciseArray[this.currentExercise].blockName }}
-        {{ this.exerciseArray[this.currentExercise].seconds + ' s' }}
-      </p>
-      <!--       <Transition>
+        <!-- <span>Routine</span> -->
+        <p>
+          {{ this.exerciseArray[this.currentExercise].blockName }}
+          {{ this.exerciseArray[this.currentExercise].seconds + ' s' }}
+        </p>
+        <!--       <Transition>
         <span
           class="next-routine"
           v-if="
@@ -407,57 +408,58 @@
         >
       </Transition> -->
 
-      <span class="next-routine">{{
-        checkIfResting(this.exerciseArray[this.currentExercise].blockName)
-          ? 'Next ' +
-            this.exerciseArray[this.currentExercise + 1].blockName +
-            ' ' +
-            this.exerciseArray[this.currentExercise + 1].seconds +
-            ' s'
-          : '.'
-      }}</span>
+        <span class="next-routine">{{
+          checkIfResting(this.exerciseArray[this.currentExercise].blockName)
+            ? 'Next ' +
+              this.exerciseArray[this.currentExercise + 1].blockName +
+              ' ' +
+              this.exerciseArray[this.currentExercise + 1].seconds +
+              ' s'
+            : '.'
+        }}</span>
 
-      <!--
+        <!--
               v-if="
           checkIfResting(this.exerciseArray[this.currentExercise].blockName)
         " -->
-      <!--      <h2>{{ this.counterInSeconds }}</h2>
+        <!--      <h2>{{ this.counterInSeconds }}</h2>
 
       <h2>{{ this.totalCounter }}</h2> -->
-    </div>
+      </div>
 
-    <div :class="centerOrNot">
-      <div ref="dots" class="dot-container" @mousedown="mouseDownHandler">
-        <span
-          class="circle"
-          :key="exercise.id"
-          v-for="(exercise, index) in exerciseArray"
-          ref="exercise"
-        >
-          <ExerciseCircle
-            :timer-is-running="timerIsRunning"
-            :activeindex="currentExercise"
-            :circleindex="index"
-            :exercise="exercise"
-          />
-        </span>
+      <div :class="centerOrNot">
+        <div ref="dots" class="dot-container" @mousedown="mouseDownHandler">
+          <span
+            class="circle"
+            :key="exercise.id"
+            v-for="(exercise, index) in exerciseArray"
+            ref="exercise"
+          >
+            <ExerciseCircle
+              :timer-is-running="timerIsRunning"
+              :activeindex="currentExercise"
+              :circleindex="index"
+              :exercise="exercise"
+            />
+          </span>
+        </div>
+      </div>
+      <div class="center-temp">
+        <nav>
+          <button @click="fastForwardRewindBtnClick(this.currentExercise - 1)">
+            <img alt="back-btn" :src="playOrPauseBack" />
+          </button>
+          <button @click="playPauseBtnClick()" :disabled="isDisabled">
+            <img alt="playOrPause" :src="playOrPause" />
+          </button>
+          <button @click="fastForwardRewindBtnClick(this.currentExercise + 1)">
+            <img alt="forward-btn" :src="playOrPauseForward" />
+          </button>
+        </nav>
       </div>
     </div>
-    <div class="center-temp">
-      <nav>
-        <button @click="fastForwardRewindBtnClick(this.currentExercise - 1)">
-          <img alt="back-btn" :src="playOrPauseBack" />
-        </button>
-        <button @click="playPauseBtnClick()" :disabled="isDisabled">
-          <img alt="playOrPause" :src="playOrPause" />
-        </button>
-        <button @click="fastForwardRewindBtnClick(this.currentExercise + 1)">
-          <img alt="forward-btn" :src="playOrPauseForward" />
-        </button>
-      </nav>
-    </div>
+    <div v-else>Sorry, the exercise does not exist</div>
   </div>
-  <div v-else>Sorry, the exercise does not exist</div>
 </template>
 
 <style scoped>
