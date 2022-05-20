@@ -57,41 +57,47 @@
     },
     methods: {
       upArrow(childIndex) {
+        // Put values in variables, for readability. Used in splice-functions
         let numberOfElToDelete = 1
         let fromIndex = childIndex
         let toIndex = childIndex - 1
-
+        // Get element(pickedElementToMove) and remove it from (exerciseArray), function does two things
         const pickedElementToMove = this.exerciseArray.splice(
           fromIndex,
           numberOfElToDelete
         )[0]
-
+        // Change value to zero, no index to delete, just adding (splice takes 3 args in this case)
         numberOfElToDelete = 0
-
+        // Add picked-out(pickedElementToMove) element to new index
         this.exerciseArray.splice(
           toIndex,
           numberOfElToDelete,
           pickedElementToMove
         )
+        // Change values that triggers animation when index changes
+        this.animationIndexDown = null
         this.animationIndexUp = toIndex
       },
       downArrow(childIndex) {
+        // Put values in variables, for readability. Used in splice-functions
         let numberOfElToDelete = 1
         let fromIndex = childIndex
         let toIndex = childIndex + 1
-
+        // Get element(pickedElementToMove) and remove it from (exerciseArray), function does two things
         const pickedElementToMove = this.exerciseArray.splice(
           fromIndex,
           numberOfElToDelete
         )[0]
-
+        // Change value to zero, no index to delete, just adding (splice takes 3 args in this case)
         numberOfElToDelete = 0
-
+        // Add picked-out(pickedElementToMove) element to new index
         this.exerciseArray.splice(
           toIndex,
           numberOfElToDelete,
           pickedElementToMove
         )
+        // Change values that triggers animation when index changes
+        this.animationIndexUp = null
         this.animationIndexDown = toIndex
         /* const activeClass = 'test'
         console.log('refs', this.$refs.exercise)

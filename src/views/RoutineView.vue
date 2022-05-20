@@ -48,7 +48,11 @@
         return this.routineListWithAddedCycles.filter((routineId) =>
           this.routineListWithAddedCycles.length
             ? Object.keys(this.routineListWithAddedCycles[0]).some((key) =>
-                ('' + routineId[key]).toLowerCase().includes(this.input)
+                ('' + routineId[key])
+                  .split(' ')
+                  .join('')
+                  .toLowerCase()
+                  .includes(this.input.split(' ').join('').toLowerCase())
               )
             : true
         )
