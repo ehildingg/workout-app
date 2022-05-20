@@ -128,53 +128,7 @@
 <style scoped>
   /* SCOOPED STYLE/CSS, GÄLLER BARA DENNA KOMPONENTEN
   GLOBALA STYLES I APP.VUE */
-  .animateup {
-    animation: pulseup 0.5s ease-in;
-  }
 
-  .animatedown {
-    animation: pulse 0.5s ease-in;
-  }
-  @keyframes pulseup {
-    0% {
-      transform: translateY(1in);
-    }
-    25% {
-      transform: scale(0.9);
-      /*  transform: translateY(-1in); */
-      opacity: 0.3;
-    }
-    75% {
-      transform: scale(1.05);
-      opacity: 0.5;
-    }
-  }
-  @keyframes pulse {
-    0% {
-      transform: translateY(-1in);
-    }
-    25% {
-      transform: scale(0.9);
-      /*  transform: translateY(-1in); */
-      opacity: 0.3;
-    }
-    75% {
-      transform: scale(1.05);
-      opacity: 0.5;
-    }
-  }
-  @keyframes push {
-    50% {
-      transform: scale(0.8);
-      opacity: 0.8;
-    }
-  }
-  @keyframes pop {
-    50% {
-      transform: scale(1.05);
-      opacity: 1;
-    }
-  }
   .delete-btn {
     display: inline-block;
     /*  background-color: green; */
@@ -218,22 +172,6 @@
 
   .default-color {
     background: #ffffffab;
-  }
-
-  .down-arrow {
-    position: absolute;
-
-    right: -10px;
-    bottom: -12px;
-    z-index: 1;
-  }
-
-  .up-arrow {
-    position: absolute;
-
-    left: -10px;
-    top: -12px;
-    z-index: 1;
   }
 
   .list-item {
@@ -308,5 +246,79 @@
   *:before,
   *:after {
     box-sizing: border-box;
+  }
+
+  .down-arrow {
+    position: absolute;
+    right: -10px;
+    bottom: -12px;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  .up-arrow {
+    position: absolute;
+    left: -10px;
+    top: -12px;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  .up-arrow:hover,
+  .up-arrow:focus,
+  .up-arrow:active,
+  .down-arrow:hover,
+  .down-arrow:focus,
+  .down-arrow:active {
+    opacity: 0.9;
+  }
+
+  .animateup {
+    animation: pulseup 0.5s ease-in;
+  }
+  .animatedown {
+    animation: pulse 0.5s ease-in;
+  }
+  @keyframes pulseup {
+    0% {
+      transform: translateY(1in);
+    }
+    25% {
+      transform: scale(0.9);
+      /*  transform: translateY(-1in); */
+      opacity: 0.3;
+    }
+    75% {
+      transform: scale(1.05);
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: translateY(-1in);
+    }
+    25% {
+      transform: scale(0.9);
+      /*  transform: translateY(-1in); */
+      opacity: 0.3;
+    }
+    75% {
+      transform: scale(1.05);
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes push {
+    50% {
+      transform: scale(0.8);
+      opacity: 0.8;
+    }
+  }
+  @keyframes pop {
+    50% {
+      transform: scale(1.05);
+      opacity: 1;
+    }
   }
 </style>
