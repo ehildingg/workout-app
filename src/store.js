@@ -2,17 +2,86 @@ import { createStore /*storeKey */ } from 'vuex'
 
 const mutations = {
     updateEditedRoutine(state, { exArr, updateId }) {
-      state.routineList[
-        state.routineList.findIndex((element) => element.id == updateId)
-      ].exercisesEdited = { edited: true, exercises: exArr }
+      if (updateId == 0) {
+        // If id = 0, add new routine to routineList
 
-      console.log('changed state store', state.routineList)
+        // Get routine-id-index 0 and put copy in end of routineList
+        state.routineList.push(state.routineList[0])
+        // Update created routine copy
+        state.routineList[state.routineList.length - 1] = {
+          ...state.routineList.at(-1),
+          /* blockName: name, */
+          id: state.routineList.length - 1,
+          show: true,
+          exercisesEdited: {
+            edited: true,
+            exercises: exArr
+          }
+        }
+        //
+        state.savedNewId = state.routineList.length - 1
+      } else {
+        // Other id:s(), just update
+        state.routineList[
+          state.routineList.findIndex((element) => element.id == updateId)
+        ].exercisesEdited = { edited: true, exercises: exArr }
+      }
+
+      /* console.log('changed state store', state.routineList) */
+    },
+
+    updateTempRoutine(state, { exArr }) {
+      state.tempRoutine = {
+        ...state.tempRoutine,
+        id: 'temp',
+        show: true,
+        blockName: 'changed temp',
+        exercisesEdited: {
+          edited: true,
+          exercises: exArr
+        }
+      }
+    },
+
+    clearSavedId(state) {
+      /* console.log('clearing temp', state.savedNewId) */
+      state.savedNewId = null
     }
   },
   state = {
+    savedNewId: null,
+
+    tempRoutine: {
+      id: 'temp',
+      show: true,
+      blockName: 'Temp',
+      seconds: 30,
+      resting: true,
+      color: 'blue',
+      exercises: [21, 1],
+      exercisesEdited: {
+        edited: false,
+        exercises: []
+      }
+    },
+
     routineList: [
       {
+        id: 0,
+        show: false,
+        blockName: '...',
+        seconds: 30,
+        resting: true,
+        color: 'blue',
+        exercises: [21, 1, 21, 1, 21],
+        exercisesEdited: {
+          edited: false,
+          exercises: []
+        }
+      },
+      {
         id: 1,
+        show: true,
         blockName: 'FULL BODY',
         seconds: 30,
         resting: true,
@@ -65,6 +134,7 @@ const mutations = {
       },
       {
         id: 2,
+        show: true,
         blockName: 'UPPER BODY',
         seconds: 30,
         resting: true,
@@ -73,6 +143,7 @@ const mutations = {
       },
       {
         id: 3,
+        show: true,
         blockName: 'LOWER BODY',
         seconds: 30,
         resting: false,
@@ -80,6 +151,7 @@ const mutations = {
         exercises: [15, 1, 16, 1, 17, 1, 18, 1, 19, 1, 20]
       }
     ],
+
     exerciseList: {
       // Har kortat ner sekundrarna till 3 sek på varje exercise
       // Har lagt den ursprungliga exerciseList med längre sekundintervall borkommenterat längre ner i koden
@@ -237,7 +309,7 @@ const mutations = {
       },
       21: {
         id: 21,
-        blockName: '',
+        blockName: '...',
         seconds: 0,
         resting: false,
         color: 'red'

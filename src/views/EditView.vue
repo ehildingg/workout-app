@@ -9,13 +9,17 @@
       this.$watch(
         () => this.$route.params.id,
         (newValue, oldValue) => {
-          /* console.log('OLD ' + oldValue + ' NEW ' + newValue) */
-          this.$store.getters.checkIfRoutineExists(newValue)
+          let routineId = newValue
+          /*           this.routineNameChanged = this.$route.params.blockName */
+
+          this.$store.getters.checkIfRoutineExists(routineId)
             ? this.init()
             : (this.doesRoutineExist = false)
         },
         { immediate: true }
       )
+      // Clear temp saved id
+      this.$store.commit('clearSavedId')
     },
     beforeUnmount() {
       this.exerciseArrayIds = null
@@ -28,9 +32,10 @@
         routineId: null,
         exerciseArrayIds: null,
         exerciseArray: null,
-        /* exerciseArrayCopy: null, */
         doesRoutineExist: true,
         isSaved: false,
+
+        routineNameChanged: null,
 
         animationIndexDown: null,
         animationIndexUp: null
@@ -45,11 +50,25 @@
       getRoutePathName: function () {
         return this.$route.fullPath
       },
-      routeRoutineId: function () {
-        return Number(this.$route.params.id)
+
+      // New routine-stuff save, edit...
+      savedNewId: function () {
+        return this.$store.state.savedNewId
       },
+      routeRoutineId: function () {
+        if (this.savedNewId) {
+          return this.savedNewId
+        } else {
+          return Number(this.$route.params.id)
+        }
+      },
+
       routeRoutineName: function () {
+        /*         if (this.$route.params.blockName != this.routeRoutineNameChanged) {
+          return ''
+        } else { */
         return this.$route.params.blockName
+        /*   } */
       },
       isDisabled() {
         return !this.doesRoutineExist
@@ -78,6 +97,7 @@
         this.animationIndexDown = null
         this.animationIndexUp = toIndex
       },
+
       downArrow(childIndex) {
         // Put values in variables, for readability. Used in splice-functions
         let numberOfElToDelete = 1
@@ -103,6 +123,7 @@
         console.log('refs', this.$refs.exercise)
         this.$refs.exercise[toIndex].classList.value = [activeClass] */
       },
+
       createNewBlock(type) {
         switch (type) {
           case 'exercise':
@@ -113,6 +134,7 @@
             break
         }
       },
+
       toggleMenu() {
         this.hideOrShow = !this.hideOrShow
         if (this.hideOrShow) {
@@ -121,6 +143,7 @@
           this.showMenu = 'hideMenu'
         }
       },
+
       getExerciseArrayIds() {
         this.exerciseArrayIds = this.$store.state.routineList
           .filter((el) => el.id == this.routeRoutineId)
@@ -128,6 +151,7 @@
           .flat()
         /* console.log(this.exerciseArrayIds) */
       },
+
       getExersices() {
         this.exerciseArray = JSON.parse(
           JSON.stringify(
@@ -136,11 +160,8 @@
             )
           )
         )
-        /*         this.exerciseArray = this.exerciseArrayIds.map(
-          (id) => this.$store.state.exerciseList[id]
-        ) */
-        /* console.log('exercise array', this.exerciseArray) */
       },
+
       getEditedExersices() {
         this.exerciseArray = JSON.parse(
           JSON.stringify(
@@ -151,14 +172,10 @@
             ].exercisesEdited.exercises.map((el) => el)
           )
         )
-        /*         this.exerciseArray = this.$store.state.routineList[
-          this.$store.state.routineList.findIndex(
-            (element) => element.id == this.routeRoutineId
-          )
-        ].exercisesEdited.exercises.map((el) => el) */
-        /* console.log('exercise array', this.exerciseArray) */
       },
+
       init() {
+        // Check if routine is edited, if edited get edited array
         if (
           this.$store.state.routineList[
             this.$store.state.routineList.findIndex(
@@ -174,16 +191,36 @@
       },
 
       startRoutineRouterLink() {
-        this.$router.push({
-          name: 'exercise',
-          params: {
-            id: this.routeRoutineId,
-            blockName: this.routeRoutineName
-          }
-        })
+        if (!this.isSaved) {
+          // Add NOT saved routine to vuex store to be able to start but not save
+          this.$store.commit('updateTempRoutine', {
+            // blockName: this.routineName,
+            exArr: this.exerciseArray
+          })
+          /* console.log('updated', this.$store.state.tempRoutine) */
+          this.$router.push({
+            name: 'exercise',
+            params: {
+              id: 'temp',
+              blockName: 'tempname',
+              cycles: '1'
+            }
+          })
+        } else {
+          this.$router.push({
+            name: 'exercise',
+            params: {
+              id: this.routeRoutineId,
+              blockName: this.routeRoutineName,
+              cycles: '1'
+            }
+          })
+        }
       },
+
       saveEditedRoutine() {
         this.$store.commit('updateEditedRoutine', {
+          /* blockName: this.routineName, */
           exArr: this.exerciseArray,
           updateId: this.routeRoutineId
         })
@@ -198,11 +235,12 @@
         this.exerciseArray = this.exerciseArray.filter(
           (exerciceBlockElement, index) => childIndex != index
         )
+        this.isSaved = false
       },
 
       onSecChanged({ sec, childIndex }) {
-        /*         console.log('onsecchanged ' + sec + childIndex)
-        console.log('hbhe', this.exerciseArray) */
+        /*         console.log('sec childindes ' + sec + childIndex)
+        console.log('before sec-change arr ', this.exerciseArray) */
         this.exerciseArray = this.exerciseArray.map(
           (exerciceBlockElement, index) =>
             childIndex == index
@@ -212,11 +250,12 @@
                 }
               : exerciceBlockElement
         )
-        console.log('after changeeee1', this.exerciseArray)
+        this.isSaved = false
+        /* console.log('after sec-change arr', this.exerciseArray) */
       },
 
       onNameChanged({ name, childIndex }) {
-        console.log('onnamedchane ' + name + childIndex)
+        /* console.log('name childindex ' + name + childIndex) */
         this.exerciseArray = this.exerciseArray.map(
           (exerciceBlockElement, index) =>
             childIndex == index
@@ -226,7 +265,8 @@
                 }
               : exerciceBlockElement
         )
-        console.log('after changeeee1', this.exerciseArray)
+        this.isSaved = false
+        /* console.log('after name-change arr', this.exerciseArray) */
       }
     },
 

@@ -14,10 +14,15 @@
       this.$watch(
         () => this.$route.params.id,
         (newValue) => {
+          console.log('bb2', this.$route.params.id)
           // Check if the exercise exists in vuex-store. If not show error message
-          this.$store.getters.checkIfRoutineExists(newValue)
-            ? this.initData()
-            : (this.doesRoutineExist = false)
+          if (this.$route.params.id == 'temp') {
+            this.initData(this.$route.params.id)
+          } else {
+            this.$store.getters.checkIfRoutineExists(newValue)
+              ? this.initData('')
+              : (this.doesRoutineExist = false)
+          }
         },
         { immediate: true }
       )
@@ -141,11 +146,11 @@
       },
 
       fastForwardRewindBtnClick(goToExerciseIndex) {
-        // Calculate values to previous or next exercise. Simulate the timer in for-loop, set values orig-timer
+        // Calculate values to previous or next exercise. Simulate the timer in for-loop, set values original-timer
 
         that.$timer.stop('exerciseTimer')
 
-        // Make copy of orginal exercise-array
+        // Make copy of original exercise-array
         let exerciseArrayCopy = this.exerciseArray
         // Count total seconds to selected exercise
         let secondsToSelectedExersice = this.exerciseArray
@@ -155,7 +160,7 @@
               previousValue + currentValue.seconds,
             0
           )
-        // Sum up totalseconds on routine/workout
+        // Sum up totalseconds routine/workout
         let totalCounterCopy = this.exerciseArray.reduce(
           (previousValue, currentValue) => previousValue + currentValue.seconds,
           0
@@ -165,7 +170,7 @@
         // Set intial current-exercise index
         let currentExerciseCopy = 0
 
-        // Simulate timer, make it go to selected exercise
+        // Simulate timer, make it iterate to selected exercise
         for (let i = 0; i < secondsToSelectedExersice; i++) {
           counterInSecondsCopy--
           totalCounterCopy--
@@ -176,7 +181,7 @@
               exerciseArrayCopy[currentExerciseCopy].seconds
           }
         }
-        // Set simulted timer-values to orignal timer-values
+        // Set simulted timer-values to orignal-timer-values
         this.counterInSeconds = counterInSecondsCopy
         this.totalCounter = totalCounterCopy
         this.currentExercise = currentExerciseCopy
@@ -185,34 +190,52 @@
         this.scrollToElement(this.currentExercise)
 
         /* this.$timer.start('exerciseTimer') */
-
-        /*         console.log('counterInSecondsCopy', counterInSecondsCopy)
-        console.log('totalCounterCopy', totalCounterCopy)
-        console.log('currentExerciseCopy', currentExerciseCopy) */
       },
 
-      initData() {
+      initData(id) {
         this.$timer.stop('exerciseTimer')
-        this.getExerciseArrayIds()
-        this.getExersices()
+
+        // Check if routine is temporary(edited but not saved)
+        if (id == 'temp') {
+          // If routine is temporary
+          this.getTempExersices()
+        } else {
+          // Check if routine is original
+          if (
+            this.$store.state.routineList[
+              this.$store.state.routineList.findIndex(
+                (element) => element.id == this.routeRoutineId
+              )
+            ].exercisesEdited.edited == false
+          ) {
+            // If routine is original
+            this.getExerciseArrayIds()
+            this.getExersices()
+          } else {
+            // If routine is edited
+            this.getEditedExersices()
+          }
+        }
+        // Execute in all cases (temp/original/edited)
         this.setTotalCounter()
         this.setFirstCounterInterval()
         this.currentExercise = 0
         this.circleTimerInSeconds = this.exerciseArray[0].seconds
-        /*         console.log(this.exerciseArray)
-            console.log(this.totalCounter)
-            console.log(this.exerciseArray[0].seconds) */
       },
+
       getExerciseArrayIds() {
         this.exerciseArrayIds = this.$store.state.routineList
           .filter((el) => el.id == this.routeRoutineId)
           .map((ele) => ele.exercises)
           .flat()
       },
+
       getExersices() {
-        /*     if (this.routeValueCycles > 1) { */
+        // Necessary variables/decalarations for constructing exerciseArray
         this.exerciseArray = []
         let prepareOrRecovery = 0
+
+        // Create exercisearray, adding prepare/recovery-blocks on suitable indexes
         for (let i = 0; i < this.routeValueCycles; i++) {
           this.exerciseArrayIds.forEach((id, index) => {
             this.exerciseArray.push(this.$store.state.exerciseList[id])
@@ -222,22 +245,83 @@
                 i == 0 ? 0 : (this.exerciseArrayIds.length + 1) * i,
                 0,
                 this.$store.getters.getExerciseById(prepareOrRecovery)
-                /* {
-                      id: 0,
-                      blockName: 'Prepare',
-                      seconds: 5,
-                      resting: false,
-                      color: 'yellow'
-                    } */
+                // { id: 0, blockName: 'Prepare', seconds: 5, resting: false, color: 'yellow' }
               )
+              // Change from prepare to recovery block after first iteration
               if (prepareOrRecovery === 0) {
                 prepareOrRecovery = 2
               }
             }
           })
         }
-        console.log(this.exerciseArrayIds)
+        // console.log(this.exerciseArrayIds)
       },
+
+      getEditedExersices() {
+        // Necessary variables/decalarations to construct exerciseArray
+        this.exerciseArray = []
+        let prepareOrRecovery = 0
+        let editedList = JSON.parse(
+          JSON.stringify(
+            this.$store.state.routineList[
+              this.$store.state.routineList.findIndex(
+                (element) => element.id == this.routeRoutineId
+              )
+            ].exercisesEdited.exercises.map((el) => el)
+          )
+        )
+
+        // Create exercisearray, adding prepare/recovery-blocks on suitable indexes
+        for (let i = 0; i < this.routeValueCycles; i++) {
+          editedList.forEach((el, index) => {
+            this.exerciseArray.push(el)
+            if (index == editedList.length - 1) {
+              this.exerciseArray.splice(
+                i == 0 ? 0 : (editedList.length + 1) * i,
+                0,
+                this.$store.getters.getExerciseById(prepareOrRecovery)
+              )
+              // Change from prepare to recovery block after first iteration
+              if (prepareOrRecovery === 0) {
+                prepareOrRecovery = 2
+              }
+            }
+          })
+        }
+      },
+
+      getTempExersices() {
+        // Necessary variables/decalarations to construct exerciseArray
+        this.exerciseArray = []
+        let prepareOrRecovery = 0
+        let tempList = JSON.parse(
+          JSON.stringify(
+            this.$store.state.tempRoutine.exercisesEdited.exercises.map(
+              (el) => el
+            )
+          )
+        )
+
+        // Create exercisearray, adding prepare/recovery-blocks on suitable indexes
+        for (let i = 0; i < this.routeValueCycles; i++) {
+          tempList.forEach((el, index) => {
+            this.exerciseArray.push(el)
+            if (index == tempList.length - 1) {
+              /* console.log('lastindex') */
+              this.exerciseArray.splice(
+                i == 0 ? 0 : (tempList.length + 1) * i,
+                0,
+                this.$store.getters.getExerciseById(prepareOrRecovery)
+              )
+              // Change from prepare to recovery block after first iteration
+              if (prepareOrRecovery === 0) {
+                prepareOrRecovery = 2
+              }
+            }
+          })
+        }
+      },
+
       setTotalCounter() {
         this.totalCounter = this.exerciseArray.reduce(
           (previousValue, currentValue) => previousValue + currentValue.seconds,

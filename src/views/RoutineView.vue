@@ -4,7 +4,9 @@
     created() {
       // Make copy of routineList(must use JSONParse, otherwise errors when changing it )
       let routineListCopy = JSON.parse(
-        JSON.stringify(this.$store.state.routineList)
+        JSON.stringify(
+          this.$store.state.routineList.filter((el) => el.show == true)
+        )
       )
       // Add cycles to routineListCopy
       this.routineListWithAddedCycles = routineListCopy.map((el) =>
@@ -111,6 +113,15 @@
           el.id == id ? (el.cycles = Number(e.target.value)) : el
         ) */
       },
+      newRoutineRouterLink(selectedId, blockName) {
+        this.$router.push({
+          name: 'create',
+          params: {
+            id: selectedId,
+            blockName: blockName
+          }
+        })
+      },
       editRoutineRouterLink(selectedId, blockName) {
         this.$router.push({
           name: 'details',
@@ -216,7 +227,8 @@
         </tr>
       </table>
       <div id="create">
-        <button class="create-btn" @click="$router.push('/edit')" />
+        <!-- <button class="create-btn" @click="$router.push('/edit/new')" /> -->
+        <button class="create-btn" @click="newRoutineRouterLink(0, 'new')" />
       </div>
     </div>
   </div>
