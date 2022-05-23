@@ -77,9 +77,6 @@
               element.cycles = 10
             } */
     methods: {
-      testMethod() {
-        console.log(this.filterListWithDuration)
-      },
       cycleClickChange(eventClick, id) {
         this.routineListWithAddedCycles.forEach((element) => {
           if (element.id == id) {
