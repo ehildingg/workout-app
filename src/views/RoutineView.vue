@@ -35,7 +35,7 @@
     },
     watch: {
       durationValue() {
-        this.$forceUpdate()
+        // this.$forceUpdate()
       }
     },
 
@@ -258,6 +258,7 @@
     text-align: center;
     font-family: Quicksand;
     width: 20px;
+    opacity: 0.8;
   }
   input[type='range'] {
     background-color: transparent;
