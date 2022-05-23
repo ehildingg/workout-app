@@ -43,20 +43,24 @@
     },
     computed: {
       checkRests: function () {
-        if (this.exerciseArray.length >= 1) {
-          let lastRest = this.exerciseArray.at(-1).blockName != 'Rest'
-          let possibleRests = this.exerciseArray.filter(function (
-            element,
-            index
-          ) {
-            return index % 2 !== 0
-          })
+        if (this.exerciseArray) {
+          if (this.exerciseArray.length >= 1) {
+            let lastRest = this.exerciseArray.at(-1).blockName != 'Rest'
+            let possibleRests = this.exerciseArray.filter(function (
+              element,
+              index
+            ) {
+              return index % 2 !== 0
+            })
 
-          let onlyRests = possibleRests.every((el) => el.blockName == 'Rest')
+            let onlyRests = possibleRests.every((el) => el.blockName == 'Rest')
 
-          return onlyRests && lastRest === true ? true : false
+            return onlyRests && lastRest === true ? true : false
+          } else {
+            return false
+          }
         } else {
-          return false
+          return true
         }
       },
       // Get data from router
@@ -322,6 +326,7 @@
   </div>
   <h3>RouterPath: {{ getRoutePathName }}</h3>
   <input
+    v-if="exerciseArray && doesRoutineExist"
     class="routine-name"
     id="pencil"
     type="text"
@@ -329,7 +334,12 @@
     v-model="this.routeRoutineName"
   />
   <br />
-  <button class="fix-add-rest" @click="fixRest" :disabled="checkRests">
+  <button
+    v-if="exerciseArray && doesRoutineExist"
+    class="fix-add-rest"
+    @click="fixRest"
+    :disabled="checkRests"
+  >
     Add/Fix rests (every other)
   </button>
   <!-- ref="exercise" -->
