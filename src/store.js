@@ -7,6 +7,14 @@ const mutations = {
       ].exercisesEdited = { edited: true, exercises: exArr }
 
       console.log('changed state store', state.routineList)
+    },
+    addDuration(state, getters) {
+      state.routineList.forEach((routine) => {
+        this.getters.getRoutineById(routine.id).duration =
+          this.getters.calculateRoutineTimeByRoutineId(routine.id)
+      })
+
+      // console.log('Hej' + state.routineList[1].duration)
     }
   },
   state = {
@@ -16,6 +24,7 @@ const mutations = {
         blockName: 'FULL BODY',
         seconds: 30,
         resting: true,
+        duration: 0,
         color: 'blue',
         exercises: [3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8],
         exercisesEdited: {
@@ -67,6 +76,7 @@ const mutations = {
         id: 2,
         blockName: 'UPPER BODY',
         seconds: 30,
+        duration: 0,
         resting: true,
         color: 'green',
         exercises: [9, 1, 10, 1, 11, 1, 12, 1, 13, 1, 14]
@@ -75,6 +85,7 @@ const mutations = {
         id: 3,
         blockName: 'LOWER BODY',
         seconds: 30,
+        duration: 0,
         resting: false,
         color: 'red',
         exercises: [15, 1, 16, 1, 17, 1, 18, 1, 19, 1, 20]

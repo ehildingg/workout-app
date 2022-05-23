@@ -2,6 +2,7 @@
   export default {
     components: {},
     created() {
+      this.$store.commit('addDuration')
       // Make copy of routineList(must use JSONParse, otherwise errors when changing it )
       let routineListCopy = JSON.parse(
         JSON.stringify(this.$store.state.routineList)
@@ -28,7 +29,13 @@
       return {
         input: '',
         /* routineListWithAddedCycles: this.$store.state.routineList */
-        routineListWithAddedCycles: null
+        routineListWithAddedCycles: null,
+        durationValue: 60
+      }
+    },
+    watch: {
+      durationValue() {
+        this.$forceUpdate()
       }
     },
 
@@ -56,6 +63,12 @@
               )
             : true
         )
+      },
+      filterListWithDuration: function () {
+        this.$store.commit('addDuration')
+        return this.routineListWithAddedCycles.filter(
+          (routine) => routine.duration * routine.cycles < this.durationValue
+        )
       }
     },
     /*             if (element.cycles <= 1) {
@@ -64,6 +77,9 @@
               element.cycles = 10
             } */
     methods: {
+      testMethod() {
+        console.log(this.filterListWithDuration)
+      },
       cycleClickChange(eventClick, id) {
         this.routineListWithAddedCycles.forEach((element) => {
           if (element.id == id) {
@@ -152,16 +168,29 @@
           v-model="input"
           placeholder="  Search Routine"
         />
+        <div class="search-duration">
+          <input
+            type="range"
+            min="5"
+            max="60"
+            name="Duration"
+            id="Duration"
+            step="5"
+            @click="testMethod"
+            v-model="durationValue"
+          />
+          <label id="duration-label" for="Duration">{{ durationValue }}</label>
+        </div>
       </div>
-      <table class="list-container" v-if="filteredList">
+      <table class="list-container" v-if="filterListWithDuration">
         <tr
           class="list-item"
-          v-for="(routineId, index) in filteredList"
+          v-for="(routineId, index) in filterListWithDuration"
           :key="routineId.id"
         >
           <td>
-            <h2 class="info">{{ filteredList[index].blockName }}</h2>
-            <p>{{ filteredList[index].cycle }}</p>
+            <h2 class="info">{{ filterListWithDuration[index].blockName }}</h2>
+            <p>{{ filterListWithDuration[index].cycle }}</p>
             <h2 class="info">
               {{
                 this.$store.getters.calculateRoutineTimeByRoutineId(
@@ -223,6 +252,45 @@
 </template>
 
 <style scoped>
+  #duration-label {
+    color: white;
+    background: linear-gradient(17deg, #2d2b2b, #8d8d8d);
+    border: 1px solid black;
+    border-radius: 10%;
+    padding: 5px;
+    text-align: center;
+    font-family: Quicksand;
+    width: 20px;
+  }
+  input[type='range'] {
+    background-color: transparent;
+    width: 250px;
+    border-radius: 5px;
+    margin: 0 auto;
+  }
+
+  input[type='range']::-moz-range-thumb {
+    -webkit-appearance: none;
+    background-color: #5c5250;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgb(207, 202, 202);
+    cursor: pointer;
+  }
+
+  input[type='range']::-moz-range-track {
+    background: linear-gradient(17deg, #423a3a, #8d8d8d);
+    height: 5px;
+    border-radius: 10px;
+  }
+
+  .search-duration {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px 5px 0px 0px;
+  }
   .header {
     margin-right: 30px;
     margin-left: 20px;
