@@ -66,7 +66,7 @@
       },
       filterListWithDuration: function () {
         this.$store.commit('addDuration')
-        return this.routineListWithAddedCycles.filter(
+        return this.filteredList.filter(
           (routine) => routine.duration * routine.cycles < this.durationValue
         )
       }
