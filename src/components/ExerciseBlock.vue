@@ -93,8 +93,18 @@
     "
     v-if="this.exercises"
   >
-    <img @click="downArrow" class="down-arrow" src="/assets/arrow-move.svg" />
-    <img @click="upArrow" class="up-arrow" src="/assets/arrow-move-up.svg" />
+    <img
+      v-if="index != exerciseLength - 1"
+      @click="downArrow"
+      class="down-arrow"
+      src="/assets/arrow-move.svg"
+    />
+    <img
+      v-if="index != 0"
+      @click="upArrow"
+      class="up-arrow"
+      src="/assets/arrow-move-up.svg"
+    />
 
     <div class="slide-container">
       <input

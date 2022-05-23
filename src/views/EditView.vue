@@ -42,9 +42,22 @@
       }
     },
     computed: {
-      // Get exercisesArray from vuex
-      exercisesList: function () {
-        return this.$store.state.exerciseList
+      checkRests: function () {
+        if (this.exerciseArray.length >= 1) {
+          let lastRest = this.exerciseArray.at(-1).blockName != 'Rest'
+          let possibleRests = this.exerciseArray.filter(function (
+            element,
+            index
+          ) {
+            return index % 2 !== 0
+          })
+
+          let onlyRests = possibleRests.every((el) => el.blockName == 'Rest')
+
+          return onlyRests && lastRest === true ? true : false
+        } else {
+          return false
+        }
       },
       // Get data from router
       getRoutePathName: function () {
@@ -267,6 +280,22 @@
         )
         this.isSaved = false
         /* console.log('after name-change arr', this.exerciseArray) */
+      },
+      fixRest() {
+        let newArr = []
+
+        let exerciseArrNoRests = this.exerciseArray.filter(
+          (el) => el.blockName != 'Rest'
+        )
+
+        for (let i = 0; i <= exerciseArrNoRests.length - 1; i++) {
+          newArr.push(exerciseArrNoRests[i])
+          if (i <= exerciseArrNoRests.length - 2) {
+            newArr.push(this.$store.getters.getExerciseById('1'))
+          }
+        }
+
+        this.exerciseArray = newArr
       }
     },
 
@@ -300,6 +329,9 @@
     v-model="this.routeRoutineName"
   />
   <br />
+  <button class="fix-add-rest" @click="fixRest" :disabled="checkRests">
+    Add/Fix rests (every other)
+  </button>
   <!-- ref="exercise" -->
 
   <!-- class="test" -->
@@ -387,6 +419,24 @@
     align-items: center;
     text-align: center;
     margin: auto;
+  }
+
+  .fix-add-rest {
+    border: none;
+    width: 319px;
+    border-radius: 8px;
+    padding: 5px;
+    /*  height: 50px; */
+    background: white;
+    color: black;
+    font-weight: 700;
+    font-family: 'Quicksand', sans-serif, 'Avenir', Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 1.4rem;
   }
 
   #pencil {

@@ -139,7 +139,11 @@ const mutations = {
         seconds: 30,
         resting: true,
         color: 'green',
-        exercises: [9, 1, 10, 1, 11, 1, 12, 1, 13, 1, 14]
+        exercises: [9, 1, 10, 1, 11, 1, 12, 1, 13, 1, 14],
+        exercisesEdited: {
+          edited: false,
+          exercises: []
+        }
       },
       {
         id: 3,
@@ -148,7 +152,11 @@ const mutations = {
         seconds: 30,
         resting: false,
         color: 'red',
-        exercises: [15, 1, 16, 1, 17, 1, 18, 1, 19, 1, 20]
+        exercises: [15, 1, 16, 1, 17, 1, 18, 1, 19, 1, 20],
+        exercisesEdited: {
+          edited: false,
+          exercises: []
+        }
       }
     ],
 
