@@ -10,7 +10,7 @@
       )
       // Add cycles to routineListCopy
       this.routineListWithAddedCycles = routineListCopy.map((el) =>
-        Object.assign(el, { cycles: 2 })
+        Object.assign(el, { cycles: 1 })
       )
     },
     beforeUnmount() {
