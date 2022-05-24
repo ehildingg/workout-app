@@ -5,11 +5,13 @@
       this.$store.commit('addDuration')
       // Make copy of routineList(must use JSONParse, otherwise errors when changing it )
       let routineListCopy = JSON.parse(
-        JSON.stringify(this.$store.state.routineList)
+        JSON.stringify(
+          this.$store.state.routineList.filter((el) => el.show == true)
+        )
       )
       // Add cycles to routineListCopy
       this.routineListWithAddedCycles = routineListCopy.map((el) =>
-        Object.assign(el, { cycles: 2 })
+        Object.assign(el, { cycles: 1 })
       )
     },
     beforeUnmount() {
@@ -124,6 +126,15 @@
           el.id == id ? (el.cycles = Number(e.target.value)) : el
         ) */
       },
+      newRoutineRouterLink(selectedId, blockName) {
+        this.$router.push({
+          name: 'create',
+          params: {
+            id: selectedId,
+            blockName: blockName
+          }
+        })
+      },
       editRoutineRouterLink(selectedId, blockName) {
         this.$router.push({
           name: 'details',
@@ -157,7 +168,7 @@
   </div>
   <div class="container">
     <div class="content-container">
-      <h3>(RouterPath: {{ getRoutePathName }})</h3>
+      <!--       <h3>(RouterPath: {{ getRoutePathName }})</h3> -->
       <div class="search-routine">
         <input
           id="search-btn"
@@ -242,7 +253,8 @@
         </tr>
       </table>
       <div id="create">
-        <button class="create-btn" @click="$router.push('/edit')" />
+        <!-- <button class="create-btn" @click="$router.push('/edit/new')" /> -->
+        <button class="create-btn" @click="newRoutineRouterLink(0, 'new')" />
       </div>
     </div>
   </div>
@@ -306,6 +318,7 @@
     background-position: 50%;
     background-size: 50px;
     padding: 2px;
+    cursor: pointer;
   }
 
   #hamburger-btn {
@@ -318,10 +331,11 @@
     background-size: 35px;
     background-position: 50%;
     padding: 2px;
+    cursor: pointer;
   }
   .container {
     display: flex;
-    border: 1px solid white;
+    /* border: 1px solid white; */
     justify-content: center;
   }
   .content-container {
@@ -395,6 +409,7 @@
     background-repeat: no-repeat;
     /*   border: 1px solid white; */
     align-self: flex-start;
+    cursor: pointer;
   }
   .up-a {
     width: 10px;
@@ -404,6 +419,7 @@
     background-repeat: no-repeat;
     /* border: 1px solid white; */
     align-self: flex-end;
+    cursor: pointer;
   }
   /*   Input cycles end */
   .search-routine {
@@ -471,6 +487,7 @@
     background-repeat: no-repeat;
     border: none;
     background-size: 25px;
+    cursor: pointer;
   }
 
   .start-btn {
@@ -485,6 +502,7 @@
     background-size: 20px, 50px;
     background-position-x: 52%, center;
     background-position-y: 55%, center;
+    cursor: pointer;
   }
   .start-btn:disabled {
     opacity: 0.15;
@@ -499,6 +517,7 @@
     background-size: 63px;
     border: none;
     background-position: 55%;
+    cursor: pointer;
   }
 
   #create {

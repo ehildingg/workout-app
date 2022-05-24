@@ -3,9 +3,7 @@
     components: {},
 
     created() {},
-    mounted() {
-      // this.startTimer()
-    },
+    mounted() {},
     beforeUnmount() {},
     data() {
       return {
@@ -41,28 +39,8 @@
           this.timeLimit = val
         }
       }
-      // countDownSec: {
-      //   immediate: true,
-      //   deep: true,
-      //   handler(newValue, oldValue) {
-      //     this.timePassed = newValue
-      //   }
-      // }
     },
-    /*     watch: {
-          ciecleTimerInSeconds: function () {
-              immediate: true,
-              deep: true,
-              handler(newValue, oldValue) {
-                  console.log(newValue);
-              }
-          }
-      }, */
     methods: {
-      /*       startTimer() {
-          this.timerInterval = setInterval(() => (this.timePassed += 1), 1000)
-        } */
-
       forceRerender() {
         // remove the my-component component from the DOM
         this.hideOrShow = false
@@ -76,21 +54,14 @@
     computed: {
       formattedTimeLeft() {
         const timeLeft = this.timeLeft
-
         const minutes = Math.floor(timeLeft / 60)
-
         let seconds = timeLeft % 60
-
         if (seconds < 10) {
           seconds = `0${seconds}`
         }
 
-        // The output in MM:SS format
         return `${minutes}:${seconds}`
-      }, // timelimit = 6 sek - timepassed = 6sek
-      // 6 - 6
-      // 6 - 5
-      // 6 - 4
+      },
       timeLeft() {
         return this.countDownSec
       },
@@ -106,11 +77,6 @@
       },
 
       // ------------------------------- circle timer
-
-      /*       timerIsRunning: function () {},
-        totalTimeLeft: function () {},
-        routeRoutineId: function () {},
-        routineName: function () {}, */
 
       colorCodes() {
         return {
@@ -146,8 +112,6 @@
   }
 </script>
 <template>
-  <!--   <section class="just-a-border">
-    <p>CURRENT ROUTINE INTERVAL(seconds) {{ timeIntervalTestSetByProp }}</p> -->
   <div class="base-timer" v-if="hideOrShow">
     <svg class="svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <g class="circle">
@@ -169,16 +133,9 @@
       {{ formattedTimeLeft }}
     </span>
   </div>
-
-  <!--   <div>Sorry, the exercise does not exist</div> -->
-  <!--   </section> -->
 </template>
 
 <style scoped>
-  /* Sets the containers height and width */
-  .just-a-border {
-    /* border: 1px solid black; */
-  }
   .base-timer {
     position: relative;
     width: 300px;
@@ -189,13 +146,11 @@
     transform: scaleX(-1);
   }
 
-  /* Removes SVG styling that would hide the time label */
   .circle {
     fill: none;
     stroke: none;
   }
 
-  /* The SVG path that displays the timer's progress */
   .path-elapsed {
     stroke-width: 7px;
     stroke: #222222;
@@ -203,20 +158,12 @@
 
   .label {
     position: absolute;
-
-    /* Size should match the parent container */
     width: 300px;
     height: 300px;
-
-    /* Keep the label aligned to the top */
     top: 0;
-
-    /* Create a flexible box that centers content vertically and horizontally */
     display: flex;
     align-items: center;
     justify-content: center;
-
-    /* Sort of an arbitrary number; adjust to your liking */
     font-size: 48px;
   }
   .path-remaining {
@@ -231,18 +178,14 @@
   }
 
   .darkBlue {
-    /* color: rgb(65, 184, 131); */
     color: #0467ba;
   }
 
   .orange {
-    /* color: orange; */
     color: #0467ba;
   }
 
   .lightBlue {
-    /* color: red; */
-
     color: #4be8f2;
   }
 
