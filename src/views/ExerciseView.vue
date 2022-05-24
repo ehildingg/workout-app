@@ -182,6 +182,7 @@
           }
         }
         // Set simulted timer-values to orignal-timer-values
+        that.circleTimerInSeconds = counterInSecondsCopy
         this.counterInSeconds = counterInSecondsCopy
         this.totalCounter = totalCounterCopy
         this.currentExercise = currentExerciseCopy
