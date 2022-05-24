@@ -155,7 +155,7 @@
   </div>
   <div class="container">
     <div class="content-container">
-      <h3>(RouterPath: {{ getRoutePathName }})</h3>
+      <!--       <h3>(RouterPath: {{ getRoutePathName }})</h3> -->
       <div class="search-routine">
         <input
           id="search-btn"
@@ -267,7 +267,7 @@
   }
   .container {
     display: flex;
-    border: 1px solid white;
+    /* border: 1px solid white; */
     justify-content: center;
   }
   .content-container {

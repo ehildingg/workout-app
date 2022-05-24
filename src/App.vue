@@ -6,9 +6,7 @@
 </script>
 
 <template>
-  <!--   <Dragi /> -->
-  <nav>
-    <!--   <ul> -->
+  <!--   <nav>
     <span>
       <RouterLink to="/">RoutineView</RouterLink>
     </span>
@@ -20,8 +18,7 @@
     <span>
       <RouterLink to="/edit">EditView</RouterLink>
     </span>
-    <!--  </ul> -->
-  </nav>
+  </nav> -->
   <main>
     <RouterView />
   </main>

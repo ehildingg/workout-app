@@ -14,7 +14,7 @@
       this.$watch(
         () => this.$route.params.id,
         (newValue) => {
-          console.log('bb2', this.$route.params.id)
+          /* console.log('routeid', this.$route.params.id) */
           // Check if the exercise exists in vuex-store. If not show error message
           if (this.$route.params.id == 'temp') {
             this.initData(this.$route.params.id)

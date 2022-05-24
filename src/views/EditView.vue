@@ -2,9 +2,10 @@
 <script>
   // import { ModuleGraph } from 'vite'
   import ExerciseBlock from '../components/ExerciseBlock.vue'
+  import PickExerciseBlock from '../components/PickExerciseBlock.vue'
 
   export default {
-    components: { ExerciseBlock },
+    components: { ExerciseBlock, PickExerciseBlock },
     created() {
       this.$watch(
         () => this.$route.params.id,
@@ -38,7 +39,9 @@
         routineNameChanged: null,
 
         animationIndexDown: null,
-        animationIndexUp: null
+        animationIndexUp: null,
+
+        showPickExerciseBlock: false
       }
     },
     computed: {
@@ -92,6 +95,16 @@
       }
     },
     methods: {
+      /*       closeOpenPickExerciseBlock() {
+        this.showPickExerciseBlock = false
+      }, */
+      closeAndAddExercises({ closeDialog, pickedExercisesArr }) {
+        this.showPickExerciseBlock = closeDialog
+        this.exerciseArray = this.exerciseArray.concat(pickedExercisesArr)
+      },
+      closeExercisePicker(trueOrfalse) {
+        this.showPickExerciseBlock = trueOrfalse
+      },
       upArrow(childIndex) {
         // Put values in variables, for readability. Used in splice-functions
         let numberOfElToDelete = 1
@@ -143,7 +156,11 @@
 
       createNewBlock(type) {
         switch (type) {
-          case 'exercise':
+          case 'fromlist':
+            /* this.exerciseArray.push(this.$.state.exerciseList['21']) */
+            this.showPickExerciseBlock = true
+            break
+          case 'empty':
             this.exerciseArray.push(this.$store.state.exerciseList['21'])
             break
           case 'rest':
@@ -324,9 +341,8 @@
   <div class="header">
     <button id="back-btn" @click="$router.push('/')" />
   </div>
-  <h3>RouterPath: {{ getRoutePathName }}</h3>
+  <!-- <h3>RouterPath: {{ getRoutePathName }}</h3> -->
   <input
-    v-if="exerciseArray && doesRoutineExist"
     class="routine-name"
     id="pencil"
     type="text"
@@ -334,19 +350,11 @@
     v-model="this.routeRoutineName"
   />
   <br />
-  <button
-    v-if="exerciseArray && doesRoutineExist"
-    class="fix-add-rest"
-    @click="fixRest"
-    :disabled="checkRests"
-  >
+  <button class="fix-add-rest" @click="fixRest" :disabled="checkRests">
     Add/Fix rests (every other)
   </button>
-  <!-- ref="exercise" -->
 
-  <!-- class="test" -->
   <section class="list-container" v-if="exerciseArray && doesRoutineExist">
-    <!-- ref="exercise" -->
     <ExerciseBlock
       :key="exercise + index"
       v-for="(exercise, index) in exerciseArray"
@@ -386,8 +394,11 @@
         <br />
       </button>
       <div :class="`dropup-content ${showMenu}`">
-        <a @click="createNewBlock('exercise')"
-          ><img src="/assets/exercise-icon.svg"
+        <a @click="createNewBlock('fromlist')"
+          ><img src="/assets/exercise-icon-list.svg"
+        /></a>
+        <a @click="createNewBlock('empty')"
+          ><img src="/assets/exercise-icon-blanc.svg"
         /></a>
         <a @click="createNewBlock('rest')"
           ><img src="/assets/rest-icon.svg"
@@ -395,6 +406,12 @@
       </div>
     </div>
   </div>
+  <!-- @close-open="closeOpenPickExerciseBlock" -->
+  <PickExerciseBlock
+    @close-and-add-exercises="closeAndAddExercises"
+    :show-exercises="showPickExerciseBlock"
+    @child-close-exercise-picker="closeExercisePicker"
+  />
 </template>
 
 <style scoped>
@@ -514,6 +531,7 @@
     background-color: transparent;
     height: 75px;
     width: 75px;
+    /* opacity: 0.95; */
     background-image: url('/assets/start-icon.svg'),
       url('/assets/start-background.svg');
     background-position: center, center;
@@ -533,7 +551,9 @@
   .dropup-content {
     /* display: none; */
     position: absolute;
-    background-color: #343434;
+    background-color: rgba(255, 255, 255, 0.505);
+    /* background-color: transparent; */
+    border-radius: 5px;
     min-width: 160px;
     bottom: 85px;
     right: 5px;
@@ -549,11 +569,15 @@
   }
 
   .dropup-content a:hover {
-    background-color: #ccc;
+    /* background-color: #ccc; */
   }
 
-  .dropup:focus .dropup-content,
+  /*   .dropup:focus .dropup-content,
   .dropup:hover .dropup-content {
+    display: block;
+  } */
+
+  .dropup:focus .dropup-content {
     display: block;
   }
 
@@ -562,7 +586,8 @@
   }
 
   .startbtn:hover {
-    background-color: #35bd49;
+    opacity: 1;
+    /* background-color: #35bd49; */
   }
 
   .dropbtn {
