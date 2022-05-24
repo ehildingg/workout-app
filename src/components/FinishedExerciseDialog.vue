@@ -35,11 +35,11 @@
       },
       stay: {
         type: Function,
-        default: console.log('Something went wrong')
+        default: null
       },
       go: {
         type: Function,
-        default: console.log('Something went wrong')
+        default: null
       }
     }
   }
