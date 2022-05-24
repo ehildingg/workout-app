@@ -570,6 +570,7 @@
     padding-left: 5px;
     padding-right: 5px;
     display: block;
+    cursor: pointer;
   }
 
   .dropup-content a:hover {
