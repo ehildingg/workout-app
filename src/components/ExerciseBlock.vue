@@ -117,7 +117,6 @@
       />
 
       <span class="delete-btn" @click="deleteExercise" />
-      <!--      <br /> -->
 
       <span class="rangeValue">
         <output id="output" name="sec">{{ exercises.seconds }}s</output>
@@ -141,6 +140,7 @@
 
   .delete-btn {
     display: inline-block;
+    cursor: pointer;
     /*  background-color: green; */
     margin-left: 10px;
     height: 25px;
