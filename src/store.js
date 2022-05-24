@@ -1,10 +1,17 @@
 import { createStore /*storeKey */ } from 'vuex'
 
 const mutations = {
+  
+    addDuration(state, getters) {
+      state.routineList.forEach((routine) => {
+        this.getters.getRoutineById(routine.id).duration =
+          this.getters.calculateRoutineTimeByRoutineId(routine.id)
+      })
+  },
+  
     updateEditedRoutine(state, { exArr, updateId }) {
       if (updateId == 0) {
         // If id = 0, add new routine to routineList
-
         // Get routine-id-index 0 and put copy in end of routineList
         state.routineList.push(state.routineList[0])
         // Update created routine copy
@@ -26,8 +33,6 @@ const mutations = {
           state.routineList.findIndex((element) => element.id == updateId)
         ].exercisesEdited = { edited: true, exercises: exArr }
       }
-
-      /* console.log('changed state store', state.routineList) */
     },
 
     updateTempRoutine(state, { exArr }) {
@@ -60,8 +65,8 @@ const mutations = {
       color: 'blue',
       exercises: [21, 1],
       exercisesEdited: {
-        edited: false,
-        exercises: []
+      edited: false,
+      exercises: []
       }
     },
 
@@ -85,51 +90,12 @@ const mutations = {
         blockName: 'FULL BODY',
         seconds: 30,
         resting: true,
+        duration: 0,
         color: 'blue',
         exercises: [3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8],
         exercisesEdited: {
           edited: false,
-          exercises: [
-            {
-              id: 1,
-              blockName: 'Rest',
-              seconds: 3,
-              resting: false,
-              color: 'red'
-            },
-            {
-              id: 4,
-              blockName: 'Squats',
-              seconds: 3,
-              resting: true,
-              color: 'green'
-            },
-            {
-              id: 1,
-              blockName: 'Rest',
-              seconds: 3,
-              resting: false,
-              color: 'red'
-            },
-            {
-              id: 4,
-              blockName: 'Squats',
-              seconds: 3,
-              resting: true,
-              color: 'green'
-            }
-            /*             { id: 3, seconds: 4 },
-            { id: 1, seconds: 4 },
-            { id: 4, seconds: 4 },
-            { id: 1, seconds: 4 },
-            { id: 5, seconds: 4 },
-            { id: 1, seconds: 4 },
-            { id: 6, seconds: 4 },
-            { id: 1, seconds: 4 },
-            { id: 7, seconds: 4 },
-            { id: 1, seconds: 4 },
-            { id: 8, seconds: 4 } */
-          ]
+          exercises: []
         }
       },
       {
@@ -137,6 +103,7 @@ const mutations = {
         show: true,
         blockName: 'UPPER BODY',
         seconds: 30,
+        duration: 0,
         resting: true,
         color: 'green',
         exercises: [9, 1, 10, 1, 11, 1, 12, 1, 13, 1, 14],
@@ -150,6 +117,7 @@ const mutations = {
         show: true,
         blockName: 'LOWER BODY',
         seconds: 30,
+        duration: 0,
         resting: false,
         color: 'red',
         exercises: [15, 1, 16, 1, 17, 1, 18, 1, 19, 1, 20],
