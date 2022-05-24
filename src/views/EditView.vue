@@ -433,6 +433,7 @@
     border: none;
     background-position: 40%;
     background-color: transparent;
+    cursor: pointer;
   }
   .routine-name {
     border: none;
@@ -464,6 +465,7 @@
     text-align: center;
     margin: auto;
     margin-bottom: 1.4rem;
+    cursor: pointer;
   }
 
   #pencil {
@@ -516,6 +518,7 @@
     background-position-x: center;
     background-position-y: center;
     margin: 10px;
+    cursor: pointer;
   }
 
   .saved-btn {
@@ -541,6 +544,7 @@
     background-position-x: 55%, center;
     background-position-y: 60%, center;
     margin: 10px;
+    cursor: pointer;
   }
 
   .dropup {
@@ -600,5 +604,6 @@
     border: none;
     background-position: 50%;
     margin: 10px;
+    cursor: pointer;
   }
 </style>

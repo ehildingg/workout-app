@@ -317,8 +317,8 @@ const mutations = {
       },
       21: {
         id: 21,
-        blockName: '...',
-        seconds: 0,
+        blockName: '',
+        seconds: 1,
         resting: false,
         color: 'red'
       }
