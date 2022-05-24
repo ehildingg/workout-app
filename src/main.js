@@ -6,3 +6,6 @@ import store from './store'
 import VueTimers from 'vue-timers'
 
 createApp(App).use(router).use(store).use(VueTimers).mount('#app')
+
+import { registerSW } from 'virtual:pwa-register'
+registerSW()
