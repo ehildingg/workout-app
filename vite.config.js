@@ -34,10 +34,10 @@ export default defineConfig({
             type: 'image/png'
           }
         ],
-        name: 'Testapplikation',
-        short_name: 'Testapp',
+        name: 'Timata',
+        short_name: 'timata',
         start_url: '.',
-        theme_color: 'red'
+        theme_color: 'blue'
       },
       registerType: 'autoUpdate',
       workbox: {
