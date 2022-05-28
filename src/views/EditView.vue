@@ -45,6 +45,7 @@
       }
     },
     computed: {
+      // Validation, add/fix-rests-btn, diabled if rests is ordered on recommended indexes
       checkRests: function () {
         if (this.exerciseArray) {
           if (this.exerciseArray.length >= 1) {
@@ -66,15 +67,15 @@
           return true
         }
       },
-      // Get data from router
       getRoutePathName: function () {
         return this.$route.fullPath
       },
 
-      // New routine-stuff save, edit...
+      // Get possible temp-id(if routine is changed but not saved)
       savedNewId: function () {
         return this.$store.state.savedNewId
       },
+
       routeRoutineId: function () {
         if (this.savedNewId) {
           return this.savedNewId
@@ -90,21 +91,22 @@
         return this.$route.params.blockName
         /*   } */
       },
+
       isDisabled() {
         return !this.doesRoutineExist
       }
     },
     methods: {
-      /*       closeOpenPickExerciseBlock() {
-        this.showPickExerciseBlock = false
-      }, */
       closeAndAddExercises({ closeDialog, pickedExercisesArr }) {
         this.showPickExerciseBlock = closeDialog
         this.exerciseArray = this.exerciseArray.concat(pickedExercisesArr)
       },
+
       closeExercisePicker(trueOrfalse) {
         this.showPickExerciseBlock = trueOrfalse
       },
+
+      // Move exercise-block up in exercise-list
       upArrow(childIndex) {
         // Put values in variables, for readability. Used in splice-functions
         let numberOfElToDelete = 1
@@ -128,6 +130,7 @@
         this.animationIndexUp = toIndex
       },
 
+      // Move exercise-block down in exercise-list
       downArrow(childIndex) {
         // Put values in variables, for readability. Used in splice-functions
         let numberOfElToDelete = 1
@@ -157,7 +160,7 @@
       createNewBlock(type) {
         switch (type) {
           case 'fromlist':
-            /* this.exerciseArray.push(this.$.state.exerciseList['21']) */
+            // Open pick-exercise-modal
             this.showPickExerciseBlock = true
             break
           case 'empty':
@@ -209,7 +212,8 @@
       },
 
       init() {
-        // Check if routine is edited, if edited get edited array
+        // Check if routine is edited get edited array.
+        // If not edited get array with id:s, fetch exercises with id-array
         if (
           this.$store.state.routineList[
             this.$store.state.routineList.findIndex(
@@ -226,7 +230,7 @@
 
       startRoutineRouterLink() {
         if (!this.isSaved) {
-          // Add NOT saved routine to vuex store to be able to start but not save
+          // Add NOT saved routine to vuex-store to be able to start but not save exercise
           this.$store.commit('updateTempRoutine', {
             // blockName: this.routineName,
             exArr: this.exerciseArray
@@ -262,9 +266,11 @@
         this.isSaved = true
         console.log('saved')
       },
+
       /*       doesRoutineExist(id) {
         return this.$store.getters.checkIfRoutineExists(id);
-      } */
+      }, */
+
       deleteExercise(childIndex) {
         this.exerciseArray = this.exerciseArray.filter(
           (exerciceBlockElement, index) => childIndex != index
@@ -302,7 +308,9 @@
         this.isSaved = false
         /* console.log('after name-change arr', this.exerciseArray) */
       },
+
       fixRest() {
+        // Delete possiblie rests on first/last-index, insert rest on even indexes
         let newArr = []
 
         let exerciseArrNoRests = this.exerciseArray.filter(

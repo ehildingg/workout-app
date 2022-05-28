@@ -98,20 +98,20 @@
           }
         })
       },
-      myChangeFunction(e, id) {
-        /* console.log(id)
-
-        console.log(e.target.value) */
+      changeCycles(e, id) {
         let newCycleValue = e.target.value
-        console.log('newCyclevalue: ', newCycleValue)
-        console.log('typeof cycle', typeof newCycleValue)
+        /* console.log(id)
+        console.log(e.target.value) */
+        /*         console.log('newCyclevalue: ', newCycleValue)
+        console.log('typeof cycle', typeof newCycleValue) */
+
         if (
           newCycleValue == '0' ||
           newCycleValue == '' ||
           newCycleValue === null ||
           newCycleValue == typeof 'undefined'
         ) {
-          console.log('refs', this.$refs[id + 'playbtn'])
+          /* console.log('refs', this.$refs[id + 'playbtn']) */
           this.$refs[id + 'playbtn'][0].disabled = true
         } else {
           this.$refs[id + 'playbtn'][0].disabled = false
@@ -153,10 +153,10 @@
             cycles: cycles
           }
         })
-      },
-      isDisabled(id) {
-        return !this.doesRoutineExist
       }
+      /*       isDisabled(id) {
+        return !this.doesRoutineExist
+      } */
     }
   }
 </script>
@@ -211,7 +211,6 @@
 
           <div class="button-input-row">
             <div class="input-cycles-container">
-              <!-- <span class="cycle-label">Cycles</span> -->
               <span
                 @click="cycleClickChange('down', routineId.id)"
                 class="down-a"
@@ -224,7 +223,7 @@
                 type="number"
                 :value="routineId.cycles"
                 :v-model="routineId.cycles"
-                @input="myChangeFunction($event, routineId.id)"
+                @input="changeCycles($event, routineId.id)"
               />
               <span
                 @click="cycleClickChange('up', routineId.id)"
@@ -253,7 +252,6 @@
         </tr>
       </table>
       <div id="create">
-        <!-- <button class="create-btn" @click="$router.push('/edit/new')" /> -->
         <button class="create-btn" @click="newRoutineRouterLink(0, 'new')" />
       </div>
     </div>

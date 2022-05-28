@@ -5,9 +5,6 @@
   let that
   export default {
     components: { ExerciseCircle, CircleTimer, FinishedExerciseDialog },
-    /*     beforeCreated() {
-        this.$router.go()
-      }, */
     created() {
       that = this
       // Watch router.params. Use router.params.id to get exercise from vuex-store
@@ -29,15 +26,6 @@
       window.addEventListener('resize', this.screenSizeEvent)
     },
     mounted() {
-      /*       console.log(this.$refs.dots.clientWidth)
-        console.log(
-          this.$refs.exercise.reduce(
-            (previousValue, currentValue) =>
-              previousValue + currentValue.clientWidth,
-            0
-          )
-        ) */
-
       this.totalWidthCircles = this.$refs.exercise.reduce(
         (previousValue, currentValue) =>
           previousValue + currentValue.clientWidth,
@@ -47,7 +35,7 @@
       this.initialScreenSizeEvent(window.innerWidth)
     },
     beforeUnmount() {
-      console.log('before pause ?')
+      /* console.log('before pause ?') */
       // Always stop timer when leaving route
       if (this.timerIsRunning) {
         this.$timer.stop('exerciseTimer')
@@ -303,7 +291,7 @@
           )
         )
 
-        // Create exercisearray, adding prepare/recovery-blocks on suitable indexes
+        // Create exercise-array, adding prepare/recovery-blocks on suitable indexes
         for (let i = 0; i < this.routeValueCycles; i++) {
           tempList.forEach((el, index) => {
             this.exerciseArray.push(el)
@@ -355,9 +343,9 @@
           : (this.centerOrNot = '')
       },
       initialScreenSizeEvent(width) {
-        console.log(
+        /*         console.log(
           'screen: ' + width + ' ' + ' circles: ' + this.totalWidthCircles
-        )
+        ) */
         width > this.totalWidthCircles
           ? (this.centerOrNot = 'center-temp')
           : (this.centerOrNot = '')

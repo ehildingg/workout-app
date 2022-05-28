@@ -3,13 +3,13 @@
     components: {},
     methods: {
       downArrow() {
-        console.log('ned', this.exerciseLength)
+        /* console.log('ned', this.exerciseLength) */
         if (this.index <= this.exerciseLength) {
           this.$emit('down-arrow', this.index)
         }
       },
       upArrow() {
-        console.log('upp')
+        /* console.log('upp') */
         if (this.index > 0) {
           this.$emit('up-arrow', this.index)
         }
