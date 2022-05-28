@@ -59,29 +59,29 @@
           this.intervalActive &&
           this.timerIsRunning
         ) {
-          return '/assets/active-line.svg'
+          return '/active-line.svg'
         } else if (
           (this.exercise.blockName == 'Prepare' ||
             this.exercise.blockName == 'Recovery') &&
           this.intervalActive &&
           !this.timerIsRunning
         ) {
-          return '/assets/pause-line.svg'
+          return '/pause-line.svg'
         } else if (
           (this.exercise.blockName == 'Prepare' ||
             this.exercise.blockName == 'Recovery') &&
           !this.intervalActive
         ) {
-          return '/assets/disabled-line.svg'
+          return '/disabled-line.svg'
         } else {
           if (this.intervalActive && this.timerIsRunning) {
-            return '/assets/active-circle.svg'
+            return '/active-circle.svg'
           } else if (this.intervalActive && !this.timerIsRunning) {
-            return '/assets/pause-circle.svg'
+            return '/pause-circle.svg'
           } else if (!this.intervalActive) {
-            return '/assets/disabled-circle.svg'
+            return '/disabled-circle.svg'
           } else {
-            return '/assets/disabled-circle.svg'
+            return '/disabled-circle.svg'
           }
         }
       }

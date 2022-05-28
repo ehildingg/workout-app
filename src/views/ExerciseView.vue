@@ -401,19 +401,17 @@
         return this.timers.exerciseTimer.isRunning
       },
       playOrPause: function () {
-        return this.timerIsRunning
-          ? '/assets/pause-button.svg'
-          : '/assets/play-button.svg'
+        return this.timerIsRunning ? '/pause-button.svg' : '/play-button.svg'
       },
       playOrPauseBack: function () {
         return this.timerIsRunning
-          ? '/assets/back-btn-active.svg'
-          : '/assets/back-btn-pause.svg'
+          ? '/back-btn-active.svg'
+          : '/back-btn-pause.svg'
       },
       playOrPauseForward: function () {
         return this.timerIsRunning
-          ? '/assets/forward-btn-active.svg'
-          : '/assets/forward-btn-pause.svg'
+          ? '/forward-btn-active.svg'
+          : '/forward-btn-pause.svg'
       },
 
       totalTimeLeft: function () {
@@ -456,8 +454,8 @@
       <div class="center-temp">
         <h1>{{ routineName }}</h1>
         <div class="in-row">
-          <span>Total time left:</span>
-          <h3>{{ totalTimeLeft + ' ' }}</h3>
+          <span class="small-gap">Total time left: </span>
+          <h3>{{ ' ' + totalTimeLeft }}</h3>
         </div>
 
         <CircleTimer
@@ -526,7 +524,11 @@
 </template>
 
 <style scoped>
+  .small-gap {
+    padding-right: 3px;
+  }
   #back-btn {
+    position: absolute;
     background-image: url('/assets/back-btn.svg');
     background-repeat: no-repeat;
     width: 38px;
@@ -563,7 +565,8 @@
     font-size: 1.9rem;
   }
   .in-row {
-    margin-top: 1rem;
+    color: #959595;
+    margin-top: 0rem;
     margin-bottom: 1rem;
     display: flex;
     align-items: center;

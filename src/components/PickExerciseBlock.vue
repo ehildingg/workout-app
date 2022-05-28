@@ -52,12 +52,12 @@
       singleOrMultipleStyles() {
         if (this.singleOrMultiple) {
           return {
-            'background-image': "url('/assets/multi-single.svg')"
+            'background-image': "url('/multi-single.svg')"
             /*             'background-image': "url('/assets/single-multi.svg')" */
           }
         } else {
           return {
-            'background-image': "url('/assets/single-multi.svg')"
+            'background-image': "url('/single-multi.svg')"
           }
         }
       }
